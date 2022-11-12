@@ -10,6 +10,7 @@ import com.habidev.bookdb.databinding.BookListBinding
 class BookListFragment: Fragment() {
     private lateinit var viewBinding: BookListBinding
     private lateinit var bookViewModel: BookViewModel
+    private lateinit var items: List<BookItem>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,13 +20,13 @@ class BookListFragment: Fragment() {
         viewBinding = BookListBinding.inflate(inflater, container, false)
         bookViewModel = BookViewModel()
 
+        items = bookViewModel.bookItemList
+
         return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val items = bookViewModel.bookItemList
 
         val adapter = BookAdapter(requireContext(), items)
 
