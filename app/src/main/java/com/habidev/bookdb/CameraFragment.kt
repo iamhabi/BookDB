@@ -29,6 +29,9 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment: Fragment() {
+    val clientId = "VRhYmSY428ZpifCq3eDS"
+    val clientSecret = "6Z2UyAxts4"
+
     private lateinit var viewBinding: CameraBinding
 
     private var imageCapture: ImageCapture? = null
@@ -48,7 +51,7 @@ class CameraFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewBinding.btnCapture.setOnClickListener { takePhoto() }
+        viewBinding.btnCapture.setOnClickListener { takePhotoTest() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -126,6 +129,10 @@ class CameraFragment: Fragment() {
         }
     }
 
+    private fun takePhotoTest() {
+        showInfo("9791162996522")
+    }
+
     private fun startCamera() {
         val cameraProviderFuture = context?.let { ProcessCameraProvider.getInstance(it) }
 
@@ -167,9 +174,6 @@ class CameraFragment: Fragment() {
     private fun showInfo(barcode: String) {
         val apiUrl = "https://openapi.naver.com/v1/search/book.json?query=$barcode"
 
-        val clientId = ""
-        val clientSecret = ""
-
         Thread {
             try {
                 val con = connect(apiUrl)
@@ -184,7 +188,7 @@ class CameraFragment: Fragment() {
                     readBody(con.errorStream)
                 }
 
-                val intent = Intent(context, BookActivity::class.java)
+                val intent = Intent(context, BookDetailActivity::class.java)
                 intent.putExtra("barcode", barcode)
                 intent.putExtra("result", result)
                 startActivity(intent)

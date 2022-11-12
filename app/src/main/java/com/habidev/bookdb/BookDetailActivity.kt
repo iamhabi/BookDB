@@ -1,5 +1,6 @@
 package com.habidev.bookdb
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +12,7 @@ import com.habidev.bookdb.database.BookDatabase
 import com.habidev.bookdb.databinding.BookDetailBinding
 import org.json.JSONObject
 
-class BookActivity: AppCompatActivity() {
+class BookDetailActivity: AppCompatActivity() {
     private val TAG: String = "Book Activity"
 
     private lateinit var viewBinding: BookDetailBinding
@@ -25,6 +26,7 @@ class BookActivity: AppCompatActivity() {
     private lateinit var imageUrl: String
     private lateinit var title: String
     private lateinit var author: String
+    private lateinit var link: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +74,9 @@ class BookActivity: AppCompatActivity() {
         title = item.get("title") as String
         author = item.get("author") as String
         imageUrl = item.get("image") as String
+
+        val linkString = item.get("link") as String
+        link = Uri.parse(linkString)
     }
 
     private fun setInfo() {
@@ -87,7 +92,7 @@ class BookActivity: AppCompatActivity() {
     }
 
     private fun buildBookItem() {
-        bookItem = BookItem(barcode, imageUrl, title, author)
+        bookItem = BookItem(barcode, imageUrl, title, author, link)
     }
 
     private fun addToDatabase() {
@@ -96,7 +101,8 @@ class BookActivity: AppCompatActivity() {
 
     private fun initOnClickListener() {
         viewBinding.btnOpenInBrowser.setOnClickListener {
-            Log.d(TAG, "Open In Browser")
+            val intent = Intent(Intent.ACTION_VIEW, link)
+            startActivity(intent)
         }
 
         viewBinding.btnAddBookmark.setOnClickListener {

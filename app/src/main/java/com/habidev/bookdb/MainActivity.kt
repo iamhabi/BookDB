@@ -2,13 +2,18 @@ package com.habidev.bookdb
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.room.Room
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.habidev.bookdb.database.BookDao
+import com.habidev.bookdb.database.BookDatabase
 import com.habidev.bookdb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
     private lateinit var viewPager: ViewPager2
+
+    private lateinit var bookDao: BookDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +22,18 @@ class MainActivity : AppCompatActivity() {
 
         initViewPager()
         initBottomNav()
+
+        initBookDao()
+
+    }
+
+    private fun initBookDao() {
+        val database = Room.databaseBuilder(
+            applicationContext,
+            BookDatabase::class.java, "books"
+        ).build()
+
+        bookDao = database.bookDao()
     }
 
     private fun initViewPager() {
@@ -33,15 +50,15 @@ class MainActivity : AppCompatActivity() {
                 super.onPageSelected(position)
 
                 when (position) {
-                    0 -> viewBinding.bottomNav.selectedItemId = R.id.btn_camera_frag
-                    1 -> viewBinding.bottomNav.selectedItemId = R.id.btn_book_list_frag
+                    0 -> changeBottomNavToCamera()
+                    1 -> changeBottomNavToBookList()
                 }
             }
         })
     }
 
     private fun initBottomNav() {
-        viewBinding.bottomNav.selectedItemId = R.id.btn_book_list_frag
+        changeBottomNavToBookList()
 
         viewBinding.bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
@@ -59,5 +76,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeToBookListFragment() {
         viewPager.setCurrentItem(1, true)
+    }
+
+    private fun changeBottomNavToCamera() {
+        viewBinding.bottomNav.selectedItemId = R.id.btn_camera_frag
+    }
+
+    private fun changeBottomNavToBookList() {
+        viewBinding.bottomNav.selectedItemId = R.id.btn_book_list_frag
     }
 }
