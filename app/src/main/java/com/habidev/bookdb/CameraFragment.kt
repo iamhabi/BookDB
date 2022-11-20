@@ -3,6 +3,7 @@ package com.habidev.bookdb
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -29,8 +30,9 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment: Fragment() {
-    val clientId = "VRhYmSY428ZpifCq3eDS"
-    val clientSecret = "6Z2UyAxts4"
+    private val testBarcode: String = "9791162996522"
+    private lateinit var clientId: String
+    private lateinit var clientSecret: String
 
     private lateinit var viewBinding: CameraBinding
 
@@ -45,13 +47,15 @@ class CameraFragment: Fragment() {
     ): View {
         viewBinding = CameraBinding.inflate(inflater, container, false)
 
+        initApiKey()
+
         return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewBinding.btnCapture.setOnClickListener { takePhotoTest() }
+        viewBinding.btnCapture.setOnClickListener { takePhoto() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -85,6 +89,10 @@ class CameraFragment: Fragment() {
         super.onDestroy()
 
         shutDownCameraExecutor()
+    }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        context?.let { it1 -> ContextCompat.checkSelfPermission(it1, it) } == PackageManager.PERMISSION_GRANTED
     }
 
     private fun takePhoto() {
@@ -130,13 +138,13 @@ class CameraFragment: Fragment() {
     }
 
     private fun takePhotoTest() {
-        showInfo("9791162996522")
+        showInfo(testBarcode)
     }
 
     private fun startCamera() {
         val cameraProviderFuture = context?.let { ProcessCameraProvider.getInstance(it) }
 
-        context?.let { ContextCompat.getMainExecutor(it) }?.let {
+        context?.let { ContextCompat.getMainExecutor(it) }?.let { it ->
             cameraProviderFuture?.addListener({
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
@@ -161,10 +169,6 @@ class CameraFragment: Fragment() {
 
             }, it)
         }
-    }
-
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        context?.let { it1 -> ContextCompat.checkSelfPermission(it1, it) } == PackageManager.PERMISSION_GRANTED
     }
 
     private fun shutDownCameraExecutor() {
@@ -223,6 +227,11 @@ class CameraFragment: Fragment() {
         } catch (e: IOException) {
             throw RuntimeException("API 응답을 읽는데 실패했습니다.", e)
         }
+    }
+
+    private fun initApiKey() {
+        clientId = resources.getString(R.string.NaverApiClientId)
+        clientSecret = resources.getString(R.string.NaverApiClientSecret)
     }
 
     companion object {

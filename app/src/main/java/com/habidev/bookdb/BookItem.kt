@@ -10,7 +10,7 @@ data class BookItem(
     private var imageUrl: String,
     private var title: String,
     private var author: String,
-    private var link: Uri
+//    private var link: Uri
 ) {
     fun getId(): Int {
         return id
@@ -27,8 +27,8 @@ data class BookItem(
     fun getAuthor(): String {
         return author
     }
-
-    fun getLink(): Uri {
-        return link
-    }
+//
+//    fun getLink(): Uri {
+//        return link
+//    }
 }

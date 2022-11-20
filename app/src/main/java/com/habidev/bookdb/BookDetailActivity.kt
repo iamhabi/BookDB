@@ -92,7 +92,7 @@ class BookDetailActivity: AppCompatActivity() {
     }
 
     private fun buildBookItem() {
-        bookItem = BookItem(barcode, imageUrl, title, author, link)
+        bookItem = BookItem(barcode, imageUrl, title, author)
     }
 
     private fun addToDatabase() {
