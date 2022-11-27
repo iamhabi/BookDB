@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.databinding.BookListItemBinding
 
-class BookAdapter(private val context: Context, private var items: List<BookItem>): RecyclerView.Adapter<BookAdapter.ViewHolder>() {
+class BookAdapter(private val context: Context, private var items: List<BookItem>, private var onItemClickListener: OnItemClickListener): RecyclerView.Adapter<BookAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.book_list_item, parent, false)
 
@@ -17,6 +17,14 @@ class BookAdapter(private val context: Context, private var items: List<BookItem
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener.onClick(position)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            onItemClickListener.onLongClick(position)
+        }
     }
 
     override fun getItemCount() = items.size
@@ -38,8 +46,8 @@ class BookAdapter(private val context: Context, private var items: List<BookItem
         }
     }
 
-    interface onItemClickListener {
+    interface OnItemClickListener {
         fun onClick(position: Int)
-        fun onLongClick(position: Int)
+        fun onLongClick(position: Int): Boolean
     }
 }

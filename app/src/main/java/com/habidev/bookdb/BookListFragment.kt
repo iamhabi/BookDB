@@ -1,14 +1,13 @@
 package com.habidev.bookdb
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import com.habidev.bookdb.BookAdapter.onItemClickListener
 import com.habidev.bookdb.database.BookDao
 import com.habidev.bookdb.database.BookDatabase
 import com.habidev.bookdb.databinding.BookListBinding
@@ -43,7 +42,7 @@ class BookListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = BookAdapter(requireContext(), items)
+        adapter = BookAdapter(requireContext(), items, onItemClickListener)
 
         viewBinding.bookRecyclerView.adapter = adapter
         viewBinding.bookRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -51,13 +50,17 @@ class BookListFragment: Fragment() {
         adapter.notifyItemRangeChanged(0, items.size)
     }
 
-    val onItemClickListener = object: onItemClickListener {
+    private val onItemClickListener = object: BookAdapter.OnItemClickListener {
         override fun onClick(position: Int) {
+            val bookItem = items[position]
 
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra("bookItem", bookItem)
+            startActivity(intent)
         }
 
-        override fun onLongClick(position: Int) {
-            TODO("Not yet implemented")
+        override fun onLongClick(position: Int): Boolean {
+            return true
         }
 
     }

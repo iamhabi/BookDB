@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         viewPager.adapter = adapter
 
-        viewPager.setCurrentItem(1, false)
+//        viewPager.setCurrentItem(1, false)
 
         viewPager.registerOnPageChangeCallback(object: OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {

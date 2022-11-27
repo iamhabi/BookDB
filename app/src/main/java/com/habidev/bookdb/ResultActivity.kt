@@ -9,14 +9,14 @@ import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.database.BookDao
 import com.habidev.bookdb.database.BookDatabase
-import com.habidev.bookdb.databinding.BookDetailBinding
+import com.habidev.bookdb.databinding.BookResultBinding
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 
 class ResultActivity: AppCompatActivity() {
-    private val TAG: String = "Book Activity"
+    private val tag: String = "Result Activity"
 
-    private lateinit var viewBinding: BookDetailBinding
+    private lateinit var viewBinding: BookResultBinding
 
     private lateinit var bookItem: BookItem
     private lateinit var bookDao: BookDao
@@ -27,11 +27,11 @@ class ResultActivity: AppCompatActivity() {
     private lateinit var imageUrl: String
     private lateinit var title: String
     private lateinit var author: String
-    private lateinit var link: Uri
+    private lateinit var link: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewBinding = BookDetailBinding.inflate(layoutInflater)
+        viewBinding = BookResultBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
         initBookDao()
@@ -44,7 +44,7 @@ class ResultActivity: AppCompatActivity() {
             getInfoFromJsonObject(resultJson)
             setInfo()
         } else {
-            Log.e(TAG, "Result is null")
+            Log.e(tag, "Result is null")
         }
     }
 
@@ -76,8 +76,7 @@ class ResultActivity: AppCompatActivity() {
         author = item.get("author") as String
         imageUrl = item.get("image") as String
 
-        val linkString = item.get("link") as String
-        link = Uri.parse(linkString)
+        link = item.get("link") as String
     }
 
     private fun setInfo() {
@@ -86,14 +85,14 @@ class ResultActivity: AppCompatActivity() {
             .load(Uri.parse(imageUrl))
             .placeholder(R.drawable.book)
             .error(R.drawable.book)
-            .into(viewBinding.detailImage)
+            .into(viewBinding.resultImage)
 
-        viewBinding.detailTitle.text = title
-        viewBinding.detailAuthor.text = author
+        viewBinding.resultTitle.text = title
+        viewBinding.resultAuthor.text = author
     }
 
     private fun buildBookItem() {
-        bookItem = BookItem(barcode, imageUrl, title, author)
+        bookItem = BookItem(barcode, imageUrl, title, author, link)
     }
 
     private fun addToDatabase() {
@@ -108,7 +107,8 @@ class ResultActivity: AppCompatActivity() {
 
     private fun initOnClickListener() {
         viewBinding.btnOpenInBrowser.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, link)
+            val linkUri = Uri.parse(link)
+            val intent = Intent(Intent.ACTION_VIEW, linkUri)
             startActivity(intent)
         }
 
