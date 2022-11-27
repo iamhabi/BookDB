@@ -37,4 +37,9 @@ class BookAdapter(private val context: Context, private var items: List<BookItem
             viewBinding.bookListTitle.text = title
         }
     }
+
+    interface onItemClickListener {
+        fun onClick(position: Int)
+        fun onLongClick(position: Int)
+    }
 }

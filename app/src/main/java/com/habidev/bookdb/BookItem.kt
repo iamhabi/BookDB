@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "books")
 data class BookItem(
-    @PrimaryKey private var id: Int,
+    @PrimaryKey(autoGenerate = true)
+    private var id: Int,
     private var imageUrl: String,
     private var title: String,
     private var author: String,

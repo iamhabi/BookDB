@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         initBottomNav()
 
         initBookDao()
-
     }
 
     private fun initBookDao() {

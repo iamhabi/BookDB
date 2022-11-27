@@ -3,7 +3,6 @@ package com.habidev.bookdb
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -192,7 +191,7 @@ class CameraFragment: Fragment() {
                     readBody(con.errorStream)
                 }
 
-                val intent = Intent(context, BookDetailActivity::class.java)
+                val intent = Intent(context, ResultActivity::class.java)
                 intent.putExtra("barcode", barcode)
                 intent.putExtra("result", result)
                 startActivity(intent)

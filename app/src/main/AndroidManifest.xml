@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".BookDetailActivity"/>
+        <activity android:name=".ResultActivity"/>
 
     </application>
 

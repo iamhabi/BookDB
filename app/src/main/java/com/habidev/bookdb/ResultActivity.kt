@@ -10,9 +10,10 @@ import com.bumptech.glide.Glide
 import com.habidev.bookdb.database.BookDao
 import com.habidev.bookdb.database.BookDatabase
 import com.habidev.bookdb.databinding.BookDetailBinding
+import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 
-class BookDetailActivity: AppCompatActivity() {
+class ResultActivity: AppCompatActivity() {
     private val TAG: String = "Book Activity"
 
     private lateinit var viewBinding: BookDetailBinding
@@ -96,7 +97,13 @@ class BookDetailActivity: AppCompatActivity() {
     }
 
     private fun addToDatabase() {
-        bookDao.insertBook(bookItem)
+        runBlocking {
+            bookDao.insertBook(bookItem)
+        }
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
     }
 
     private fun initOnClickListener() {

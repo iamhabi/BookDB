@@ -4,19 +4,20 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.habidev.bookdb.BookItem
 
 @Dao
 interface BookDao {
     @Insert
-    fun insertBook(bookItem: BookItem)
+    suspend fun insertBook(bookItem: BookItem)
 
     @Delete
-    fun deleteBook(bookItem: BookItem)
+    suspend fun deleteBook(bookItem: BookItem)
 
     @Query("SELECT * FROM books WHERE id = :id")
-    fun findBook(id: Int): BookItem
+    suspend fun findBook(id: Int): BookItem
 
     @Query("SELECT * FROM books")
-    fun getAll(): List<BookItem>
+    suspend fun getAll(): List<BookItem>
 }
