@@ -32,10 +32,6 @@ class BookListFragment: Fragment() {
 
         initBookDao()
 
-        runBlocking {
-            items = bookDao.getAll()
-        }
-
         return viewBinding.root
     }
 
@@ -47,7 +43,7 @@ class BookListFragment: Fragment() {
         viewBinding.bookRecyclerView.adapter = adapter
         viewBinding.bookRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        adapter.notifyItemRangeChanged(0, items.size)
+        getBooksFromDao()
     }
 
     private val onItemClickListener = object: BookAdapter.OnItemClickListener {
@@ -62,7 +58,6 @@ class BookListFragment: Fragment() {
         override fun onLongClick(position: Int): Boolean {
             return true
         }
-
     }
 
     private fun initBookDao() {
@@ -72,5 +67,13 @@ class BookListFragment: Fragment() {
         ).build()
 
         bookDao = database.bookDao()
+    }
+
+    private fun getBooksFromDao() {
+        runBlocking {
+            items = bookDao.getAllBooks()
+        }
+
+        adapter.notifyItemRangeChanged(0, items.size)
     }
 }

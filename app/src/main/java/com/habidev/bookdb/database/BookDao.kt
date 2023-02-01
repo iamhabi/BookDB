@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Transaction
 import com.habidev.bookdb.BookItem
 
 @Dao
@@ -19,5 +18,5 @@ interface BookDao {
     suspend fun findBook(id: Int): BookItem
 
     @Query("SELECT * FROM books")
-    suspend fun getAll(): List<BookItem>
+    suspend fun getAllBooks(): List<BookItem>
 }
