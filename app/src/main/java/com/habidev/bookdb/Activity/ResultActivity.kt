@@ -22,9 +22,6 @@ import java.net.MalformedURLException
 import java.net.URL
 
 class ResultActivity: AppCompatActivity() {
-    private lateinit var clientId: String
-    private lateinit var clientSecret: String
-
     private lateinit var viewBinding: BookResultBinding
 
     private val bookViewModel: BookViewModel by viewModels {
@@ -44,8 +41,6 @@ class ResultActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = BookResultBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
-
-        initApiKey()
 
         initOnClickListener()
 
@@ -117,8 +112,8 @@ class ResultActivity: AppCompatActivity() {
                 val con = connect(apiUrl)
 
                 con?.requestMethod = "GET"
-                con?.setRequestProperty("X-Naver-Client-Id", clientId)
-                con?.setRequestProperty("X-Naver-Client-Secret", clientSecret)
+                con?.setRequestProperty("X-Naver-Client-Id", DevKey.CLIENT_ID)
+                con?.setRequestProperty("X-Naver-Client-Secret", DevKey.CLIENT_SECRET)
 
                 val responseCode = con!!.responseCode
                 val result = if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
@@ -163,10 +158,5 @@ class ResultActivity: AppCompatActivity() {
         } catch (e: IOException) {
             throw RuntimeException("API 응답을 읽는데 실패했습니다.", e)
         }
-    }
-
-    private fun initApiKey() {
-        clientId = resources.getString(R.string.NaverApiClientId)
-        clientSecret = resources.getString(R.string.NaverApiClientSecret)
     }
 }
