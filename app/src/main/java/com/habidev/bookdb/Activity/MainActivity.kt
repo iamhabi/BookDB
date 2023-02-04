@@ -3,10 +3,12 @@ package com.habidev.bookdb.Activity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.habidev.bookdb.*
+import com.google.android.material.tabs.TabLayoutMediator
+import com.habidev.bookdb.BookViewModel
+import com.habidev.bookdb.BookViewModelFactory
+import com.habidev.bookdb.BooksApplication
+import com.habidev.bookdb.ViewPagerAdapter
 import com.habidev.bookdb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         bookViewModel.create()
 
         initViewPager()
-        initBottomNav()
     }
 
     private fun initViewPager() {
@@ -35,46 +36,11 @@ class MainActivity : AppCompatActivity() {
 
         viewPager.adapter = adapter
 
-//        viewPager.setCurrentItem(1, false)
-
-        viewPager.registerOnPageChangeCallback(object: OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-
-                when (position) {
-                    0 -> changeBottomNavToCamera()
-                    1 -> changeBottomNavToBookList()
-                }
+        TabLayoutMediator(viewBinding.viewPagerTabLayout, viewPager) { tab , position ->
+            when (position) {
+                0 -> tab.text = "Camera"
+                1 -> tab.text = "List"
             }
-        })
-    }
-
-    private fun initBottomNav() {
-        changeBottomNavToBookList()
-
-        viewBinding.bottomNav.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.btn_camera_frag -> changeToCameraFragment()
-                R.id.btn_book_list_frag -> changeToBookListFragment()
-            }
-
-            true
-        }
-    }
-
-    private fun changeToCameraFragment() {
-        viewPager.setCurrentItem(0, true)
-    }
-
-    private fun changeToBookListFragment() {
-        viewPager.setCurrentItem(1, true)
-    }
-
-    private fun changeBottomNavToCamera() {
-        viewBinding.bottomNav.selectedItemId = R.id.btn_camera_frag
-    }
-
-    private fun changeBottomNavToBookList() {
-        viewBinding.bottomNav.selectedItemId = R.id.btn_book_list_frag
+        }.attach()
     }
 }
