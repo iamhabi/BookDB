@@ -17,23 +17,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import com.habidev.bookdb.R
 import com.habidev.bookdb.Activity.ResultActivity
 import com.habidev.bookdb.databinding.CameraBinding
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment: Fragment() {
     private val testBarcode: String = "9791162996522"
-    private lateinit var clientId: String
-    private lateinit var clientSecret: String
 
     private lateinit var viewBinding: CameraBinding
 
@@ -47,8 +37,6 @@ class CameraFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewBinding = CameraBinding.inflate(inflater, container, false)
-
-        initApiKey()
 
         return viewBinding.root
     }
@@ -146,6 +134,14 @@ class CameraFragment: Fragment() {
         showInfo(testBarcode)
     }
 
+    private fun showInfo(barcode: String) {
+        val intent = Intent(context, ResultActivity::class.java)
+
+        intent.putExtra("barcode", barcode)
+
+        startActivity(intent)
+    }
+
     private fun startCamera() {
         val cameraProviderFuture = context?.let { ProcessCameraProvider.getInstance(it) }
 
@@ -178,66 +174,6 @@ class CameraFragment: Fragment() {
 
     private fun shutDownCameraExecutor() {
         cameraExecutor.shutdown()
-    }
-
-    private fun showInfo(barcode: String) {
-        val apiUrl = "https://openapi.naver.com/v1/search/book.json?query=$barcode"
-
-        Thread {
-            try {
-                val con = connect(apiUrl)
-
-                con?.requestMethod = "GET"
-                con?.setRequestProperty("X-Naver-Client-Id", clientId)
-                con?.setRequestProperty("X-Naver-Client-Secret", clientSecret)
-
-                val responseCode = con!!.responseCode
-                val result = if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-                    readBody(con.inputStream)
-                } else { // 에러 발생
-                    readBody(con.errorStream)
-                }
-
-                val intent = Intent(context, ResultActivity::class.java)
-                intent.putExtra("barcode", barcode)
-                intent.putExtra("result", result)
-                startActivity(intent)
-            } catch (e: Exception) {
-                Log.e("FAIL", e.toString())
-            }
-        }.start()
-    }
-
-    private fun connect(apiUrl: String): HttpURLConnection? {
-        return try {
-            val url = URL(apiUrl)
-            url.openConnection() as HttpURLConnection
-        } catch (e: MalformedURLException) {
-            throw RuntimeException("API URL이 잘못되었습니다. : $apiUrl", e)
-        } catch (e: IOException) {
-            throw RuntimeException("연결이 실패했습니다. : $apiUrl", e)
-        }
-    }
-
-    private fun readBody(body: InputStream): String {
-        val streamReader = InputStreamReader(body)
-        try {
-            BufferedReader(streamReader).use { lineReader ->
-                val responseBody = StringBuilder()
-                var line: String?
-                while (lineReader.readLine().also { line = it } != null) {
-                    responseBody.append(line)
-                }
-                return responseBody.toString()
-            }
-        } catch (e: IOException) {
-            throw RuntimeException("API 응답을 읽는데 실패했습니다.", e)
-        }
-    }
-
-    private fun initApiKey() {
-        clientId = resources.getString(R.string.NaverApiClientId)
-        clientSecret = resources.getString(R.string.NaverApiClientSecret)
     }
 
     companion object {
