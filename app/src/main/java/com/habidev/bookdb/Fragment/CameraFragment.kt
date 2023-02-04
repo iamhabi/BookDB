@@ -1,4 +1,4 @@
-package com.habidev.bookdb
+package com.habidev.bookdb.Fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -17,6 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import com.habidev.bookdb.R
+import com.habidev.bookdb.Activity.ResultActivity
 import com.habidev.bookdb.databinding.CameraBinding
 import java.io.BufferedReader
 import java.io.IOException
@@ -54,7 +56,10 @@ class CameraFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewBinding.btnCapture.setOnClickListener { takePhoto() }
+        viewBinding.btnCapture.setOnClickListener {
+            takePhoto()
+//            takePhotoTest()
+        }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -67,7 +72,8 @@ class CameraFragment: Fragment() {
         } else {
             activity?.let {
                 ActivityCompat.requestPermissions(
-                    it, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+                    it, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                )
             }
         }
     }
@@ -180,6 +186,7 @@ class CameraFragment: Fragment() {
         Thread {
             try {
                 val con = connect(apiUrl)
+
                 con?.requestMethod = "GET"
                 con?.setRequestProperty("X-Naver-Client-Id", clientId)
                 con?.setRequestProperty("X-Naver-Client-Secret", clientSecret)

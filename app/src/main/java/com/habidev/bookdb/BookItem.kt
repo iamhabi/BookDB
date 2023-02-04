@@ -8,14 +8,16 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "books")
 data class BookItem(
     @PrimaryKey(autoGenerate = true)
-    private var id: Int,
-    private var imageUrl: String?,
-    private var title: String?,
-    private var author: String?,
-    private var link: String?
+    private val id: Int,
+    private val link: String?,
+    private val title: String?,
+    private val author: String?,
+    private val imageUrl: String?,
+    private val description: String?,
 ): Parcelable {
     constructor(parcel: Parcel) : this (
         parcel.readInt(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -27,28 +29,33 @@ data class BookItem(
         return id
     }
 
-    fun getImageUrl(): String {
-        return imageUrl!!
+    fun getLink(): String? {
+        return link
     }
 
-    fun getTitle(): String {
-        return title!!
+    fun getTitle(): String? {
+        return title
     }
 
-    fun getAuthor(): String {
-        return author!!
+    fun getAuthor(): String? {
+        return author
     }
 
-    fun getLink(): String {
-        return link!!
+    fun getImageUrl(): String? {
+        return imageUrl
+    }
+
+    fun getDescription(): String? {
+        return description
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
-        parcel.writeString(imageUrl)
+        parcel.writeString(link)
         parcel.writeString(title)
         parcel.writeString(author)
-        parcel.writeString(link)
+        parcel.writeString(imageUrl)
+        parcel.writeString(description)
     }
 
     override fun describeContents(): Int {

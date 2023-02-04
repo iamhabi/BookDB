@@ -1,38 +1,31 @@
-package com.habidev.bookdb
+package com.habidev.bookdb.Activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.room.Room
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.habidev.bookdb.database.BookDao
-import com.habidev.bookdb.database.BookDatabase
+import com.habidev.bookdb.*
 import com.habidev.bookdb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
     private lateinit var viewPager: ViewPager2
 
-    private lateinit var bookDao: BookDao
+    private val bookViewModel: BookViewModel by viewModels {
+        BookViewModelFactory((application as BooksApplication).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
+        bookViewModel.create()
+
         initViewPager()
         initBottomNav()
-
-        initBookDao()
-    }
-
-    private fun initBookDao() {
-        val database = Room.databaseBuilder(
-            applicationContext,
-            BookDatabase::class.java, "books"
-        ).build()
-
-        bookDao = database.bookDao()
     }
 
     private fun initViewPager() {

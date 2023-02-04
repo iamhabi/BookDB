@@ -8,7 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.databinding.BookListItemBinding
 
-class BookAdapter(private val context: Context, private var items: List<BookItem>, private var onItemClickListener: OnItemClickListener): RecyclerView.Adapter<BookAdapter.ViewHolder>() {
+class BookListAdapter(
+    private val context: Context,
+    private var items: List<BookItem>,
+    private var onItemClickListener: OnItemClickListener
+): RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.book_list_item, parent, false)
 
@@ -33,8 +37,8 @@ class BookAdapter(private val context: Context, private var items: List<BookItem
         private val viewBinding = BookListItemBinding.bind(itemView)
 
         fun bind(item: BookItem) {
-            val imageUrl: String = item.getImageUrl()
-            val title: String = item.getTitle()
+            val title: String? = item.getTitle()
+            val imageUrl: String? = item.getImageUrl()
 
             Glide.with(itemView)
                 .load(imageUrl)

@@ -1,11 +1,30 @@
 package com.habidev.bookdb
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.habidev.bookdb.dao.BookRepository
+import kotlinx.coroutines.launch
 
-class BookViewModel: ViewModel() {
-     var bookItemList: List<BookItem>
-        get() = bookItemList
-        set(bookItemList) {
-            this.bookItemList = bookItemList
+class BookViewModel(private val repository: BookRepository): ViewModel() {
+    /**
+     * Do Nothing
+     * Create ViewModel
+     */
+    fun create() {}
+
+    val allBooks: LiveData<List<BookItem>> = repository.allBooks.asLiveData()
+
+    fun insert(book: BookItem) = viewModelScope.launch {
+        repository.insert(book)
+    }
+}
+
+class BookViewModelFactory(private val repository: BookRepository): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(BookViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return BookViewModel(repository) as T
         }
+
+        throw IllegalArgumentException("Unknown ViewModel Class")
+    }
 }

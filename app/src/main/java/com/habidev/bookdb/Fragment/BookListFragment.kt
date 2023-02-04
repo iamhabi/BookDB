@@ -1,4 +1,4 @@
-package com.habidev.bookdb
+package com.habidev.bookdb.Fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,21 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import com.habidev.bookdb.database.BookDao
-import com.habidev.bookdb.database.BookDatabase
+import com.habidev.bookdb.Activity.DetailActivity
+import com.habidev.bookdb.BookItem
+import com.habidev.bookdb.BookListAdapter
+import com.habidev.bookdb.BookViewModel
 import com.habidev.bookdb.databinding.BookListBinding
-import kotlinx.coroutines.runBlocking
 
-class BookListFragment: Fragment() {
+class BookListFragment(): Fragment() {
     private lateinit var viewBinding: BookListBinding
-    private lateinit var bookViewModel: BookViewModel
 
-    private lateinit var bookDao: BookDao
+    private val items: MutableList<BookItem> = mutableListOf()
+    private lateinit var adapter: BookListAdapter
 
-    private lateinit var items: List<BookItem>
-    private lateinit var adapter: BookAdapter
+    private val bookViewModel: BookViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,9 +28,6 @@ class BookListFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewBinding = BookListBinding.inflate(inflater, container, false)
-        bookViewModel = BookViewModel()
-
-        initBookDao()
 
         return viewBinding.root
     }
@@ -38,15 +35,22 @@ class BookListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = BookAdapter(requireContext(), items, onItemClickListener)
+        adapter = BookListAdapter(requireContext(), items, onItemClickListener)
 
         viewBinding.bookRecyclerView.adapter = adapter
         viewBinding.bookRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        getBooksFromDao()
+        bookViewModel.allBooks.observe(requireActivity()) { books ->
+            books.let {
+                items.clear()
+                items.addAll(books)
+
+                adapter.notifyItemRangeChanged(0, items.size)
+            }
+        }
     }
 
-    private val onItemClickListener = object: BookAdapter.OnItemClickListener {
+    private val onItemClickListener = object: BookListAdapter.OnItemClickListener {
         override fun onClick(position: Int) {
             val bookItem = items[position]
 
@@ -58,22 +62,5 @@ class BookListFragment: Fragment() {
         override fun onLongClick(position: Int): Boolean {
             return true
         }
-    }
-
-    private fun initBookDao() {
-        val database = Room.databaseBuilder(
-            requireContext(),
-            BookDatabase::class.java, "books"
-        ).build()
-
-        bookDao = database.bookDao()
-    }
-
-    private fun getBooksFromDao() {
-        runBlocking {
-            items = bookDao.getAllBooks()
-        }
-
-        adapter.notifyItemRangeChanged(0, items.size)
     }
 }
