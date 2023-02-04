@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "books")
 data class BookItem(
     @PrimaryKey(autoGenerate = true)
-    private val id: Int,
+    private val id: Long,
     private val link: String?,
     private val title: String?,
     private val author: String?,
@@ -16,7 +16,7 @@ data class BookItem(
     private val description: String?,
 ): Parcelable {
     constructor(parcel: Parcel) : this (
-        parcel.readInt(),
+        parcel.readLong(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -25,7 +25,7 @@ data class BookItem(
     ) {
     }
 
-    fun getId(): Int {
+    fun getId(): Long {
         return id
     }
 
@@ -50,7 +50,7 @@ data class BookItem(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
+        parcel.writeLong(id)
         parcel.writeString(link)
         parcel.writeString(title)
         parcel.writeString(author)
