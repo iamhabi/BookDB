@@ -3,12 +3,10 @@ package com.habidev.bookdb.Activity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import com.habidev.bookdb.BookViewModel
-import com.habidev.bookdb.BookViewModelFactory
-import com.habidev.bookdb.BooksApplication
-import com.habidev.bookdb.ViewPagerAdapter
+import com.habidev.bookdb.*
 import com.habidev.bookdb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -38,8 +36,14 @@ class MainActivity : AppCompatActivity() {
 
         TabLayoutMediator(viewBinding.viewPagerTabLayout, viewPager) { tab , position ->
             when (position) {
-                0 -> tab.text = "Camera"
-                1 -> tab.text = "List"
+                0 -> {
+                    tab.icon = ContextCompat.getDrawable(this, R.drawable.camera)
+                    tab.text = "Camera"
+                }
+                1 -> {
+                    tab.icon = ContextCompat.getDrawable(this, R.drawable.collections_bookmark)
+                    tab.text = "List"
+                }
             }
         }.attach()
     }
