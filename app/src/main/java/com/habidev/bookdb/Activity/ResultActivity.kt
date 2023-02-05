@@ -30,7 +30,7 @@ class ResultActivity: AppCompatActivity() {
 
     private lateinit var resultJsonObject: JSONObject
 
-    private lateinit var barcode: String
+    private var isbn: Long = -1
     private lateinit var link: String
     private lateinit var title: String
     private lateinit var author: String
@@ -44,7 +44,7 @@ class ResultActivity: AppCompatActivity() {
 
         initOnClickListener()
 
-        barcode = getBarcodeFromBundle()
+        val barcode = getBarcodeFromBundle()
 
         if (barcode != "") {
             getInfoFromNaverAndShow(barcode)
@@ -62,6 +62,7 @@ class ResultActivity: AppCompatActivity() {
     private fun getInfoFromJsonObject(resultJson: String) {
         resultJsonObject = JSONObject(resultJson).getJSONArray("items").getJSONObject(0)
 
+        isbn = (resultJsonObject.get("link") as String).toLong()
         link = resultJsonObject.get("link") as String
         title = resultJsonObject.get("title") as String
         author = resultJsonObject.get("author") as String
@@ -84,7 +85,7 @@ class ResultActivity: AppCompatActivity() {
 
     private fun addToDatabase() {
         bookViewModel.insert(
-            BookItem(barcode.toLong(), link, title, author, imageUrl, description)
+            BookItem(isbn, link, title, author, imageUrl, description)
         )
 
         val intent = Intent(this, MainActivity::class.java)

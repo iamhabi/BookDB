@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "books")
 data class BookItem(
     @PrimaryKey(autoGenerate = true)
-    private val id: Long,
+    private val id: Long,     // isbn
     private val link: String?,
     private val title: String?,
     private val author: String?,
