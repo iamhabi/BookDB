@@ -8,16 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.BookItem
 import com.habidev.bookdb.R
-import com.habidev.bookdb.databinding.BookDetailBinding
+import com.habidev.bookdb.databinding.DetailBinding
 
 class DetailActivity: AppCompatActivity() {
-    private lateinit var viewBinding: BookDetailBinding
+    private lateinit var viewBinding: DetailBinding
 
     private lateinit var bookItem: BookItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewBinding = BookDetailBinding.inflate(layoutInflater)
+        viewBinding = DetailBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
