@@ -19,7 +19,10 @@ interface BookDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM books WHERE id = :id")
-    suspend fun find(id: Int): BookItem
+    suspend fun searchById(id: Int): BookItem
+
+    @Query("SELECT * FROM books WHERE id LIKE '%' || :query || '%' OR title LIKE '%' || :query || '%' OR author LIKE '%' || :query || '%'")
+    suspend fun search(query: String): List<BookItem>
 
     @Query("SELECT * FROM books")
     fun getAll(): Flow<List<BookItem>>

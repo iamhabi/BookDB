@@ -1,6 +1,7 @@
 package com.habidev.bookdb.dao
 
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.habidev.bookdb.BookItem
 import kotlinx.coroutines.flow.Flow
 
@@ -11,5 +12,11 @@ class BookRepository(private val bookDao: BookDao) {
     @WorkerThread
     suspend fun insert(book: BookItem) {
         bookDao.insert(book)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun search(query: String): List<BookItem> {
+        return bookDao.search(query)
     }
 }

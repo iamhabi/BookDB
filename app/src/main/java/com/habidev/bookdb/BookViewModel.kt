@@ -16,6 +16,18 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
     fun insert(book: BookItem) = viewModelScope.launch {
         repository.insert(book)
     }
+
+    fun search(query: String): LiveData<List<BookItem>> {
+        val resultList = MutableLiveData<List<BookItem>>()
+
+        viewModelScope.launch {
+            val searchResult = repository.search(query)
+
+            resultList.postValue(searchResult)
+        }
+
+        return resultList
+    }
 }
 
 class BookViewModelFactory(private val repository: BookRepository): ViewModelProvider.Factory {
