@@ -105,11 +105,9 @@ class ResultActivity: AppCompatActivity() {
     }
 
     private fun getInfoFromNaverAndShow(barcode: String) {
-        val apiUrl = "https://openapi.naver.com/v1/search/book.json?query=$barcode"
-
         Thread {
             try {
-                val con = connect(apiUrl)
+                val con = connect("${DevKey.URL}$barcode")
 
                 con?.requestMethod = "GET"
                 con?.setRequestProperty("X-Naver-Client-Id", DevKey.CLIENT_ID)
