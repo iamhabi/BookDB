@@ -44,6 +44,10 @@ class MainActivity : AppCompatActivity() {
                     tab.icon = ContextCompat.getDrawable(this, R.drawable.collections_bookmark)
                     tab.text = "List"
                 }
+                2 -> {
+                    tab.icon = ContextCompat.getDrawable(this, R.drawable.search)
+                    tab.text = "Search"
+                }
             }
         }.attach()
     }
