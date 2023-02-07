@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.habidev.bookdb.*
+import com.habidev.bookdb.Adapter.MainViewPagerAdapter
 import com.habidev.bookdb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewPager() {
-        val adapter = ViewPagerAdapter(this)
+        val adapter = MainViewPagerAdapter(this)
 
         viewPager = viewBinding.viewPager
 

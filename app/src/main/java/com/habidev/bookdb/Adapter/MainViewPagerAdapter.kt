@@ -1,4 +1,4 @@
-package com.habidev.bookdb
+package com.habidev.bookdb.Adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -7,7 +7,7 @@ import com.habidev.bookdb.Fragment.BookListFragment
 import com.habidev.bookdb.Fragment.CameraFragment
 import com.habidev.bookdb.Fragment.SearchFragment
 
-class ViewPagerAdapter(
+class MainViewPagerAdapter(
     mainActivity: MainActivity
 ): FragmentStateAdapter(mainActivity) {
     override fun getItemCount(): Int {
