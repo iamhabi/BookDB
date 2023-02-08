@@ -42,8 +42,14 @@ class SearchFragment: Fragment() {
 
         TabLayoutMediator(viewBinding.viewPagerTabLayoutSearch, viewBinding.viewPagerSearch) { tab, position ->
             when (position) {
-                0 -> tab.icon = ContextCompat.getDrawable(requireContext(), R.drawable.collections_bookmark)
-                1 -> tab.icon = ContextCompat.getDrawable(requireContext(), R.drawable.cloud)
+                0 -> {
+                    tab.icon = ContextCompat.getDrawable(requireContext(), R.drawable.collections_bookmark)
+                    tab.text = "My Library"
+                }
+                1 -> {
+                    tab.icon = ContextCompat.getDrawable(requireContext(), R.drawable.cloud)
+                    tab.text = "Internet"
+                }
             }
         }.attach()
 
