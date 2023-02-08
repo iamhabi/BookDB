@@ -1,9 +1,11 @@
 package com.habidev.bookdb.Fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -14,10 +16,13 @@ import com.habidev.bookdb.BookViewModel
 import com.habidev.bookdb.R
 import com.habidev.bookdb.databinding.SearchBinding
 
+
 class SearchFragment: Fragment() {
     private lateinit var viewBinding: SearchBinding
 
     private val bookViewModel: BookViewModel by activityViewModels()
+
+    private lateinit var inputMethodManager: InputMethodManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,9 +31,7 @@ class SearchFragment: Fragment() {
     ): View {
         viewBinding = SearchBinding.inflate(inflater, container, false)
 
-        // TODO
-        //  Request Focus to Edit Text
-        //  show keyboard
+        inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         return viewBinding.root
     }
@@ -56,11 +59,19 @@ class SearchFragment: Fragment() {
         initListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (viewBinding.editTextSearch.text.toString() == "") {
+            viewBinding.editTextSearch.requestFocus()
+
+            inputMethodManager.showSoftInput(viewBinding.editTextSearch, InputMethodManager.SHOW_IMPLICIT)
+        }
+    }
+
     private fun initListener() {
         viewBinding.btnSearch.setOnClickListener {
-            // TODO
-            //  hide keyboard
-            //  Remove Focus from Edit Text
+            inputMethodManager.hideSoftInputFromWindow(viewBinding.editTextSearch.windowToken, 0)
 
             val query: String = viewBinding.editTextSearch.text.toString()
 
