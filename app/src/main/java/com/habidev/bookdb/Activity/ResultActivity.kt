@@ -2,6 +2,7 @@ package com.habidev.bookdb.Activity
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -30,6 +31,8 @@ class ResultActivity: AppCompatActivity() {
 
     private lateinit var resultJsonObject: JSONObject
 
+    private lateinit var bookItem: BookItem
+
     private var isbn: Long = -1
     private lateinit var link: String
     private lateinit var title: String
@@ -42,21 +45,30 @@ class ResultActivity: AppCompatActivity() {
         viewBinding = ResultBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        initOnClickListener()
+        initListener()
 
-        val barcode = getBarcodeFromBundle()
+        val bundle = intent.extras
 
-        if (barcode != "") {
+        val barcode = bundle?.getString("barcode") ?: ""
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            bookItem = bundle?.getParcelable("bookItem", BookItem::class.java) as BookItem
+        }
+
+        if (bookItem.getTitle() != null) {
+            isbn = bookItem.getId()
+            link = bookItem.getLink().toString()
+            title = bookItem.getTitle().toString()
+            author = bookItem.getAuthor().toString()
+            imageUrl = bookItem.getImageUrl().toString()
+            description = bookItem.getDescription().toString()
+
+            setInfo()
+        } else if (barcode != "") {
             getInfoFromNaverAndShow(barcode)
         } else {
             Toast.makeText(this, "Invalid Barcode", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun getBarcodeFromBundle(): String {
-        val bundle = intent.extras
-
-        return bundle?.getString("barcode") ?: ""
     }
 
     private fun getInfoFromJsonObject(resultJson: String) {
@@ -88,12 +100,10 @@ class ResultActivity: AppCompatActivity() {
             BookItem(isbn, link, title, author, imageUrl, description)
         )
 
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        finish()
     }
 
-    private fun initOnClickListener() {
+    private fun initListener() {
         viewBinding.btnOpenInBrowser.setOnClickListener {
             val linkUri = Uri.parse(link)
             val intent = Intent(Intent.ACTION_VIEW, linkUri)
