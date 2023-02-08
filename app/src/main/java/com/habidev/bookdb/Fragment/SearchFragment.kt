@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -75,11 +76,25 @@ class SearchFragment: Fragment() {
 
             val query: String = viewBinding.editTextSearch.text.toString()
 
-            if (query == "") {
-                Toast.makeText(requireContext(), "Input Search Query", Toast.LENGTH_SHORT).show()
-            } else {
-                bookViewModel.searchQuery.value = query
+            setSearchQuery(query)
+        }
+
+        viewBinding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val query: String = viewBinding.editTextSearch.text.toString()
+
+                setSearchQuery(query)
             }
+
+            false
+        }
+    }
+
+    private fun setSearchQuery(query: String) {
+        if (query == "") {
+            Toast.makeText(requireContext(), "Input Search Query", Toast.LENGTH_SHORT).show()
+        } else {
+            bookViewModel.searchQuery.value = query
         }
     }
 }
