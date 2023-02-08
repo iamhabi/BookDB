@@ -1,4 +1,4 @@
-package com.habidev.bookdb
+package com.habidev.bookdb.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.habidev.bookdb.BookItem
+import com.habidev.bookdb.R
 import com.habidev.bookdb.databinding.BookListItemBinding
 
 class BookListAdapter(
@@ -47,6 +49,10 @@ class BookListAdapter(
                 .into(viewBinding.bookListImage)
 
             viewBinding.bookListTitle.text = title
+
+            // TODO
+            //  검색 결과 보여줄 때
+            //  title + imageUrl로 My Library/Internet Result 보여주기
         }
     }
 
