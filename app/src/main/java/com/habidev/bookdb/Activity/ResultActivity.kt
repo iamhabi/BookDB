@@ -2,7 +2,6 @@ package com.habidev.bookdb.Activity
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -31,8 +30,6 @@ class ResultActivity: AppCompatActivity() {
 
     private lateinit var resultJsonObject: JSONObject
 
-    private lateinit var bookItem: BookItem
-
     private var isbn: Long = -1
     private lateinit var link: String
     private lateinit var title: String
@@ -51,20 +48,7 @@ class ResultActivity: AppCompatActivity() {
 
         val barcode = bundle?.getString("barcode") ?: ""
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            bookItem = bundle?.getParcelable("bookItem", BookItem::class.java) as BookItem
-        }
-
-        if (bookItem.getTitle() != null) {
-            isbn = bookItem.getId()
-            link = bookItem.getLink().toString()
-            title = bookItem.getTitle().toString()
-            author = bookItem.getAuthor().toString()
-            imageUrl = bookItem.getImageUrl().toString()
-            description = bookItem.getDescription().toString()
-
-            setInfo()
-        } else if (barcode != "") {
+        if (barcode != "") {
             getInfoFromNaverAndShow(barcode)
         } else {
             Toast.makeText(this, "Invalid Barcode", Toast.LENGTH_SHORT).show()
@@ -74,7 +58,7 @@ class ResultActivity: AppCompatActivity() {
     private fun getInfoFromJsonObject(resultJson: String) {
         resultJsonObject = JSONObject(resultJson).getJSONArray("items").getJSONObject(0)
 
-        isbn = (resultJsonObject.get("link") as String).toLong()
+        isbn = (resultJsonObject.get("isbn") as String).toLong()
         link = resultJsonObject.get("link") as String
         title = resultJsonObject.get("title") as String
         author = resultJsonObject.get("author") as String
