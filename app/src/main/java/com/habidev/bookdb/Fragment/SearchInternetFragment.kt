@@ -15,7 +15,7 @@ import com.habidev.bookdb.Activity.ResultActivity
 import com.habidev.bookdb.Adapter.BookListAdapter
 import com.habidev.bookdb.BookItem
 import com.habidev.bookdb.BookViewModel
-import com.habidev.bookdb.DevKey
+import com.habidev.bookdb.ApiKey
 import com.habidev.bookdb.databinding.BookListBinding
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -106,11 +106,11 @@ class SearchInternetFragment: Fragment() {
     private fun getInfoFromNaverAndShow(query: String) {
         Thread {
             try {
-                val con = connect("${DevKey.URL}$query")
+                val con = connect("${ApiKey.URL}$query")
 
                 con?.requestMethod = "GET"
-                con?.setRequestProperty("X-Naver-Client-Id", DevKey.CLIENT_ID)
-                con?.setRequestProperty("X-Naver-Client-Secret", DevKey.CLIENT_SECRET)
+                con?.setRequestProperty("X-Naver-Client-Id", ApiKey.CLIENT_ID)
+                con?.setRequestProperty("X-Naver-Client-Secret", ApiKey.CLIENT_SECRET)
 
                 val responseCode = con!!.responseCode
                 val result = if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출

@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-/app/src/main/java/com/habidev/bookdb/DevKey.kt
+/app/src/main/java/com/habidev/bookdb/ApiKey.kt

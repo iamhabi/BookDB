@@ -102,11 +102,11 @@ class ResultActivity: AppCompatActivity() {
     private fun getInfoFromNaverAndShow(barcode: String) {
         Thread {
             try {
-                val con = connect("${DevKey.URL}$barcode")
+                val con = connect("${ApiKey.URL}$barcode")
 
                 con?.requestMethod = "GET"
-                con?.setRequestProperty("X-Naver-Client-Id", DevKey.CLIENT_ID)
-                con?.setRequestProperty("X-Naver-Client-Secret", DevKey.CLIENT_SECRET)
+                con?.setRequestProperty("X-Naver-Client-Id", ApiKey.CLIENT_ID)
+                con?.setRequestProperty("X-Naver-Client-Secret", ApiKey.CLIENT_SECRET)
 
                 val responseCode = con!!.responseCode
                 val result = if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
