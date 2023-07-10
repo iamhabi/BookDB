@@ -17,10 +17,10 @@ interface BookDao {
     @Query("DELETE FROM books")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM books WHERE id = :id")
-    suspend fun searchById(id: Int): BookItem
+    @Query("SELECT * FROM books WHERE isbn = :isbn")
+    suspend fun searchByISBN(isbn: Long): BookItem
 
-    @Query("SELECT * FROM books WHERE id LIKE '%' || :query || '%' OR title LIKE '%' || :query || '%' OR author LIKE '%' || :query || '%'")
+    @Query("SELECT * FROM books WHERE isbn LIKE '%' || :query || '%' OR title LIKE '%' || :query || '%' OR author LIKE '%' || :query || '%'")
     suspend fun search(query: String): List<BookItem>
 
     @Query("SELECT * FROM books")
