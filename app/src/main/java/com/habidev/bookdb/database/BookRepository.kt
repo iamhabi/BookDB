@@ -1,7 +1,6 @@
-package com.habidev.bookdb.dao
+package com.habidev.bookdb.database
 
 import androidx.annotation.WorkerThread
-import com.habidev.bookdb.BookItem
 import kotlinx.coroutines.flow.Flow
 
 class BookRepository(private val bookDao: BookDao) {

@@ -11,6 +11,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.*
+import com.habidev.bookdb.database.BookItem
+import com.habidev.bookdb.database.BookViewModel
+import com.habidev.bookdb.database.BookViewModelFactory
+import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.databinding.ResultBinding
 import org.json.JSONObject
 import java.io.BufferedReader

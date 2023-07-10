@@ -1,7 +1,6 @@
-package com.habidev.bookdb
+package com.habidev.bookdb.database
 
 import androidx.lifecycle.*
-import com.habidev.bookdb.dao.BookRepository
 import kotlinx.coroutines.launch
 
 class BookViewModel(private val repository: BookRepository): ViewModel() {

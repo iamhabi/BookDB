@@ -10,8 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.habidev.bookdb.Activity.DetailActivity
 import com.habidev.bookdb.Adapter.BookListAdapter
-import com.habidev.bookdb.BookItem
-import com.habidev.bookdb.BookViewModel
+import com.habidev.bookdb.database.BookItem
+import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.BookListBinding
 
 class SearchDBFragment: Fragment() {

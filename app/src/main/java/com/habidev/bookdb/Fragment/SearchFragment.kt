@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.habidev.bookdb.Adapter.SearchViewPagerAdapter
-import com.habidev.bookdb.BookViewModel
+import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.R
 import com.habidev.bookdb.databinding.SearchBinding
 

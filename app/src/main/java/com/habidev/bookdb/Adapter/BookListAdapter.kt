@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.habidev.bookdb.BookItem
+import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.R
 import com.habidev.bookdb.databinding.BookListItemBinding
 

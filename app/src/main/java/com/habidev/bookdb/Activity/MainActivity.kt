@@ -8,6 +8,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.habidev.bookdb.*
 import com.habidev.bookdb.Adapter.MainViewPagerAdapter
+import com.habidev.bookdb.database.BookViewModel
+import com.habidev.bookdb.database.BookViewModelFactory
+import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

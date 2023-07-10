@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.habidev.bookdb.BookItem
+import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.R
 import com.habidev.bookdb.databinding.DetailBinding
 

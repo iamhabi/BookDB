@@ -13,8 +13,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.habidev.bookdb.Activity.ResultActivity
 import com.habidev.bookdb.Adapter.BookListAdapter
-import com.habidev.bookdb.BookItem
-import com.habidev.bookdb.BookViewModel
+import com.habidev.bookdb.database.BookItem
+import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.ApiKey
 import com.habidev.bookdb.databinding.BookListBinding
 import org.json.JSONObject

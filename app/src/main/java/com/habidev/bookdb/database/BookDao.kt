@@ -1,10 +1,9 @@
-package com.habidev.bookdb.dao
+package com.habidev.bookdb.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.habidev.bookdb.BookItem
 import kotlinx.coroutines.flow.Flow
 
 @Dao

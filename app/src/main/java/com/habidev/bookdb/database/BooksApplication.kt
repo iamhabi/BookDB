@@ -1,8 +1,8 @@
-package com.habidev.bookdb
+package com.habidev.bookdb.database
 
 import android.app.Application
-import com.habidev.bookdb.dao.BookRepository
-import com.habidev.bookdb.dao.BookRoomDatabase
+import com.habidev.bookdb.database.BookRepository
+import com.habidev.bookdb.database.BookRoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 

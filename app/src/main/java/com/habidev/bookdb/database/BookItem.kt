@@ -1,4 +1,4 @@
-package com.habidev.bookdb
+package com.habidev.bookdb.database
 
 import android.os.Build
 import android.os.Parcel
