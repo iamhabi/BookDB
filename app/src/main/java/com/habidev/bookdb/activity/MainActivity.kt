@@ -4,18 +4,19 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import com.habidev.bookdb.*
-import com.habidev.bookdb.adapter.MainViewPagerAdapter
+import com.habidev.bookdb.R
+import com.habidev.bookdb.adapter.SimpleViewPagerAdapter
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.BookViewModelFactory
 import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.databinding.ActivityMainBinding
+import com.habidev.bookdb.fragment.BookListFragment
+import com.habidev.bookdb.fragment.CameraFragment
+import com.habidev.bookdb.fragment.SearchFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
-    private lateinit var viewPager: ViewPager2
 
     private val bookViewModel: BookViewModel by viewModels {
         BookViewModelFactory((application as BooksApplication).repository)
@@ -32,25 +33,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewPager() {
-        val adapter = MainViewPagerAdapter(this)
+        val fragments = arrayListOf(
+            CameraFragment(),
+            BookListFragment(),
+            SearchFragment()
+        )
 
-        viewPager = viewBinding.viewPager
+        val adapter = SimpleViewPagerAdapter(this, fragments)
 
-        viewPager.adapter = adapter
+        viewBinding.viewPager.adapter = adapter
 
-        TabLayoutMediator(viewBinding.viewPagerTabLayout, viewPager) { tab , position ->
+        TabLayoutMediator(viewBinding.viewPagerTabLayout, viewBinding.viewPager) { tab, position ->
             when (position) {
                 0 -> {
                     tab.icon = ContextCompat.getDrawable(this, R.drawable.camera)
                     tab.text = "Camera"
                 }
+
                 1 -> {
                     tab.icon = ContextCompat.getDrawable(this, R.drawable.collections_bookmark)
                     tab.text = "List"
                 }
+
                 2 -> {
-                    tab.icon = ContextCompat.getDrawable(this, R.drawable.search)
-                    tab.text = "Search"
+                    tab.icon = ContextCompat.getDrawable(this, R.drawable.cloud)
+                    tab.text = "Internet"
                 }
             }
         }.attach()
