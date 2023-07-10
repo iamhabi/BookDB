@@ -25,7 +25,7 @@ class DetailActivity: AppCompatActivity() {
         }
 
         viewBinding.btnOpenInBrowser.setOnClickListener {
-            val link: Uri = Uri.parse(bookItem.getLink())
+            val link: Uri = Uri.parse(bookItem.link)
             val intent = Intent(Intent.ACTION_VIEW, link)
             startActivity(intent)
         }
@@ -40,13 +40,13 @@ class DetailActivity: AppCompatActivity() {
     private fun setInfo() {
         Glide
             .with(this)
-            .load(Uri.parse(bookItem.getImageUrl()))
+            .load(Uri.parse(bookItem.imageUrl))
             .placeholder(R.drawable.book)
             .error(R.drawable.book)
             .into(viewBinding.detailImage)
 
-        viewBinding.detailTitle.text = bookItem.getTitle()
-        viewBinding.detailAuthor.text = bookItem.getAuthor()
-        viewBinding.detailDescription.text = bookItem.getDescription()
+        viewBinding.detailTitle.text = bookItem.title
+        viewBinding.detailAuthor.text = bookItem.author
+        viewBinding.detailDescription.text = bookItem.description
     }
 }
