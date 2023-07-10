@@ -93,6 +93,15 @@ class SearchFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        viewBinding.editTextSearch.setText("")
+
+        adapter.notifyItemRangeRemoved(0, items.size)
+        items.clear()
+    }
+
     private fun initListener() {
         viewBinding.btnSearch.setOnClickListener {
             inputMethodManager.hideSoftInputFromWindow(viewBinding.editTextSearch.windowToken, 0)
