@@ -1,6 +1,7 @@
 package com.habidev.bookdb.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.habidev.bookdb.ApiKey
+import com.habidev.bookdb.activity.ResultActivity
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.databinding.SearchBinding
@@ -59,7 +61,10 @@ class SearchFragment : Fragment() {
             items,
             object : BookListAdapter.OnItemClickListener {
                 override fun onClick(position: Int) {
-
+                    val bookItem = items[position]
+                    val intent = Intent(context, ResultActivity::class.java)
+                    intent.putExtra("isbn", bookItem.isbn)
+                    startActivity(intent)
                 }
 
                 override fun onLongClick(position: Int): Boolean {
@@ -161,6 +166,9 @@ class SearchFragment : Fragment() {
                 } else { // 에러 발생
                     readBody(con.errorStream)
                 }
+
+                // TODO
+                //  search result is only 10
 
                 requireActivity().runOnUiThread {
                     adapter.notifyItemRangeRemoved(0, items.size)
