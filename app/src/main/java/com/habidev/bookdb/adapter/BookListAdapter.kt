@@ -39,20 +39,13 @@ class BookListAdapter(
         private val viewBinding = BookListItemBinding.bind(itemView)
 
         fun bind(item: BookItem) {
-            val title: String? = item.getTitle()
-            val imageUrl: String? = item.getImageUrl()
-
             Glide.with(itemView)
-                .load(imageUrl)
+                .load(item.imageUrl)
                 .placeholder(R.drawable.book)
                 .error(R.drawable.book)
                 .into(viewBinding.bookListImage)
 
-            viewBinding.bookListTitle.text = title
-
-            // TODO
-            //  검색 결과 보여줄 때
-            //  title + imageUrl로 My Library/Internet Result 보여주기
+            viewBinding.bookListTitle.text = item.title
         }
     }
 
