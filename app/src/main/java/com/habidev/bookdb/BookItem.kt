@@ -1,61 +1,52 @@
 package com.habidev.bookdb
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "books")
 data class BookItem(
     @PrimaryKey(autoGenerate = true)
-    private val id: Long,     // isbn
-    private val link: String?,
-    private val title: String?,
-    private val author: String?,
-    private val imageUrl: String?,
-    private val description: String?,
+    var isbn: Long,
+    var link: String,
+    var title: String,
+    var author: String,
+    var imageUrl: String,
+    var description: String,
+    var comment: String?,
+    var readingState: Int,
+    var isOwning: Boolean,
+    var wannaBuy: Boolean,
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this (
         parcel.readLong(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
         parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString()
-    ) {
-    }
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean()
+    )
 
-    fun getId(): Long {
-        return id
-    }
-
-    fun getLink(): String? {
-        return link
-    }
-
-    fun getTitle(): String? {
-        return title
-    }
-
-    fun getAuthor(): String? {
-        return author
-    }
-
-    fun getImageUrl(): String? {
-        return imageUrl
-    }
-
-    fun getDescription(): String? {
-        return description
-    }
-
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(id)
+        parcel.writeLong(isbn)
         parcel.writeString(link)
         parcel.writeString(title)
         parcel.writeString(author)
         parcel.writeString(imageUrl)
         parcel.writeString(description)
+        parcel.writeString(comment)
+        parcel.writeInt(readingState)
+        parcel.writeBoolean(isOwning)
+        parcel.writeBoolean(wannaBuy)
     }
 
     override fun describeContents(): Int {
@@ -63,6 +54,7 @@ data class BookItem(
     }
 
     companion object CREATOR : Parcelable.Creator<BookItem> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BookItem {
             return BookItem(parcel)
         }
