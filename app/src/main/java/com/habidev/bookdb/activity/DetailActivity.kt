@@ -29,6 +29,10 @@ class DetailActivity: AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, link)
             startActivity(intent)
         }
+
+        viewBinding.btnClose.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onStart() {
@@ -43,10 +47,10 @@ class DetailActivity: AppCompatActivity() {
             .load(Uri.parse(bookItem.imageUrl))
             .placeholder(R.drawable.book)
             .error(R.drawable.book)
-            .into(viewBinding.detailImage)
+            .into(viewBinding.imageViewBookCover)
 
-        viewBinding.detailTitle.text = bookItem.title
-        viewBinding.detailAuthor.text = bookItem.author
-        viewBinding.detailDescription.text = bookItem.description
+        viewBinding.textViewTitle.text = bookItem.title
+        viewBinding.textViewAuthor.text = bookItem.author
+        viewBinding.textViewDescription.text = bookItem.description
     }
 }
