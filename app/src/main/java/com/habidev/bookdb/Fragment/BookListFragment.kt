@@ -37,17 +37,29 @@ class BookListFragment: Fragment() {
 
         adapter = BookListAdapter(requireContext(), items, onItemClickListener)
 
-        viewBinding.bookRecyclerView.adapter = adapter
-        viewBinding.bookRecyclerView.layoutManager = LinearLayoutManager(context)
+        viewBinding.recyclerView.adapter = adapter
+        viewBinding.recyclerView.layoutManager = LinearLayoutManager(context)
 
-        bookViewModel.allBooks.observe(requireActivity()) { books ->
-            books.let {
-                items.clear()
-                items.addAll(books)
-
-                adapter.notifyItemRangeChanged(0, items.size)
-            }
+        viewBinding.btnSearch.setOnClickListener {
+            // search
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        bookViewModel.allBooks.observe(this) { books ->
+            items.clear()
+            items.addAll(books)
+
+            adapter.notifyItemRangeChanged(0, items.size)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        bookViewModel.allBooks.removeObservers(this)
     }
 
     private val onItemClickListener = object: BookListAdapter.OnItemClickListener {
