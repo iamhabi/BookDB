@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -50,12 +49,15 @@ class ResultActivity: AppCompatActivity() {
 
         val bundle = intent.extras
 
-        val barcode = bundle?.getString("barcode") ?: ""
+        val barcode = bundle?.getString("barcode")
+        val isbn = bundle?.getLong("isbn")
 
-        if (barcode != "") {
-            getBookInfoAndShow(barcode)
-        } else {
-            Toast.makeText(this, "Invalid Barcode", Toast.LENGTH_SHORT).show()
+        barcode?.let {
+            getBookInfoAndShow(it)
+        }
+
+        isbn?.let {
+            getBookInfoAndShow(it.toString())
         }
 
         initListener()
@@ -109,10 +111,10 @@ class ResultActivity: AppCompatActivity() {
         }
     }
 
-    private fun getBookInfoAndShow(barcode: String) {
+    private fun getBookInfoAndShow(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val con = connect("${ApiKey.URL}$barcode")
+                val con = connect("${ApiKey.URL}$query")
 
                 con?.requestMethod = "GET"
                 con?.setRequestProperty("X-Naver-Client-Id", ApiKey.CLIENT_ID)
