@@ -1,4 +1,4 @@
-package com.habidev.bookdb.Activity
+package com.habidev.bookdb.activity
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.habidev.bookdb.*
-import com.habidev.bookdb.Adapter.MainViewPagerAdapter
+import com.habidev.bookdb.adapter.MainViewPagerAdapter
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.BookViewModelFactory
 import com.habidev.bookdb.database.BooksApplication

@@ -1,4 +1,4 @@
-package com.habidev.bookdb.Activity
+package com.habidev.bookdb.activity
 
 import android.content.Intent
 import android.net.Uri

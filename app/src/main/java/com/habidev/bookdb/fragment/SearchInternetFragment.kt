@@ -1,4 +1,4 @@
-package com.habidev.bookdb.Fragment
+package com.habidev.bookdb.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.habidev.bookdb.Activity.ResultActivity
-import com.habidev.bookdb.Adapter.BookListAdapter
+import com.habidev.bookdb.activity.ResultActivity
+import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.ApiKey

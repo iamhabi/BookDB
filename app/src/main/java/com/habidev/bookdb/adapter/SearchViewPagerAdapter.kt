@@ -1,10 +1,10 @@
-package com.habidev.bookdb.Adapter
+package com.habidev.bookdb.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.habidev.bookdb.Fragment.SearchDBFragment
-import com.habidev.bookdb.Fragment.SearchInternetFragment
+import com.habidev.bookdb.fragment.SearchDBFragment
+import com.habidev.bookdb.fragment.SearchInternetFragment
 
 class SearchViewPagerAdapter(
     fragmentActivity: FragmentActivity

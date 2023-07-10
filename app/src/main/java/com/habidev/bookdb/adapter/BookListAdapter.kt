@@ -1,4 +1,4 @@
-package com.habidev.bookdb.Adapter
+package com.habidev.bookdb.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
