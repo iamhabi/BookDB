@@ -3,19 +3,21 @@ package com.habidev.bookdb.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.habidev.bookdb.*
+import com.habidev.bookdb.ApiKey
+import com.habidev.bookdb.R
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.BookViewModelFactory
 import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.databinding.ResultBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
@@ -46,20 +48,20 @@ class ResultActivity: AppCompatActivity() {
         viewBinding = ResultBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        initListener()
-
         val bundle = intent.extras
 
         val barcode = bundle?.getString("barcode") ?: ""
 
         if (barcode != "") {
-            getInfoFromNaverAndShow(barcode)
+            getBookInfoAndShow(barcode)
         } else {
             Toast.makeText(this, "Invalid Barcode", Toast.LENGTH_SHORT).show()
         }
+
+        initListener()
     }
 
-    private fun getInfoFromJsonObject(resultJson: String) {
+    private fun showResult(resultJson: String) {
         resultJsonObject = JSONObject(resultJson).getJSONArray("items").getJSONObject(0)
 
         isbn = (resultJsonObject.get("isbn") as String).toLong()
@@ -68,6 +70,10 @@ class ResultActivity: AppCompatActivity() {
         author = resultJsonObject.get("author") as String
         imageUrl = resultJsonObject.get("image") as String
         description = resultJsonObject.get("description") as String
+
+        runOnUiThread {
+            setInfo()
+        }
     }
 
     private fun setInfo() {
@@ -76,19 +82,17 @@ class ResultActivity: AppCompatActivity() {
             .load(Uri.parse(imageUrl))
             .placeholder(R.drawable.book)
             .error(R.drawable.book)
-            .into(viewBinding.resultImage)
+            .into(viewBinding.imageViewBookCover)
 
-        viewBinding.resultTitle.text = title
-        viewBinding.resultAuthor.text = author
-        viewBinding.resultDescription.text = description
+        viewBinding.textViewTitle.text = title
+        viewBinding.textViewAuthor.text = author
+        viewBinding.textViewDescription.text = description
     }
 
     private fun addToDatabase() {
         bookViewModel.insert(
-            BookItem(isbn, link, title, author, imageUrl, description)
+            BookItem(isbn, link, title, author, imageUrl, description, null, 0, isOwning = false, wannaBuy = false)
         )
-
-        finish()
     }
 
     private fun initListener() {
@@ -100,11 +104,13 @@ class ResultActivity: AppCompatActivity() {
 
         viewBinding.btnAddBookmark.setOnClickListener {
             addToDatabase()
+
+            finish()
         }
     }
 
-    private fun getInfoFromNaverAndShow(barcode: String) {
-        Thread {
+    private fun getBookInfoAndShow(barcode: String) {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 val con = connect("${ApiKey.URL}$barcode")
 
@@ -119,15 +125,11 @@ class ResultActivity: AppCompatActivity() {
                     readBody(con.errorStream)
                 }
 
-                getInfoFromJsonObject(result)
-
-                Handler(Looper.getMainLooper()).post {
-                    setInfo()
-                }
+                showResult(result)
             } catch (e: Exception) {
                 Log.e("FAIL", e.toString())
             }
-        }.start()
+        }
     }
 
     private fun connect(apiUrl: String): HttpURLConnection? {
