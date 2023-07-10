@@ -6,15 +6,16 @@ import kotlinx.coroutines.flow.Flow
 class BookRepository(private val bookDao: BookDao) {
     val allBooks: Flow<List<BookItem>> = bookDao.getAll()
 
-    @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insert(book: BookItem) {
         bookDao.insert(book)
     }
 
-    @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun search(query: String): List<BookItem> {
-        return bookDao.search(query)
+    suspend fun update(book: BookItem) {
+        bookDao.update(book)
     }
+
+    @WorkerThread
+    fun search(query: String): List<BookItem> = bookDao.search(query)
 }

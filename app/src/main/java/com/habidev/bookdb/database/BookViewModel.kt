@@ -16,6 +16,10 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
         repository.insert(book)
     }
 
+    fun update(book: BookItem) = viewModelScope.launch {
+        repository.update(book)
+    }
+
     var searchQuery: MutableLiveData<String> = MutableLiveData()
 
     fun search(query: String): LiveData<List<BookItem>> {
