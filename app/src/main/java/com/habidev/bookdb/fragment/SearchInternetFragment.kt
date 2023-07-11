@@ -92,8 +92,7 @@ class SearchInternetFragment : Fragment() {
                 //  search result is only 10
 
                 requireActivity().runOnUiThread {
-                    adapter.notifyItemRangeRemoved(0, items.size)
-                    items.clear()
+                    clearResult()
                 }
 
                 showResult(result)
@@ -101,6 +100,11 @@ class SearchInternetFragment : Fragment() {
                 Log.e("FAIL", e.toString())
             }
         }
+    }
+
+    fun clearResult() {
+        adapter.notifyItemRangeRemoved(0, items.size)
+        items.clear()
     }
 
     private fun showResult(resultJson: String) {

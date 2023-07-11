@@ -69,8 +69,7 @@ class SearchDBFragment : Fragment() {
     fun performSearch(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
             requireActivity().runOnUiThread {
-                adapter.notifyItemRangeRemoved(0, items.size)
-                items.clear()
+                clearResult()
             }
 
             val resultList = bookViewModel.search(query)
@@ -82,5 +81,10 @@ class SearchDBFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun clearResult() {
+        adapter.notifyItemRangeRemoved(0, items.size)
+        items.clear()
     }
 }
