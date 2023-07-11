@@ -64,6 +64,9 @@ class SearchFragment : Fragment() {
         super.onPause()
 
         viewBinding.editTextSearch.setText("")
+
+        searchDBFrag.clearResult()
+        searchInternetFrag.clearResult()
     }
 
     private fun initViewPager() {
@@ -78,6 +81,7 @@ class SearchFragment : Fragment() {
         val adapter = SimpleViewPagerAdapter(requireActivity(), fragments)
 
         viewBinding.viewPagerSearch.adapter = adapter
+        viewBinding.viewPagerSearch.offscreenPageLimit = fragments.size
 
         TabLayoutMediator(viewBinding.tabLayoutSearch, viewBinding.viewPagerSearch) { tab, position ->
             when (position) {
