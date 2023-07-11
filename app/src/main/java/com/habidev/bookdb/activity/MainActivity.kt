@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 2 -> {
-                    tab.icon = ContextCompat.getDrawable(this, R.drawable.cloud)
-                    tab.text = "Internet"
+                    tab.icon = ContextCompat.getDrawable(this, R.drawable.search)
+                    tab.text = "Search"
                 }
             }
         }.attach()
