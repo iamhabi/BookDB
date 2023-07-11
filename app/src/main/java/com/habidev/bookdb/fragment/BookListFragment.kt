@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.habidev.bookdb.activity.DetailActivity
-import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.adapter.BookListAdapter
+import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.BookListBinding
 
@@ -39,10 +39,6 @@ class BookListFragment: Fragment() {
 
         viewBinding.recyclerView.adapter = adapter
         viewBinding.recyclerView.layoutManager = LinearLayoutManager(context)
-
-        viewBinding.btnSearch.setOnClickListener {
-            // search
-        }
     }
 
     override fun onResume() {
