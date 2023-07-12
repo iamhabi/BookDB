@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.R
+import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.databinding.BookListItemBinding
 
 class BookListAdapter(
@@ -43,9 +43,10 @@ class BookListAdapter(
                 .load(item.imageUrl)
                 .placeholder(R.drawable.book)
                 .error(R.drawable.book)
-                .into(viewBinding.bookListImage)
+                .into(viewBinding.imageViewBookCover)
 
-            viewBinding.bookListTitle.text = item.title
+            viewBinding.textViewTitle.text = item.title
+            viewBinding.textViewAuthor.text = item.author
         }
     }
 
