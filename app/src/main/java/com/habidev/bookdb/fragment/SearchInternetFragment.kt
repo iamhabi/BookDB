@@ -88,9 +88,6 @@ class SearchInternetFragment : Fragment() {
                     readBody(con.errorStream)
                 }
 
-                // TODO
-                //  search result is only 10
-
                 requireActivity().runOnUiThread {
                     clearResult()
                 }
