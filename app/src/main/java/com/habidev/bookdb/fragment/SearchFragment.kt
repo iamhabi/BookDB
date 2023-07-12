@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
@@ -24,17 +23,12 @@ class SearchFragment : Fragment() {
     private lateinit var searchDBFrag: SearchDBFragment
     private lateinit var searchInternetFrag: SearchInternetFragment
 
-    private lateinit var inputMethodManager: InputMethodManager
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         viewBinding = SearchBinding.inflate(inflater, container, false)
-
-        inputMethodManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         return viewBinding.root
     }
@@ -51,12 +45,7 @@ class SearchFragment : Fragment() {
         super.onResume()
 
         if (viewBinding.editTextSearch.text.toString() == "") {
-            viewBinding.editTextSearch.requestFocus()
-
-            inputMethodManager.showSoftInput(
-                viewBinding.editTextSearch,
-                InputMethodManager.SHOW_IMPLICIT
-            )
+            showKeyboard()
         }
     }
 
@@ -65,8 +54,8 @@ class SearchFragment : Fragment() {
 
         viewBinding.editTextSearch.setText("")
 
-        searchDBFrag.clearResult()
-        searchInternetFrag.clearResult()
+//        searchDBFrag.clearResult()
+//        searchInternetFrag.clearResult()
     }
 
     private fun initViewPager() {
@@ -101,23 +90,30 @@ class SearchFragment : Fragment() {
         searchInternetFrag.performSearch(query)
     }
 
+    private fun showKeyboard() {
+        viewBinding.editTextSearch.requestFocus()
+
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        inputMethodManager.showSoftInput(
+            viewBinding.editTextSearch,
+            InputMethodManager.SHOW_IMPLICIT
+        )
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        inputMethodManager.hideSoftInputFromWindow(viewBinding.editTextSearch.windowToken, 0)
+    }
+
     private fun initListener() {
         viewBinding.btnSearch.setOnClickListener {
-            inputMethodManager.hideSoftInputFromWindow(viewBinding.editTextSearch.windowToken, 0)
+            hideKeyboard()
 
             val query: String = viewBinding.editTextSearch.text.toString()
 
             performSearch(query)
-        }
-
-        viewBinding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val query: String = viewBinding.editTextSearch.text.toString()
-
-                performSearch(query)
-            }
-
-            false
         }
 
         viewBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
@@ -131,5 +127,7 @@ class SearchFragment : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
             }
         })
+
+
     }
 }
