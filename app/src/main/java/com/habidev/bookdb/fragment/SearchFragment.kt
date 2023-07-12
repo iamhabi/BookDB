@@ -49,15 +49,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        viewBinding.editTextSearch.setText("")
-
-//        searchDBFrag.clearResult()
-//        searchInternetFrag.clearResult()
-    }
-
     private fun initViewPager() {
         searchDBFrag = SearchDBFragment()
         searchInternetFrag = SearchInternetFragment()
@@ -86,6 +77,13 @@ class SearchFragment : Fragment() {
     }
 
     private fun performSearch(query: String) {
+        if (query == "") {
+            searchDBFrag.clearResult()
+            searchInternetFrag.clearResult()
+
+            return
+        }
+
         searchDBFrag.performSearch(query)
         searchInternetFrag.performSearch(query)
     }
