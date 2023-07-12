@@ -1,6 +1,9 @@
 package com.habidev.bookdb.activity
 
+import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -30,6 +33,16 @@ class MainActivity : AppCompatActivity() {
         bookViewModel.create()
 
         initViewPager()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun initViewPager() {

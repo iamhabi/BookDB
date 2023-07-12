@@ -126,6 +126,10 @@ class SearchFragment : Fragment() {
             }
         })
 
-
+        viewBinding.editTextSearch.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                hideKeyboard()
+            }
+        }
     }
 }
