@@ -7,7 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "books")
+@Entity(tableName = BookDao.TABLE_NAME)
 data class BookItem(
     @PrimaryKey(autoGenerate = true)
     var isbn: Long,

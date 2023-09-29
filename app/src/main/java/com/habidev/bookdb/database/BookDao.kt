@@ -9,6 +9,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BookDao {
+    companion object {
+        const val TABLE_NAME = "books"
+    }
+
     @Insert
     suspend fun insert(bookItem: BookItem)
 
@@ -18,15 +22,15 @@ interface BookDao {
     @Delete
     suspend fun delete(bookItem: BookItem)
 
-    @Query("DELETE FROM books")
+    @Query("DELETE FROM $TABLE_NAME")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM books WHERE isbn = :isbn")
+    @Query("SELECT * FROM $TABLE_NAME WHERE isbn = :isbn")
     suspend fun searchByISBN(isbn: Long): BookItem
 
-    @Query("SELECT * FROM books WHERE isbn LIKE '%' || :query || '%' OR title LIKE '%' || :query || '%' OR author LIKE '%' || :query || '%'")
+    @Query("SELECT * FROM $TABLE_NAME WHERE isbn LIKE '%' || :query || '%' OR title LIKE '%' || :query || '%' OR author LIKE '%' || :query || '%'")
     fun search(query: String): List<BookItem>
 
-    @Query("SELECT * FROM books")
+    @Query("SELECT * FROM $TABLE_NAME")
     fun getAll(): Flow<List<BookItem>>
 }
