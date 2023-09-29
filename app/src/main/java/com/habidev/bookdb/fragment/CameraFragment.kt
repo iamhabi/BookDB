@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,7 +22,16 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment: Fragment() {
-    private val testBarcode: String = "9791162996522"
+    companion object {
+        private const val TAG = "Barcode Reader"
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private val REQUIRED_PERMISSIONS =
+            arrayOf (
+                Manifest.permission.CAMERA
+            )
+
+        private const val TEST_BARCODE: String = "9791162996522"
+    }
 
     private lateinit var viewBinding: CameraBinding
 
@@ -45,8 +53,8 @@ class CameraFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewBinding.btnCapture.setOnClickListener {
-            takePhoto()
-//            takePhotoTest()
+//            scanBarcode()
+            scanBarcodeTest()
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -88,7 +96,7 @@ class CameraFragment: Fragment() {
         context?.let { it1 -> ContextCompat.checkSelfPermission(it1, it) } == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun takePhoto() {
+    private fun scanBarcode() {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
@@ -130,8 +138,8 @@ class CameraFragment: Fragment() {
         }
     }
 
-    private fun takePhotoTest() {
-        showInfo(testBarcode)
+    private fun scanBarcodeTest() {
+        showInfo(TEST_BARCODE)
     }
 
     private fun showInfo(barcode: String) {
@@ -174,18 +182,5 @@ class CameraFragment: Fragment() {
 
     private fun shutDownCameraExecutor() {
         cameraExecutor.shutdown()
-    }
-
-    companion object {
-        private const val TAG = "Barcode Reader"
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS =
-            mutableListOf (
-                Manifest.permission.CAMERA
-            ).apply {
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                    add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }.toTypedArray()
     }
 }
