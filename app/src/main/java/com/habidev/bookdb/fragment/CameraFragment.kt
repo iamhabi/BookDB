@@ -92,8 +92,8 @@ class CameraFragment: Fragment() {
         shutDownCameraExecutor()
     }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        context?.let { it1 -> ContextCompat.checkSelfPermission(it1, it) } == PackageManager.PERMISSION_GRANTED
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all { permissions ->
+        context?.let { context -> ContextCompat.checkSelfPermission(context, permissions) } == PackageManager.PERMISSION_GRANTED
     }
 
     private fun scanBarcode() {
@@ -101,16 +101,19 @@ class CameraFragment: Fragment() {
         val imageCapture = imageCapture ?: return
 
         // Set up image capture listener, which is triggered after photo has been taken
-        context?.let { ContextCompat.getMainExecutor(it) }?.let { it ->
+        context?.let { ContextCompat.getMainExecutor(it) }?.let { executor ->
             imageCapture.takePicture(
-                it,
+                executor,
                 object: ImageCapture.OnImageCapturedCallback() {
                     @SuppressLint("UnsafeOptInUsageError")
                     override fun onCaptureSuccess(imageProxy: ImageProxy) {
                         super.onCaptureSuccess(imageProxy)
+
                         val mediaImage = imageProxy.image
+
                         if (mediaImage != null) {
                             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+
                             BarcodeScanning.getClient()
                                 .process(image)
                                 .addOnSuccessListener { barcodes ->
@@ -122,8 +125,8 @@ class CameraFragment: Fragment() {
                                         }
                                     }
                                 }
-                                .addOnFailureListener {
-                                    Log.e("FAIL", it.toString())
+                                .addOnFailureListener { exception ->
+                                    Log.e("FAIL", exception.toString())
                                 }
                         }
                     }
@@ -153,7 +156,7 @@ class CameraFragment: Fragment() {
     private fun startCamera() {
         val cameraProviderFuture = context?.let { ProcessCameraProvider.getInstance(it) }
 
-        context?.let { ContextCompat.getMainExecutor(it) }?.let { it ->
+        context?.let { ContextCompat.getMainExecutor(it) }?.let { executor ->
             cameraProviderFuture?.addListener({
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
@@ -176,7 +179,7 @@ class CameraFragment: Fragment() {
                     Log.e(TAG, "Use case binding failed", exc)
                 }
 
-            }, it)
+            }, executor)
         }
     }
 
