@@ -64,17 +64,13 @@ class SearchDBFragment : Fragment() {
     }
 
     fun performSearch(query: String) {
-        if (query == "") {
-            adapter.clear()
+        adapter.clear()
 
+        if (query == "") {
             return
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            requireActivity().runOnUiThread {
-                adapter.clear()
-            }
-
             val resultList = bookViewModel.search(query)
 
             CoroutineScope(Dispatchers.Main).launch {

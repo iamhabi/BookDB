@@ -70,9 +70,9 @@ class SearchInternetFragment : Fragment() {
     }
 
     fun performSearch(query: String) {
-        if (query == "") {
-            adapter.clear()
+        adapter.clear()
 
+        if (query == "") {
             return
         }
 
@@ -89,10 +89,6 @@ class SearchInternetFragment : Fragment() {
                     readBody(con.inputStream)
                 } else { // 에러 발생
                     readBody(con.errorStream)
-                }
-
-                CoroutineScope(Dispatchers.Main).launch  {
-                    adapter.clear()
                 }
 
                 showResult(result)
