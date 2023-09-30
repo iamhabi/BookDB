@@ -20,7 +20,7 @@ class BookListAdapter(
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
-    private val items: List<BookItem> = mutableListOf()
+    private val items: MutableList<BookItem> = mutableListOf()
     private var onItemClickListener: OnItemClickListener
 
     init {
@@ -66,6 +66,26 @@ class BookListAdapter(
     }
 
     override fun getItemCount() = items.size
+
+    fun add(item: BookItem) {
+        if (!items.contains(item)) {
+            items.add(item)
+
+            notifyItemInserted(itemCount - 1)
+        }
+    }
+
+    fun add(items: List<BookItem>) {
+        for (item in items) {
+            add(item)
+        }
+    }
+
+    fun clear() {
+        notifyItemRangeRemoved(0, itemCount - 1)
+
+        items.clear()
+    }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.onItemClickListener = listener
