@@ -17,10 +17,9 @@ data class BookItem(
     var imageUrl: String,
     var description: String,
     var comment: String?,
-    var readingState: Int,
-    var isOwning: Int
+    var readingState: Int, // 0: Not read yet, 1: Reading, 2: Done
+    var isOwning: Int // 0: Not own, 1: Wanna buy, 2: Own
 ): Parcelable {
-    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this (
         parcel.readLong(),
         parcel.readString().toString(),
