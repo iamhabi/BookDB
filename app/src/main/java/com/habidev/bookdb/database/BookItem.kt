@@ -50,6 +50,14 @@ data class BookItem(
     }
 
     companion object CREATOR : Parcelable.Creator<BookItem> {
+        const val READ_STATE_NOT_YET = 0
+        const val READ_STATE_READING = 1
+        const val READ_STATE_DONE    = 2
+
+        const val OWN_STATE_NOT_OWN   = 0
+        const val OWN_STATE_WANNA_BUY = 1
+        const val OWN_STATE_OWN       = 2
+
         @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BookItem {
             return BookItem(parcel)
