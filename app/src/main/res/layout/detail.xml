@@ -44,7 +44,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
@@ -53,31 +53,36 @@
             <ImageView
                 android:id="@+id/image_view_book_cover"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:contentDescription="@string/book_cover" />
+                android:layout_height="0dp"
+                android:contentDescription="@string/book_cover"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/text_view_title"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
                 android:gravity="center"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/image_view_book_cover"/>
 
             <TextView
                 android:id="@+id/text_view_author"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/text_view_title"/>
 
             <TextView
                 android:id="@+id/text_view_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/text_view_author"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
