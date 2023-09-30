@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.activity.ResultActivity
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
@@ -26,7 +27,6 @@ class SearchDBFragment : Fragment() {
 
     private lateinit var viewBinding: RecyclerViewBaseBinding
 
-    private lateinit var items: MutableList<BookItem>
     private lateinit var adapter: BookListAdapter
 
     override fun onCreateView(
@@ -42,49 +42,44 @@ class SearchDBFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        items = mutableListOf()
+        initRecyclerView()
+    }
 
-        adapter = BookListAdapter(
-            requireContext(),
-            items,
-            object : BookListAdapter.OnItemClickListener {
-                override fun onClick(position: Int) {
-                    val bookItem = items[position]
-                    val intent = Intent(context, ResultActivity::class.java)
-                    intent.putExtra("isbn", bookItem.isbn)
-                    startActivity(intent)
-                }
+    private fun initRecyclerView() {
+        adapter = BookListAdapter(requireContext())
 
-                override fun onLongClick(position: Int): Boolean {
-                    // do nothing
-                    return false
-                }
+        adapter.setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
+            override fun onClick(position: Int, bookItem: BookItem) {
+                val intent = Intent(context, ResultActivity::class.java)
+                intent.putExtra("isbn", bookItem.isbn)
+                startActivity(intent)
             }
-        )
+
+            override fun onMoreClick(position: Int, bookItem: BookItem) {
+            }
+        })
 
         viewBinding.recyclerViewBase.adapter = adapter
-        viewBinding.recyclerViewBase.layoutManager = LinearLayoutManager(context)
+        viewBinding.recyclerViewBase.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 
     fun performSearch(query: String) {
+        if (query == "") {
+            adapter.clear()
+
+            return
+        }
+
         CoroutineScope(Dispatchers.IO).launch {
             requireActivity().runOnUiThread {
-                clearResult()
+                adapter.clear()
             }
 
             val resultList = bookViewModel.search(query)
 
-            for (bookItem in resultList) {
-                requireActivity().runOnUiThread {
-                    items.add(bookItem)
-                    adapter.notifyItemInserted(adapter.itemCount - 1)
-                }
+            CoroutineScope(Dispatchers.Main).launch {
+                adapter.add(resultList)
             }
         }
-    }
-
-    fun clearResult() {
-        adapter.notifyItemRangeRemoved(0, items.size)
-        items.clear()
     }
 }

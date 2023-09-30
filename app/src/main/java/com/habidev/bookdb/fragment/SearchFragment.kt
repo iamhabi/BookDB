@@ -77,13 +77,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun performSearch(query: String) {
-        if (query == "") {
-            searchDBFrag.clearResult()
-            searchInternetFrag.clearResult()
-
-            return
-        }
-
         searchDBFrag.performSearch(query)
         searchInternetFrag.performSearch(query)
     }

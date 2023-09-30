@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.ApiKey
 import com.habidev.bookdb.activity.ResultActivity
 import com.habidev.bookdb.adapter.BookListAdapter
@@ -32,7 +33,6 @@ class SearchInternetFragment : Fragment() {
 
     private lateinit var viewBinding: RecyclerViewBaseBinding
 
-    private lateinit var items: MutableList<BookItem>
     private lateinit var adapter: BookListAdapter
 
     override fun onCreateView(
@@ -48,31 +48,34 @@ class SearchInternetFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        items = mutableListOf()
+        initRecyclerView()
+    }
 
-        adapter = BookListAdapter(
-            requireContext(),
-            items,
-            object : BookListAdapter.OnItemClickListener {
-                override fun onClick(position: Int) {
-                    val bookItem = items[position]
-                    val intent = Intent(context, ResultActivity::class.java)
-                    intent.putExtra("isbn", bookItem.isbn)
-                    startActivity(intent)
-                }
+    private fun initRecyclerView() {
+        adapter = BookListAdapter(requireContext())
 
-                override fun onLongClick(position: Int): Boolean {
-                    // do nothing
-                    return false
-                }
+        adapter.setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
+            override fun onClick(position: Int, bookItem: BookItem) {
+                val intent = Intent(context, ResultActivity::class.java)
+                intent.putExtra("isbn", bookItem.isbn)
+                startActivity(intent)
             }
-        )
+
+            override fun onMoreClick(position: Int, bookItem: BookItem) {
+            }
+        })
 
         viewBinding.recyclerViewBase.adapter = adapter
-        viewBinding.recyclerViewBase.layoutManager = LinearLayoutManager(context)
+        viewBinding.recyclerViewBase.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 
     fun performSearch(query: String) {
+        if (query == "") {
+            adapter.clear()
+
+            return
+        }
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val con = connect("${ApiKey.URL}$query")
@@ -88,8 +91,8 @@ class SearchInternetFragment : Fragment() {
                     readBody(con.errorStream)
                 }
 
-                requireActivity().runOnUiThread {
-                    clearResult()
+                CoroutineScope(Dispatchers.Main).launch  {
+                    adapter.clear()
                 }
 
                 showResult(result)
@@ -97,11 +100,6 @@ class SearchInternetFragment : Fragment() {
                 Log.e("FAIL", e.toString())
             }
         }
-    }
-
-    fun clearResult() {
-        adapter.notifyItemRangeRemoved(0, items.size)
-        items.clear()
     }
 
     private fun showResult(resultJson: String) {
@@ -118,14 +116,19 @@ class SearchInternetFragment : Fragment() {
             val description = jsonObject.get("description") as String
 
             val bookItem = BookItem(
-                isbn.toLong(), link, title, author, imageUrl, description, null, 0,
-                isOwning = false,
-                wannaBuy = false
+                isbn.toLong(),
+                link,
+                title,
+                author,
+                imageUrl,
+                description,
+                null,
+                BookItem.READ_STATE_NOT_YET,
+                BookItem.OWN_STATE_NOT_OWN
             )
 
-            requireActivity().runOnUiThread {
-                items.add(bookItem)
-                adapter.notifyItemInserted(adapter.itemCount - 1)
+            CoroutineScope(Dispatchers.Main).launch  {
+                adapter.add(bookItem)
             }
         }
     }
