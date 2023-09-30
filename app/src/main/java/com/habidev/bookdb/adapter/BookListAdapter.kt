@@ -82,7 +82,7 @@ class BookListAdapter(
     }
 
     fun clear() {
-        notifyItemRangeRemoved(0, itemCount - 1)
+        notifyItemRangeRemoved(0, itemCount)
 
         items.clear()
     }
