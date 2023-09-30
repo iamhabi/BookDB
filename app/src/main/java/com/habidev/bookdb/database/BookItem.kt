@@ -18,8 +18,7 @@ data class BookItem(
     var description: String,
     var comment: String?,
     var readingState: Int,
-    var isOwning: Boolean,
-    var wannaBuy: Boolean,
+    var isOwning: Int
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this (
@@ -31,8 +30,7 @@ data class BookItem(
         parcel.readString().toString(),
         parcel.readString(),
         parcel.readInt(),
-        parcel.readBoolean(),
-        parcel.readBoolean()
+        parcel.readInt()
     )
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -45,8 +43,7 @@ data class BookItem(
         parcel.writeString(description)
         parcel.writeString(comment)
         parcel.writeInt(readingState)
-        parcel.writeBoolean(isOwning)
-        parcel.writeBoolean(wannaBuy)
+        parcel.writeInt(isOwning)
     }
 
     override fun describeContents(): Int {
