@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.activity.DetailActivity
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
@@ -15,12 +16,25 @@ import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.BookListBinding
 
 class BookListFragment: Fragment() {
+    private val bookViewModel: BookViewModel by activityViewModels()
+
     private lateinit var viewBinding: BookListBinding
 
-    private val items: MutableList<BookItem> = mutableListOf()
     private lateinit var adapter: BookListAdapter
 
-    private val bookViewModel: BookViewModel by activityViewModels()
+    private lateinit var bookMoreFragment: BookMoreFragment
+
+    private val onItemClickListener = object: BookListAdapter.OnItemClickListener {
+        override fun onClick(position: Int, bookItem: BookItem) {
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra("bookItem", bookItem)
+            startActivity(intent)
+        }
+
+        override fun onMoreClick(position: Int, bookItem: BookItem) {
+            bookMoreFragment.show(childFragmentManager, null)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,20 +49,16 @@ class BookListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = BookListAdapter(requireContext(), items, onItemClickListener)
+        bookMoreFragment = BookMoreFragment()
 
-        viewBinding.recyclerView.adapter = adapter
-        viewBinding.recyclerView.layoutManager = LinearLayoutManager(context)
+        initRecyclerView()
     }
 
     override fun onResume() {
         super.onResume()
 
         bookViewModel.allBooks.observe(this) { books ->
-            items.clear()
-            items.addAll(books)
-
-            adapter.notifyItemRangeChanged(0, items.size)
+            adapter.add(books)
         }
     }
 
@@ -58,17 +68,12 @@ class BookListFragment: Fragment() {
         bookViewModel.allBooks.removeObservers(this)
     }
 
-    private val onItemClickListener = object: BookListAdapter.OnItemClickListener {
-        override fun onClick(position: Int) {
-            val bookItem = items[position]
+    private fun initRecyclerView() {
+        adapter = BookListAdapter(requireContext())
 
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra("bookItem", bookItem)
-            startActivity(intent)
-        }
+        adapter.setOnItemClickListener(onItemClickListener)
 
-        override fun onLongClick(position: Int): Boolean {
-            return true
-        }
+        viewBinding.recyclerView.adapter = adapter
+        viewBinding.recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 }
