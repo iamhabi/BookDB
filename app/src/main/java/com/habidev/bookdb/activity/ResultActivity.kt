@@ -73,12 +73,12 @@ class ResultActivity: AppCompatActivity() {
         imageUrl = resultJsonObject.get("image") as String
         description = resultJsonObject.get("description") as String
 
-        runOnUiThread {
-            setInfo()
+        CoroutineScope(Dispatchers.Main).launch {
+            updateBookInfo()
         }
     }
 
-    private fun setInfo() {
+    private fun updateBookInfo() {
         Glide
             .with(this)
             .load(Uri.parse(imageUrl))
@@ -93,7 +93,17 @@ class ResultActivity: AppCompatActivity() {
 
     private fun addToDatabase() {
         bookViewModel.insert(
-            BookItem(isbn, link, title, author, imageUrl, description, null, 0, isOwning = false, wannaBuy = false)
+            BookItem(
+                isbn,
+                link,
+                title,
+                author,
+                imageUrl,
+                description,
+                null,
+                BookItem.READ_STATE_NOT_YET,
+                BookItem.OWN_STATE_NOT_OWN
+            )
         )
     }
 
