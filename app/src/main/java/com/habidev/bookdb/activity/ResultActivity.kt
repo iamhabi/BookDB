@@ -52,12 +52,10 @@ class ResultActivity: AppCompatActivity() {
         val barcode = bundle?.getString("barcode")
         val isbn = bundle?.getLong("isbn")
 
-        barcode?.let {
-            getBookInfoAndShow(it)
-        }
-
-        isbn?.let {
-            getBookInfoAndShow(it.toString())
+        if (barcode != null) {
+            getBookInfoAndShow(barcode)
+        } else if (isbn != null) {
+            getBookInfoAndShow(isbn.toString())
         }
 
         initListener()
