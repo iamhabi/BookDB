@@ -60,16 +60,17 @@ class BookListFragment: Fragment() {
         initViewListener()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         bookViewModel.allBooks.observe(this) { books ->
+            adapter.checkItemExist(books)
             adapter.add(books)
         }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
 
         bookViewModel.allBooks.removeObservers(this)
     }
