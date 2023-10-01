@@ -4,9 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -16,6 +19,7 @@ import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.BookViewModelFactory
 import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.databinding.DetailBinding
+import com.habidev.bookdb.utils.Utils
 
 class DetailActivity: AppCompatActivity() {
     private val bookViewModel: BookViewModel by viewModels {
@@ -55,6 +59,7 @@ class DetailActivity: AppCompatActivity() {
         viewBinding.textViewTitle.text = bookItem.title
         viewBinding.textViewAuthor.text = bookItem.author
         viewBinding.textViewDescription.text = bookItem.description
+        viewBinding.editTextComment.setText(bookItem.comment.toString(), TextView.BufferType.EDITABLE)
 
         viewBinding.spinnerReadingState.setSelection(bookItem.readingState)
         viewBinding.spinnerOwnState.setSelection(bookItem.ownState)
@@ -122,6 +127,28 @@ class DetailActivity: AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
+            }
+        }
+
+        viewBinding.editTextComment.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(comment: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                bookItem.comment = comment.toString()
+
+                bookViewModel.update(bookItem)
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+
+        viewBinding.editTextComment.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                Utils.showKeyboard(this, view)
+            } else {
+                Utils.hideKeyboard(this, view)
             }
         }
     }
