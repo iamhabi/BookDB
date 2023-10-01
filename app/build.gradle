@@ -6,6 +6,7 @@ plugins {
 
 android {
     compileSdk 34
+    namespace 'com.habidev.bookdb'
 
     defaultConfig {
         applicationId "com.habidev.bookdb"
@@ -40,8 +41,6 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-
-    namespace 'com.habidev.bookdb'
 }
 
 dependencies {
