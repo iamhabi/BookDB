@@ -209,6 +209,8 @@ class CameraFragment: Fragment() {
     }
 
     private fun shutDownCameraExecutor() {
-        cameraExecutor.shutdown()
+        if (this::cameraExecutor.isInitialized) {
+            cameraExecutor.shutdown()
+        }
     }
 }
