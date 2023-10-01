@@ -35,7 +35,7 @@
             android:id="@+id/btn_add_bookmark"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:contentDescription="bookmark"
+            android:contentDescription="@string/bookmark"
             android:src="@drawable/bookmark_add"
             android:background="@null"
             app:layout_constraintDimensionRatio="H,1:1"
