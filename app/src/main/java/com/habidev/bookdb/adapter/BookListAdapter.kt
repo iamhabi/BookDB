@@ -82,6 +82,26 @@ class BookListAdapter(
 
     override fun getItemCount() = items.size
 
+    fun checkItemExist(bookItems: List<BookItem>) {
+        val deletedItems = items.filter { bookItem ->
+            !bookItems.contains(bookItem)
+        }
+
+        val deletedIndex = mutableListOf<Int>()
+
+        for (item in deletedItems) {
+            val position = items.indexOf(item)
+
+            deletedIndex.add(position)
+
+            notifyItemRemoved(position)
+        }
+
+        for (index in deletedIndex) {
+            items.removeAt(index)
+        }
+    }
+
     fun add(item: BookItem) {
         if (!items.contains(item)) {
             items.add(item)
