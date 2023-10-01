@@ -5,71 +5,94 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/close"
+            android:src="@drawable/chevron_left"
+            android:background="@null"
+            android:scaleType="fitXY"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_open_in_browser"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/open_in_browser"
+            android:src="@drawable/open_in_browser"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="20dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_top"
         app:layout_constraintBottom_toTopOf="@id/btn_add_bookmark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/image_view_book_cover"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"/>
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/text_view_title"
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                app:layout_constraintTop_toBottomOf="@id/image_view_book_cover"/>
 
             <TextView
                 android:id="@+id/text_view_author"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/text_view_title"/>
 
             <TextView
                 android:id="@+id/text_view_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/text_view_author"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <ImageButton
-        android:id="@+id/btn_open_in_browser"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:src="@drawable/open_in_browser"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_add_bookmark" />
-
-    <ImageButton
         android:id="@+id/btn_add_bookmark"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="52dp"
+        android:contentDescription="bookmark"
         android:src="@drawable/bookmark_add"
         android:background="@null"
         android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_open_in_browser"
         app:layout_constraintEnd_toEndOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
