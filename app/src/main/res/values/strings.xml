@@ -7,4 +7,6 @@
     <string name="open_in_browser">open in browser</string>
     <string name="more">more</string>
     <string name="bookmark">bookmark</string>
+    <string name="reading_state">Reading State</string>
+    <string name="owning_state">Owning State</string>
 </resources>
