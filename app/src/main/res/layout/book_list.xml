@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_options"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="@dimen/default_minimum_height"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/recycler_view"
         app:layout_constraintStart_toStartOf="parent"

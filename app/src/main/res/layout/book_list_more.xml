@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/text_view_title"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="@dimen/default_height"
         android:text="Hello World!"
         android:textSize="17sp"
         android:gravity="center_vertical"
@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/text_view_move_to_link"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/default_minimum_height"
         android:text="Move to link"
         android:textSize="14sp"
         android:gravity="center_vertical"
@@ -26,7 +26,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_reading_state"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/default_minimum_height"
         app:layout_constraintTop_toBottomOf="@id/text_view_move_to_link">
 
         <TextView
@@ -54,7 +54,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_own_state"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/default_minimum_height"
         app:layout_constraintTop_toBottomOf="@id/layout_reading_state">
 
         <TextView

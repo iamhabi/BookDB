@@ -2,4 +2,8 @@
 <resources>
     <dimen name="default_height">52dp</dimen>
     <dimen name="default_minimum_height">48dp</dimen>
+
+    <dimen name="book_list_item_height">80dp</dimen>
+
+    <dimen name="camera_button_height">110dp</dimen>
 </resources>
