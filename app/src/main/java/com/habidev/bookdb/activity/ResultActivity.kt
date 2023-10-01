@@ -27,8 +27,6 @@ import java.net.MalformedURLException
 import java.net.URL
 
 class ResultActivity: AppCompatActivity() {
-    private lateinit var viewBinding: ResultBinding
-
     private val bookViewModel: BookViewModel by viewModels {
         BookViewModelFactory((application as BooksApplication).repository)
     }
@@ -41,6 +39,8 @@ class ResultActivity: AppCompatActivity() {
     private lateinit var author: String
     private lateinit var imageUrl: String
     private lateinit var description: String
+
+    private lateinit var viewBinding: ResultBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
