@@ -1,5 +1,7 @@
 package com.habidev.bookdb.fragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -60,6 +62,13 @@ class BookMoreFragment : BottomSheetDialogFragment() {
     }
 
     private fun initViewListener() {
+        viewBinding.btnOpenInBrowser.setOnClickListener {
+            val bookItem = this.bookItem ?: return@setOnClickListener
+            val link: Uri = Uri.parse(bookItem.link)
+            val intent = Intent(Intent.ACTION_VIEW, link)
+            startActivity(intent)
+        }
+
         viewBinding.textViewDelete.setOnClickListener {
             val bookItem = this.bookItem ?: return@setOnClickListener
 

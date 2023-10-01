@@ -16,10 +16,10 @@
         android:ellipsize="end"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_move_to_link"/>
+        app:layout_constraintEnd_toStartOf="@id/btn_open_in_browser"/>
 
     <ImageButton
-        android:id="@+id/btn_move_to_link"
+        android:id="@+id/btn_open_in_browser"
         android:layout_width="0dp"
         android:layout_height="@dimen/default_height"
         android:contentDescription="@string/open_in_browser"
