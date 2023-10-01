@@ -9,4 +9,5 @@
     <string name="bookmark">bookmark</string>
     <string name="reading_state">Reading State</string>
     <string name="owning_state">Owning State</string>
+    <string name="delete">Delete</string>
 </resources>
