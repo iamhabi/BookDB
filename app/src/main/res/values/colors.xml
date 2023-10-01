@@ -10,4 +10,6 @@
 
     <color name="sky">#FF0088FF</color>
     <color name="pink">#FFFFB7C5</color>
+
+    <color name="default_button_color">#5F6368</color>
 </resources>
