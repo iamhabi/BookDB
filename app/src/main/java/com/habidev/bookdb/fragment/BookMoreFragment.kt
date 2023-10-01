@@ -1,10 +1,12 @@
 package com.habidev.bookdb.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.habidev.bookdb.database.BookItem
@@ -59,12 +61,52 @@ class BookMoreFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        viewBinding.layoutReadingState.setOnClickListener {
-            Log.d(TAG, "Reading state")
+        val readStateAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            BookItem.READ_STATE
+        )
+
+        val ownStateAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            BookItem.OWN_STATE
+        )
+
+        readStateAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
+        ownStateAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
+
+        viewBinding.spinnerReadingState.adapter = readStateAdapter
+        viewBinding.spinnerOwnState.adapter = ownStateAdapter
+
+        viewBinding.spinnerReadingState.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
         }
 
-        viewBinding.layoutOwnState.setOnClickListener {
-            Log.d(TAG, "Own state")
+        viewBinding.spinnerOwnState.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
         }
     }
 }
