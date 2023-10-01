@@ -36,6 +36,7 @@ class BookListFragment: Fragment() {
         }
 
         override fun onMoreClick(position: Int, bookItem: BookItem) {
+            bookMoreFragment.setBookItem(bookItem)
             bookMoreFragment.show(childFragmentManager, null)
         }
     }
