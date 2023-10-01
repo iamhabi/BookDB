@@ -18,7 +18,7 @@ data class BookItem(
     var description: String,
     var comment: String?,
     var readingState: Int, // 0: Not read yet, 1: Reading, 2: Done
-    var isOwning: Int // 0: Not own, 1: Wanna buy, 2: Own
+    var ownState: Int      // 0: Not own, 1: Wanna buy, 2: Own
 ): Parcelable {
     constructor(parcel: Parcel) : this (
         parcel.readLong(),
@@ -42,7 +42,7 @@ data class BookItem(
         parcel.writeString(description)
         parcel.writeString(comment)
         parcel.writeInt(readingState)
-        parcel.writeInt(isOwning)
+        parcel.writeInt(ownState)
     }
 
     override fun describeContents(): Int {

@@ -56,7 +56,7 @@ class BookMoreFragment : BottomSheetDialogFragment() {
         viewBinding.textViewTitle.text = item.title
 
         viewBinding.spinnerReadingState.setSelection(item.readingState)
-        viewBinding.spinnerOwnState.setSelection(item.isOwning)
+        viewBinding.spinnerOwnState.setSelection(item.ownState)
     }
 
     private fun initViewListener() {
@@ -114,7 +114,7 @@ class BookMoreFragment : BottomSheetDialogFragment() {
             ) {
                 val bookItem = this@BookMoreFragment.bookItem ?: return
 
-                bookItem.isOwning = position
+                bookItem.ownState = position
 
                 bookViewModel.update(bookItem)
             }
