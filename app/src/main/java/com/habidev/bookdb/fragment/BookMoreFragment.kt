@@ -52,7 +52,11 @@ class BookMoreFragment : BottomSheetDialogFragment() {
 
     private fun initViewListener() {
         viewBinding.textViewDelete.setOnClickListener {
-            Log.d(TAG, "Delete")
+            val bookItem = this.bookItem ?: return@setOnClickListener
+
+            bookViewModel.delete(bookItem)
+
+            dismiss()
         }
 
         viewBinding.layoutReadingState.setOnClickListener {
