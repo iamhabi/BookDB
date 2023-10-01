@@ -28,7 +28,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.ResultActivity"/>
+        <activity android:name=".activity.ResultActivity"
+            android:launchMode="singleInstance" />
         <activity android:name=".activity.DetailActivity"/>
 
     </application>
