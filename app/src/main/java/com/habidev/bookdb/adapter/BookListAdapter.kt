@@ -4,11 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
 import com.habidev.bookdb.database.BookItem
-import com.habidev.bookdb.databinding.BookListItemBinding
 
 class BookListAdapter(
     private val context: Context
@@ -23,6 +25,8 @@ class BookListAdapter(
     private val items: MutableList<BookItem> = mutableListOf()
     private var onItemClickListener: OnItemClickListener
 
+    private var isGridLayout = false
+
     init {
         onItemClickListener = object : OnItemClickListener {
             override fun onClick(position: Int, bookItem: BookItem) {
@@ -35,32 +39,43 @@ class BookListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layout = if (isGridLayout) {
+            R.layout.book_list_item_grid
+        } else {
+            R.layout.book_list_item
+        }
+
         val view = LayoutInflater
             .from(context)
-            .inflate(R.layout.book_list_item, parent, false)
+            .inflate(layout, parent, false)
 
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val viewBinding = BookListItemBinding.bind(holder.itemView)
-
         val item = items[position]
 
-        Glide.with(viewBinding.imageViewBookCover)
+        val view = holder.itemView
+
+        val imageViewBookCover = view.findViewById<ImageView>(R.id.image_view_book_cover)
+        val textViewTitle = view.findViewById<TextView>(R.id.text_view_title)
+        val textViewAuthor = view.findViewById<TextView>(R.id.text_view_author)
+        val btnMore = view.findViewById<ImageButton>(R.id.btn_more)
+
+        Glide.with(imageViewBookCover)
             .load(item.imageUrl)
             .placeholder(R.drawable.book)
             .error(R.drawable.book)
-            .into(viewBinding.imageViewBookCover)
+            .into(imageViewBookCover)
 
-        viewBinding.textViewTitle.text = item.title
-        viewBinding.textViewAuthor.text = item.author
+        textViewTitle.text = item.title
+        textViewAuthor?.text = item.author
 
-        viewBinding.root.setOnClickListener {
+        view.setOnClickListener {
             onItemClickListener.onClick(position, item)
         }
 
-        viewBinding.btnMore.setOnClickListener {
+        btnMore.setOnClickListener {
             onItemClickListener.onMoreClick(position, item)
         }
     }
@@ -85,6 +100,10 @@ class BookListAdapter(
         notifyItemRangeRemoved(0, itemCount)
 
         items.clear()
+    }
+
+    fun changeLayout(isGridLayout: Boolean) {
+        this.isGridLayout = isGridLayout
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {

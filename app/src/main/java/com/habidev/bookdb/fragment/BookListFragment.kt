@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.activity.DetailActivity
@@ -21,6 +22,9 @@ class BookListFragment: Fragment() {
     private lateinit var viewBinding: BookListBinding
 
     private lateinit var adapter: BookListAdapter
+
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var gridLayoutManager: GridLayoutManager
 
     private lateinit var bookMoreFragment: BookMoreFragment
 
@@ -52,6 +56,7 @@ class BookListFragment: Fragment() {
         bookMoreFragment = BookMoreFragment()
 
         initRecyclerView()
+        initViewListener()
     }
 
     override fun onResume() {
@@ -73,7 +78,24 @@ class BookListFragment: Fragment() {
 
         adapter.setOnItemClickListener(onItemClickListener)
 
+        linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        gridLayoutManager = GridLayoutManager(context, 2)
+
         viewBinding.recyclerView.adapter = adapter
-        viewBinding.recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        viewBinding.recyclerView.layoutManager = linearLayoutManager
+    }
+
+    private fun initViewListener() {
+        viewBinding.btnToggleListLayout.setOnCheckedChangeListener { _, isChecked ->
+            viewBinding.recyclerView.layoutManager = if (isChecked) {
+                gridLayoutManager
+            } else {
+                linearLayoutManager
+            }
+
+            adapter.changeLayout(isChecked)
+
+            viewBinding.recyclerView.adapter = adapter
+        }
     }
 }
