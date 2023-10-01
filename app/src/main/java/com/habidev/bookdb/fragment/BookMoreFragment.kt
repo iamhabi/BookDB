@@ -86,7 +86,11 @@ class BookMoreFragment : BottomSheetDialogFragment() {
                 position: Int,
                 id: Long
             ) {
+                val bookItem = this@BookMoreFragment.bookItem ?: return
 
+                bookItem.readingState = position
+
+                bookViewModel.update(bookItem)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -101,7 +105,11 @@ class BookMoreFragment : BottomSheetDialogFragment() {
                 position: Int,
                 id: Long
             ) {
+                val bookItem = this@BookMoreFragment.bookItem ?: return
 
+                bookItem.isOwning = position
+
+                bookViewModel.update(bookItem)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
