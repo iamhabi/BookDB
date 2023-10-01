@@ -18,6 +18,10 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.habidev.bookdb.activity.ResultActivity
 import com.habidev.bookdb.databinding.CameraBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -39,6 +43,8 @@ class CameraFragment: Fragment() {
 
     private lateinit var cameraExecutor: ExecutorService
 
+    private var isScanningBarcode = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,8 +59,8 @@ class CameraFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewBinding.btnCapture.setOnClickListener {
-//            scanBarcode()
-            scanBarcodeTest()
+            scanBarcode()
+//            scanBarcodeTest()
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -64,6 +70,8 @@ class CameraFragment: Fragment() {
         super.onResume()
 
         if (allPermissionsGranted()) {
+            isScanningBarcode = true
+
             startCamera()
         } else {
             activity?.let {
@@ -96,61 +104,67 @@ class CameraFragment: Fragment() {
         context?.let { context -> ContextCompat.checkSelfPermission(context, permissions) } == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun scanBarcode() {
-        // Get a stable reference of the modifiable image capture use case
-        val imageCapture = imageCapture ?: return
-
-        // Set up image capture listener, which is triggered after photo has been taken
-        context?.let { ContextCompat.getMainExecutor(it) }?.let { executor ->
-            imageCapture.takePicture(
-                executor,
-                object: ImageCapture.OnImageCapturedCallback() {
-                    @SuppressLint("UnsafeOptInUsageError")
-                    override fun onCaptureSuccess(imageProxy: ImageProxy) {
-                        super.onCaptureSuccess(imageProxy)
-
-                        val mediaImage = imageProxy.image
-
-                        if (mediaImage != null) {
-                            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-
-                            BarcodeScanning.getClient()
-                                .process(image)
-                                .addOnSuccessListener { barcodes ->
-                                    for (barcode in barcodes) {
-                                        val rawValue = barcode.rawValue // value of barcode
-
-                                        if (rawValue != null) {
-                                            showInfo(rawValue)
-                                        }
-                                    }
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.e("FAIL", exception.toString())
-                                }
-                        }
-                    }
-
-                    override fun onError(exception: ImageCaptureException) {
-                        super.onError(exception)
-
-                        Log.e(TAG, exception.toString())
-                    }
-                }
-            )
-        }
-    }
-
-    private fun scanBarcodeTest() {
-        showInfo(TEST_BARCODE)
-    }
-
     private fun showInfo(barcode: String) {
         val intent = Intent(context, ResultActivity::class.java)
 
         intent.putExtra("barcode", barcode)
 
         startActivity(intent)
+    }
+
+    private fun scanBarcode() {
+        // Get a stable reference of the modifiable image capture use case
+        val imageCapture = imageCapture ?: return
+
+        val executor = ContextCompat.getMainExecutor(requireContext())
+        val callback = object : ImageCapture.OnImageCapturedCallback() {
+            @SuppressLint("UnsafeOptInUsageError")
+            override fun onCaptureSuccess(imageProxy: ImageProxy) {
+                super.onCaptureSuccess(imageProxy)
+
+                val barcodeImage = imageProxy.image
+
+                if (barcodeImage != null) {
+                    val fixedBarcodeImage = InputImage.fromMediaImage(barcodeImage, imageProxy.imageInfo.rotationDegrees)
+
+                    BarcodeScanning.getClient()
+                        .process(fixedBarcodeImage)
+                        .addOnSuccessListener { barcodes ->
+                            isScanningBarcode = false
+
+                            for (barcode in barcodes) {
+                                val rawValue = barcode.rawValue // barcode
+
+                                Log.d(TAG, rawValue.toString())
+
+                                if (rawValue != null) {
+                                    showInfo(rawValue)
+
+                                    shutDownCameraExecutor()
+
+                                    break
+                                }
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.e("FAIL", exception.toString())
+                        }
+                }
+            }
+
+            override fun onError(exception: ImageCaptureException) {
+                super.onError(exception)
+
+                Log.e(TAG, exception.toString())
+            }
+        }
+
+        // Set up image capture listener, which is triggered after photo has been taken
+        imageCapture.takePicture(executor, callback)
+    }
+
+    private fun scanBarcodeTest() {
+        showInfo(TEST_BARCODE)
     }
 
     private fun startCamera() {
@@ -175,6 +189,14 @@ class CameraFragment: Fragment() {
                     cameraProvider.unbindAll()
 
                     cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        while (isScanningBarcode) {
+                            scanBarcode()
+
+                            delay(100)
+                        }
+                    }
                 } catch(exc: Exception) {
                     Log.e(TAG, "Use case binding failed", exc)
                 }
