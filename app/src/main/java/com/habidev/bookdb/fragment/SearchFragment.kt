@@ -1,17 +1,16 @@
 package com.habidev.bookdb.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.habidev.bookdb.adapter.SimpleViewPagerAdapter
 import com.habidev.bookdb.databinding.SearchBinding
+import com.habidev.bookdb.utils.Utils
 
 class SearchFragment : Fragment() {
     companion object {
@@ -45,7 +44,9 @@ class SearchFragment : Fragment() {
         super.onResume()
 
         if (viewBinding.editTextSearch.text.toString() == "") {
-            showKeyboard()
+            viewBinding.editTextSearch.requestFocus()
+
+            Utils.showKeyboard(requireContext(), viewBinding.editTextSearch)
         }
     }
 
@@ -81,26 +82,9 @@ class SearchFragment : Fragment() {
         searchInternetFrag.performSearch(query)
     }
 
-    private fun showKeyboard() {
-        viewBinding.editTextSearch.requestFocus()
-
-        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-        inputMethodManager.showSoftInput(
-            viewBinding.editTextSearch,
-            InputMethodManager.SHOW_IMPLICIT
-        )
-    }
-
-    private fun hideKeyboard() {
-        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-        inputMethodManager.hideSoftInputFromWindow(viewBinding.editTextSearch.windowToken, 0)
-    }
-
     private fun initListener() {
         viewBinding.btnSearch.setOnClickListener {
-            hideKeyboard()
+            Utils.hideKeyboard(requireContext(), viewBinding.editTextSearch)
 
             val query: String = viewBinding.editTextSearch.text.toString()
 
@@ -121,7 +105,7 @@ class SearchFragment : Fragment() {
 
         viewBinding.editTextSearch.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                hideKeyboard()
+                Utils.hideKeyboard(requireContext(), view)
             }
         }
     }
