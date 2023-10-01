@@ -54,9 +54,21 @@ data class BookItem(
         const val READ_STATE_READING = 1
         const val READ_STATE_DONE    = 2
 
+        val READ_STATE = arrayListOf(
+            "Not yet",
+            "Reading",
+            "Done"
+        )
+
         const val OWN_STATE_NOT_OWN   = 0
         const val OWN_STATE_WANNA_BUY = 1
         const val OWN_STATE_OWN       = 2
+
+        val OWN_STATE = arrayListOf(
+            "Not own",
+            "Wanna buy",
+            "Own"
+        )
 
         @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BookItem {
