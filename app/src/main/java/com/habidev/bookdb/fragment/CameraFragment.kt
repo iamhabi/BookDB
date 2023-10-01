@@ -62,8 +62,6 @@ class CameraFragment: Fragment() {
             scanBarcode()
 //            scanBarcodeTest()
         }
-
-        cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
     override fun onResume() {
@@ -168,10 +166,15 @@ class CameraFragment: Fragment() {
     }
 
     private fun startCamera() {
-        val cameraProviderFuture = context?.let { ProcessCameraProvider.getInstance(it) }
+        val context = context ?: return
 
-        context?.let { ContextCompat.getMainExecutor(it) }?.let { executor ->
-            cameraProviderFuture?.addListener({
+        cameraExecutor = Executors.newSingleThreadExecutor()
+
+        val executor = ContextCompat.getMainExecutor(context)
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
+
+        cameraProviderFuture.addListener(
+            {
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
                 val preview = Preview.Builder()
@@ -180,8 +183,7 @@ class CameraFragment: Fragment() {
                         it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
                     }
 
-                imageCapture = ImageCapture.Builder()
-                    .build()
+                imageCapture = ImageCapture.Builder().build()
 
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -201,8 +203,9 @@ class CameraFragment: Fragment() {
                     Log.e(TAG, "Use case binding failed", exc)
                 }
 
-            }, executor)
-        }
+            },
+            executor
+        )
     }
 
     private fun shutDownCameraExecutor() {
