@@ -12,12 +12,12 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
 
     val allBooks: LiveData<List<BookItem>> = repository.allBooks.asLiveData()
 
-    fun insert(book: BookItem) = viewModelScope.launch {
-        repository.insert(book)
+    fun insert(bookItem: BookItem) = viewModelScope.launch {
+        repository.insert(bookItem)
     }
 
-    fun update(book: BookItem) = viewModelScope.launch {
-        repository.update(book)
+    fun update(bookItem: BookItem) = viewModelScope.launch {
+        repository.update(bookItem)
     }
 
     fun delete(bookItem: BookItem) = viewModelScope.launch {

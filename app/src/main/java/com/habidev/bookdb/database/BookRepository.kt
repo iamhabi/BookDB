@@ -7,13 +7,13 @@ class BookRepository(private val bookDao: BookDao) {
     val allBooks: Flow<List<BookItem>> = bookDao.getAll()
 
     @WorkerThread
-    suspend fun insert(book: BookItem) {
-        bookDao.insert(book)
+    suspend fun insert(bookItem: BookItem) {
+        bookDao.insert(bookItem)
     }
 
     @WorkerThread
-    suspend fun update(book: BookItem) {
-        bookDao.update(book)
+    suspend fun update(bookItem: BookItem) {
+        bookDao.update(bookItem)
     }
 
     @WorkerThread
