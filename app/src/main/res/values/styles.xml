@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="default_height">52dp</dimen>
+    <dimen name="default_height">60dp</dimen>
     <dimen name="default_minimum_height">48dp</dimen>
 
     <dimen name="book_list_item_height">80dp</dimen>
