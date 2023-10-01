@@ -30,7 +30,9 @@
 
         <activity android:name=".activity.ResultActivity"
             android:launchMode="singleInstance" />
-        <activity android:name=".activity.DetailActivity"/>
+
+        <activity android:name=".activity.DetailActivity"
+            android:launchMode="singleInstance"/>
 
     </application>
 
