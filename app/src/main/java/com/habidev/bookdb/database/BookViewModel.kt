@@ -20,6 +20,10 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
         repository.update(book)
     }
 
+    fun delete(bookItem: BookItem) = viewModelScope.launch {
+        repository.delete(bookItem)
+    }
+
     fun search(query: String): List<BookItem> = repository.search(query)
 }
 

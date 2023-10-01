@@ -17,5 +17,10 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     @WorkerThread
+    suspend fun delete(bookItem: BookItem) {
+        bookDao.delete(bookItem)
+    }
+
+    @WorkerThread
     fun search(query: String): List<BookItem> = bookDao.search(query)
 }
