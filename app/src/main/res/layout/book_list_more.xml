@@ -7,27 +7,45 @@
 
     <TextView
         android:id="@+id/text_view_title"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/default_height"
-        android:text="Hello World!"
-        android:textSize="17sp"
         android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="Hello World!"
+        android:textSize="@dimen/title_text_size"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_move_to_link"/>
+
+    <ImageButton
+        android:id="@+id/btn_move_to_link"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_height"
+        android:contentDescription="@string/open_in_browser"
+        android:src="@drawable/open_in_browser"
+        android:background="@android:color/transparent"
+        app:layout_constraintDimensionRatio="H,1:0.8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/text_view_move_to_link"
+        android:id="@+id/text_view_delete"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_minimum_height"
-        android:text="Move to link"
+        android:text="Delete"
         android:textSize="14sp"
+        android:textColor="@android:color/holo_red_light"
         android:gravity="center_vertical"
+        app:drawableEndCompat="@drawable/delete"
+        app:drawableTint="@android:color/holo_red_light"
         app:layout_constraintTop_toBottomOf="@id/text_view_title"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_reading_state"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_minimum_height"
-        app:layout_constraintTop_toBottomOf="@id/text_view_move_to_link">
+        app:layout_constraintTop_toBottomOf="@id/text_view_delete">
 
         <TextView
             android:id="@+id/text_view_reading_state_header"
