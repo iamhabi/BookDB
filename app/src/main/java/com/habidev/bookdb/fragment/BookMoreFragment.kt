@@ -43,16 +43,20 @@ class BookMoreFragment : BottomSheetDialogFragment() {
     override fun onResume() {
         super.onResume()
 
-        val bookItem = this.bookItem ?: return
-
-        viewBinding.textViewTitle.text = bookItem.title
-
-        viewBinding.spinnerReadingState.setSelection(bookItem.readingState)
-        viewBinding.spinnerOwnState.setSelection(bookItem.isOwning)
+        updateInfo(bookItem)
     }
 
     fun setBookItem(bookItem: BookItem) {
         this.bookItem = bookItem
+    }
+
+    private fun updateInfo(bookItem: BookItem?) {
+        val item = bookItem ?: return
+
+        viewBinding.textViewTitle.text = item.title
+
+        viewBinding.spinnerReadingState.setSelection(item.readingState)
+        viewBinding.spinnerOwnState.setSelection(item.isOwning)
     }
 
     private fun initViewListener() {
