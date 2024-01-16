@@ -190,14 +190,6 @@ class CameraFragment: Fragment() {
                     cameraProvider.unbindAll()
 
                     cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
-
-                    CoroutineScope(Dispatchers.Main).launch {
-                        while (isScanningBarcode) {
-                            scanBarcode()
-
-                            delay(100)
-                        }
-                    }
                 } catch(exc: Exception) {
                     Log.e(TAG, "Use case binding failed", exc)
                 }
