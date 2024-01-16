@@ -13,22 +13,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Spinner
-            android:id="@+id/spinner_read_state"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Spinner
-            android:id="@+id/spinner_is_own"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_toggle_list_layout" />
-
         <ToggleButton
             android:id="@+id/btn_toggle_list_layout"
             android:layout_width="0dp"
@@ -36,7 +20,8 @@
             android:layout_margin="8dp"
             android:textOff=""
             android:textOn=""
-            android:background="@drawable/toggle_list_layout"
+            android:drawableTop="@drawable/toggle_list_layout"
+            android:background="@null"
             app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="parent"/>
 
