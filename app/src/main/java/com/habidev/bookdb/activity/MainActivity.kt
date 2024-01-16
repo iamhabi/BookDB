@@ -3,17 +3,19 @@ package com.habidev.bookdb.activity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.BookViewModelFactory
 import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.databinding.ActivityMainBinding
 import com.habidev.bookdb.fragment.BookListFragment
 import com.habidev.bookdb.fragment.CameraFragment
+import com.habidev.bookdb.fragment.DetailFragment
 import com.habidev.bookdb.fragment.ResultFragment
 import com.habidev.bookdb.fragment.SearchFragment
 
 interface SomeInterface {
-    fun showDetailInfo(query: String)
+    fun showDetailInfo(bookItem: BookItem)
     fun showResultInfo(query: String)
 }
 
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity(), SomeInterface {
     private val bookListFragment = BookListFragment()
     private val searchFragment = SearchFragment()
     private val cameraFragment = CameraFragment()
+    private val detailFragment = DetailFragment()
     private val resultFragment = ResultFragment()
 
     private lateinit var viewBinding: ActivityMainBinding
@@ -70,8 +73,13 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         }
     }
 
-    override fun showDetailInfo(query: String) {
+    override fun showDetailInfo(bookItem: BookItem) {
+        detailFragment.setBookItem(bookItem)
 
+        supportFragmentManager.beginTransaction()
+            .add(viewBinding.frameLayoutFull.id, detailFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun showResultInfo(query: String) {
