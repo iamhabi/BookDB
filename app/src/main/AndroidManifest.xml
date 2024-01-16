@@ -27,10 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.DetailActivity"
-            android:launchMode="singleInstance"/>
-
     </application>
 
 </manifest>
