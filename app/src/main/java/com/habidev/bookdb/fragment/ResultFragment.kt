@@ -119,5 +119,9 @@ class ResultFragment: Fragment() {
                 bookViewModel.insert(bookItem)
             }
         }
+
+        viewBinding.btnClose.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 }
