@@ -19,11 +19,18 @@ import com.habidev.bookdb.fragment.CameraFragment
 import com.habidev.bookdb.fragment.SearchFragment
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewBinding: ActivityMainBinding
+    companion object {
+        private const val TAG = "BookDBMainAct"
+    }
 
     private val bookViewModel: BookViewModel by viewModels {
         BookViewModelFactory((application as BooksApplication).repository)
     }
+
+    private val bookListFragment = BookListFragment()
+    private val searchFragment = SearchFragment()
+
+    private lateinit var viewBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,47 +39,26 @@ class MainActivity : AppCompatActivity() {
 
         bookViewModel.create()
 
-        initViewPager()
+        initBookList()
+        initViewListener()
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    private fun initBookList() {
+        supportFragmentManager.beginTransaction()
+            .add(viewBinding.frameLayoutBookList.id, bookListFragment)
+            .commit()
+    }
 
-            inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+    private fun initViewListener() {
+        viewBinding.btnSearch.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .add(viewBinding.frameLayoutFull.id, searchFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
-        return super.dispatchTouchEvent(ev)
-    }
+        viewBinding.btnMore.setOnClickListener {
 
-    private fun initViewPager() {
-        val fragments = arrayListOf(
-            CameraFragment(),
-            BookListFragment(),
-            SearchFragment()
-        )
-
-        val adapter = SimpleViewPagerAdapter(this, fragments)
-
-        viewBinding.viewPager.adapter = adapter
-
-        TabLayoutMediator(viewBinding.viewPagerTabLayout, viewBinding.viewPager) { tab, position ->
-            when (position) {
-                0 -> {
-                    tab.icon = ContextCompat.getDrawable(this, R.drawable.camera)
-                    tab.text = "Camera"
-                }
-
-                1 -> {
-                    tab.icon = ContextCompat.getDrawable(this, R.drawable.collections_bookmark)
-                    tab.text = "List"
-                }
-
-                2 -> {
-                    tab.icon = ContextCompat.getDrawable(this, R.drawable.search)
-                    tab.text = "Search"
-                }
-            }
-        }.attach()
+        }
     }
 }
