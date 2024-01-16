@@ -36,11 +36,11 @@
 
         <ImageButton
             android:id="@+id/btn_more"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:contentDescription="@string/more"
             android:src="@drawable/more"
-            android:background="@android:color/transparent"
+            android:background="@null"
             app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="parent"/>
 
