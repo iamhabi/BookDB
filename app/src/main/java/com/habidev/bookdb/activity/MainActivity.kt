@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private val bookListFragment = BookListFragment()
     private val searchFragment = SearchFragment()
+    private val cameraFragment = CameraFragment()
 
     private lateinit var viewBinding: ActivityMainBinding
 
@@ -59,6 +60,13 @@ class MainActivity : AppCompatActivity() {
 
         viewBinding.btnMore.setOnClickListener {
 
+        }
+
+        viewBinding.btnOpenCamera.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .add(viewBinding.frameLayoutFull.id, cameraFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 }
