@@ -19,8 +19,8 @@ class SearchFragment : Fragment() {
 
     private lateinit var viewBinding: SearchBinding
 
-    private lateinit var searchDBFrag: SearchDBFragment
-    private lateinit var searchInternetFrag: SearchInternetFragment
+    private val searchDBFrag: SearchDBFragment = SearchDBFragment()
+    private val searchInternetFrag: SearchInternetFragment = SearchInternetFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,9 +51,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun initViewPager() {
-        searchDBFrag = SearchDBFragment()
-        searchInternetFrag = SearchInternetFragment()
-
         val fragments = arrayListOf(
             searchDBFrag,
             searchInternetFrag
