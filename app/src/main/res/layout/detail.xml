@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
@@ -149,10 +150,12 @@
                 android:layout_marginVertical="@dimen/text_margin_vertical"
                 android:background="@null"
                 android:autofillHints="Comment"
+                android:inputType="text"
                 android:textSize="@dimen/description_text_size"
                 android:lineSpacingExtra="@dimen/text_line_space"
                 app:layout_constraintTop_toBottomOf="@id/text_view_description"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="LabelFor" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
