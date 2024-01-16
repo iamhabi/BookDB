@@ -41,6 +41,19 @@
         app:layout_constraintTop_toBottomOf="@id/layout_top"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <ImageButton
+        android:id="@+id/btn_open_camera"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/open_camera_button_height"
+        android:layout_marginBottom="@dimen/open_camera_button_margin"
+        android:layout_marginEnd="@dimen/open_camera_button_margin"
+        android:contentDescription="@string/open_camera"
+        android:src="@drawable/camera"
+        android:background="@drawable/round_button"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <FrameLayout
         android:id="@+id/frame_layout_full"
         android:layout_width="match_parent"
