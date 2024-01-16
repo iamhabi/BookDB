@@ -2,6 +2,7 @@ package com.habidev.bookdb.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.habidev.bookdb.activity.ResultActivity
+import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.databinding.CameraBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -35,11 +37,19 @@ class CameraFragment: Fragment() {
 
     private lateinit var viewBinding: CameraBinding
 
-    private var imageCapture: ImageCapture? = null
-
     private lateinit var cameraExecutor: ExecutorService
 
+    private var imageCapture: ImageCapture? = null
+
     private var isScanningBarcode = true
+
+    private var someInterface: SomeInterface? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        someInterface = context as? SomeInterface
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,11 +109,7 @@ class CameraFragment: Fragment() {
     }
 
     private fun showInfo(barcode: String) {
-        val intent = Intent(context, ResultActivity::class.java)
-
-        intent.putExtra("barcode", barcode)
-
-        startActivity(intent)
+        someInterface?.showResultInfo(barcode)
     }
 
     private fun scanBarcode() {
