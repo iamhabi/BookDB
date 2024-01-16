@@ -9,9 +9,15 @@ import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.databinding.ActivityMainBinding
 import com.habidev.bookdb.fragment.BookListFragment
 import com.habidev.bookdb.fragment.CameraFragment
+import com.habidev.bookdb.fragment.ResultFragment
 import com.habidev.bookdb.fragment.SearchFragment
 
-class MainActivity : AppCompatActivity() {
+interface SomeInterface {
+    fun showDetailInfo(query: String)
+    fun showResultInfo(query: String)
+}
+
+class MainActivity : AppCompatActivity(), SomeInterface {
     companion object {
         private const val TAG = "BookDBMainAct"
     }
@@ -23,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private val bookListFragment = BookListFragment()
     private val searchFragment = SearchFragment()
     private val cameraFragment = CameraFragment()
+    private val resultFragment = ResultFragment()
 
     private lateinit var viewBinding: ActivityMainBinding
 
@@ -61,5 +68,18 @@ class MainActivity : AppCompatActivity() {
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    override fun showDetailInfo(query: String) {
+
+    }
+
+    override fun showResultInfo(query: String) {
+        resultFragment.setQuery(query)
+
+        supportFragmentManager.beginTransaction()
+            .add(viewBinding.frameLayoutFull.id, resultFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
