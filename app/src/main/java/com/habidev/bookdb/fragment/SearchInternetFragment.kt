@@ -1,5 +1,6 @@
 package com.habidev.bookdb.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.ApiKey
-import com.habidev.bookdb.activity.ResultActivity
+import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.databinding.RecyclerViewBaseBinding
@@ -35,6 +36,14 @@ class SearchInternetFragment : Fragment() {
 
     private lateinit var adapter: BookListAdapter
 
+    private var someInterface: SomeInterface? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        someInterface = context as? SomeInterface
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,9 +65,7 @@ class SearchInternetFragment : Fragment() {
 
         adapter.setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
             override fun onClick(position: Int, bookItem: BookItem) {
-                val intent = Intent(context, ResultActivity::class.java)
-                intent.putExtra("isbn", bookItem.isbn)
-                startActivity(intent)
+                someInterface?.showResultInfo(bookItem.isbn.toString())
             }
 
             override fun onMoreClick(position: Int, bookItem: BookItem) {
