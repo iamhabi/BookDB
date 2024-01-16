@@ -3,7 +3,6 @@ package com.habidev.bookdb.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -17,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import com.habidev.bookdb.activity.ResultActivity
 import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.databinding.CameraBinding
 import java.util.concurrent.ExecutorService
