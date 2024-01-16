@@ -5,11 +5,12 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.RequiresApi
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = BookDao.TABLE_NAME)
+@Entity(tableName = BookDao.TABLE_NAME, indices = [Index(value = ["isbn"], unique = true)])
 data class BookItem(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     var isbn: Long,
     var link: String,
     var title: String,

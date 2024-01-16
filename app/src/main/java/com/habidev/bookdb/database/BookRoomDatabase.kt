@@ -1,6 +1,7 @@
 package com.habidev.bookdb.database
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -10,8 +11,11 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [BookItem::class],
-    version = 1,
+    version = 2,
     exportSchema = true,
+    autoMigrations = [
+        AutoMigration(1, 2)
+    ]
 )
 abstract class BookRoomDatabase: RoomDatabase() {
 
