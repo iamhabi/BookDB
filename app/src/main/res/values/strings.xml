@@ -11,4 +11,5 @@
     <string name="owning_state">Owning State</string>
     <string name="delete">Delete</string>
     <string name="open_camera">open camera</string>
+    <string name="add_group">Add group</string>
 </resources>
