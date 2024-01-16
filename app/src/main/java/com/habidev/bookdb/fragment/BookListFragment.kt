@@ -1,6 +1,6 @@
 package com.habidev.bookdb.fragment
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.habidev.bookdb.activity.DetailActivity
+import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
@@ -30,15 +30,21 @@ class BookListFragment: Fragment() {
 
     private val onItemClickListener = object: BookListAdapter.OnItemClickListener {
         override fun onClick(position: Int, bookItem: BookItem) {
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra("bookItem", bookItem)
-            startActivity(intent)
+            someInterface?.showDetailInfo(bookItem)
         }
 
         override fun onMoreClick(position: Int, bookItem: BookItem) {
             bookMoreFragment.setBookItem(bookItem)
             bookMoreFragment.show(childFragmentManager, null)
         }
+    }
+
+    private var someInterface: SomeInterface? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        someInterface = context as? SomeInterface
     }
 
     override fun onCreateView(
