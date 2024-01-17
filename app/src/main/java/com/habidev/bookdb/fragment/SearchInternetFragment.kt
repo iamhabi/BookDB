@@ -110,7 +110,7 @@ class SearchInternetFragment : Fragment() {
         for (i in 0 until resultJsonArray.length()) {
             val jsonObject = resultJsonArray.getJSONObject(i)
 
-            val isbn = jsonObject.get("isbn") as String
+            val isbn = (jsonObject.get("isbn") as String).toLong()
             val link = jsonObject.get("link") as String
             val title = jsonObject.get("title") as String
             val author = jsonObject.get("author") as String
@@ -118,15 +118,12 @@ class SearchInternetFragment : Fragment() {
             val description = jsonObject.get("description") as String
 
             val bookItem = BookItem(
-                isbn.toLong(),
+                isbn,
                 link,
                 title,
                 author,
                 imageUrl,
-                description,
-                null,
-                BookItem.READ_STATE_NOT_YET,
-                BookItem.OWN_STATE_NOT_OWN
+                description
             )
 
             CoroutineScope(Dispatchers.Main).launch  {
