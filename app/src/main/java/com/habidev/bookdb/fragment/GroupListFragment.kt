@@ -5,16 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.adapter.GroupListAdapter
 import com.habidev.bookdb.database.BookGroupItem
+import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.GroupListBinding
+import com.habidev.bookdb.utils.Utils
 
 class GroupListFragment: Fragment() {
     companion object {
         private const val TAG = "BookDBGroupList"
     }
+
+    private val bookViewModel: BookViewModel by activityViewModels()
 
     private lateinit var viewBinding: GroupListBinding
 
@@ -61,12 +66,27 @@ class GroupListFragment: Fragment() {
             parentFragmentManager.popBackStack()
         }
 
-        viewBinding.btnAddGroup.setOnClickListener {
-
-        }
-
         viewBinding.layoutEmptySpace.setOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+
+        viewBinding.btnAddGroup.setOnClickListener {
+            val text = viewBinding.editTextAddGroup.text.toString()
+
+            if (text == "") {
+                viewBinding.editTextAddGroup.requestFocus()
+            } else {
+                bookViewModel.insertGroup(BookGroupItem(0, text))
+            }
+        }
+
+        viewBinding.editTextAddGroup.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                Utils.showKeyboard(requireContext(), view)
+            } else {
+                view.clearFocus()
+                Utils.hideKeyboard(requireContext(), view)
+            }
         }
     }
 }
