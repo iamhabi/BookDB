@@ -52,6 +52,21 @@ class GroupListFragment: Fragment() {
         initViewListener()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        bookViewModel.allGroupsLiveData.observe(requireActivity()) { groups ->
+            adapter.clear()
+            adapter.add(groups)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        bookViewModel.allGroupsLiveData.removeObservers(requireActivity())
+    }
+
     private fun initRecyclerView() {
         adapter = GroupListAdapter(requireContext())
 
@@ -76,6 +91,8 @@ class GroupListFragment: Fragment() {
             if (text == "") {
                 viewBinding.editTextAddGroup.requestFocus()
             } else {
+                viewBinding.editTextAddGroup.text.clear()
+
                 bookViewModel.insertGroup(BookGroupItem(0, text))
             }
         }
