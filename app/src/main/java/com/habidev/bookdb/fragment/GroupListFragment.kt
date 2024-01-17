@@ -64,5 +64,9 @@ class GroupListFragment: Fragment() {
         viewBinding.btnAddGroup.setOnClickListener {
 
         }
+
+        viewBinding.layoutEmptySpace.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 }
