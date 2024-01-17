@@ -1,6 +1,10 @@
 package com.habidev.bookdb.database
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class BookViewModel(private val repository: BookRepository): ViewModel() {
@@ -10,21 +14,21 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
      */
     fun create() {}
 
-    val allBooks: LiveData<List<BookItem>> = repository.allBooks.asLiveData()
+    val allBooksLiveData: LiveData<List<BookItem>> = repository.allBooksFlow.asLiveData()
 
-    fun insert(bookItem: BookItem) = viewModelScope.launch {
-        repository.insert(bookItem)
+    fun insertBook(bookItem: BookItem) = viewModelScope.launch {
+        repository.insertBook(bookItem)
     }
 
-    fun update(bookItem: BookItem) = viewModelScope.launch {
-        repository.update(bookItem)
+    fun updateBook(bookItem: BookItem) = viewModelScope.launch {
+        repository.updateBook(bookItem)
     }
 
-    fun delete(bookItem: BookItem) = viewModelScope.launch {
-        repository.delete(bookItem)
+    fun deleteBook(bookItem: BookItem) = viewModelScope.launch {
+        repository.deleteBook(bookItem)
     }
 
-    fun search(query: String): List<BookItem> = repository.search(query)
+    fun searchBook(query: String): List<BookItem> = repository.searchBook(query)
 }
 
 class BookViewModelFactory(private val repository: BookRepository): ViewModelProvider.Factory {

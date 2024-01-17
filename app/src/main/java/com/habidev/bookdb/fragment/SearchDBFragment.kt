@@ -77,7 +77,7 @@ class SearchDBFragment : Fragment() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            val resultList = bookViewModel.search(query)
+            val resultList = bookViewModel.searchBook(query)
 
             CoroutineScope(Dispatchers.Main).launch {
                 adapter.add(resultList)

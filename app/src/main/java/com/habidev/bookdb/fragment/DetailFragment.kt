@@ -115,7 +115,7 @@ class DetailFragment: Fragment() {
                 if (this@DetailFragment::bookItem.isInitialized) {
                     bookItem.readingState = position
 
-                    bookViewModel.update(bookItem)
+                    bookViewModel.updateBook(bookItem)
                 }
             }
 
@@ -135,7 +135,7 @@ class DetailFragment: Fragment() {
                 if (this@DetailFragment::bookItem.isInitialized) {
                     bookItem.ownState = position
 
-                    bookViewModel.update(bookItem)
+                    bookViewModel.updateBook(bookItem)
                 }
             }
 
@@ -152,7 +152,7 @@ class DetailFragment: Fragment() {
                 if (this@DetailFragment::bookItem.isInitialized) {
                     bookItem.comment = comment.toString()
 
-                    bookViewModel.update(bookItem)
+                    bookViewModel.updateBook(bookItem)
                 }
             }
 

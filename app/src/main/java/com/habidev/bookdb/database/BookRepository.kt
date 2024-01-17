@@ -4,23 +4,23 @@ import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
 
 class BookRepository(private val bookDao: BookDao) {
-    val allBooks: Flow<List<BookItem>> = bookDao.getAll()
+    val allBooksFlow: Flow<List<BookItem>> = bookDao.getBooksFlow()
 
     @WorkerThread
-    suspend fun insert(bookItem: BookItem) {
-        bookDao.insert(bookItem)
+    suspend fun insertBook(bookItem: BookItem) {
+        bookDao.insertBook(bookItem)
     }
 
     @WorkerThread
-    suspend fun update(bookItem: BookItem) {
-        bookDao.update(bookItem)
+    suspend fun updateBook(bookItem: BookItem) {
+        bookDao.updateBook(bookItem)
     }
 
     @WorkerThread
-    suspend fun delete(bookItem: BookItem) {
-        bookDao.delete(bookItem)
+    suspend fun deleteBook(bookItem: BookItem) {
+        bookDao.deleteBook(bookItem)
     }
 
     @WorkerThread
-    fun search(query: String): List<BookItem> = bookDao.search(query)
+    fun searchBook(query: String): List<BookItem> = bookDao.searchBook(query)
 }

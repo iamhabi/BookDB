@@ -8,7 +8,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = BookDao.TABLE_NAME, indices = [Index(value = ["isbn"], unique = true)])
+@Entity(tableName = BookDao.TABLE_NAME_BOOK, indices = [Index(value = ["isbn"], unique = true)])
 data class BookItem(
     @PrimaryKey(autoGenerate = false)
     var isbn: Long,

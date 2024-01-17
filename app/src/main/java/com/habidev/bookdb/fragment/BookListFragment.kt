@@ -69,7 +69,7 @@ class BookListFragment: Fragment() {
     override fun onStart() {
         super.onStart()
 
-        bookViewModel.allBooks.observe(this) { books ->
+        bookViewModel.allBooksLiveData.observe(this) { books ->
             adapter.checkItemExist(books)
             adapter.add(books)
         }
@@ -78,7 +78,7 @@ class BookListFragment: Fragment() {
     override fun onStop() {
         super.onStop()
 
-        bookViewModel.allBooks.removeObservers(this)
+        bookViewModel.allBooksLiveData.removeObservers(this)
     }
 
     private fun initRecyclerView() {

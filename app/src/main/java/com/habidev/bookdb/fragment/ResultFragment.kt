@@ -116,7 +116,7 @@ class ResultFragment: Fragment() {
 
         viewBinding.btnAddBookmark.setOnClickListener {
             if (this::bookItem.isInitialized) {
-                bookViewModel.insert(bookItem)
+                bookViewModel.insertBook(bookItem)
             }
         }
 

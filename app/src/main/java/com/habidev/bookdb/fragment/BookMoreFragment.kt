@@ -72,7 +72,7 @@ class BookMoreFragment : BottomSheetDialogFragment() {
         viewBinding.textViewDelete.setOnClickListener {
             val bookItem = this.bookItem ?: return@setOnClickListener
 
-            bookViewModel.delete(bookItem)
+            bookViewModel.deleteBook(bookItem)
 
             dismiss()
         }
@@ -106,7 +106,7 @@ class BookMoreFragment : BottomSheetDialogFragment() {
 
                 bookItem.readingState = position
 
-                bookViewModel.update(bookItem)
+                bookViewModel.updateBook(bookItem)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -125,7 +125,7 @@ class BookMoreFragment : BottomSheetDialogFragment() {
 
                 bookItem.ownState = position
 
-                bookViewModel.update(bookItem)
+                bookViewModel.updateBook(bookItem)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
