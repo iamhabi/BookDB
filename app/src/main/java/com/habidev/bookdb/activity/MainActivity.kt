@@ -11,6 +11,7 @@ import com.habidev.bookdb.databinding.ActivityMainBinding
 import com.habidev.bookdb.fragment.BookListFragment
 import com.habidev.bookdb.fragment.CameraFragment
 import com.habidev.bookdb.fragment.DetailFragment
+import com.habidev.bookdb.fragment.GroupListFragment
 import com.habidev.bookdb.fragment.ResultFragment
 import com.habidev.bookdb.fragment.SearchFragment
 
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity(), SomeInterface {
     }
 
     private val bookListFragment = BookListFragment()
+    private val groupListFragment = GroupListFragment()
     private val searchFragment = SearchFragment()
     private val cameraFragment = CameraFragment()
     private val detailFragment = DetailFragment()
@@ -62,7 +64,10 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         }
 
         viewBinding.btnMore.setOnClickListener {
-
+            supportFragmentManager.beginTransaction()
+                .add(viewBinding.frameLayoutFull.id, groupListFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
         viewBinding.btnOpenCamera.setOnClickListener {
