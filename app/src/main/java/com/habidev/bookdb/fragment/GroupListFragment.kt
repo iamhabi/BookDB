@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.habidev.bookdb.adapter.GroupListAdapter
+import com.habidev.bookdb.database.BookGroupItem
 import com.habidev.bookdb.databinding.GroupListBinding
 
 class GroupListFragment: Fragment() {
@@ -15,6 +17,18 @@ class GroupListFragment: Fragment() {
     }
 
     private lateinit var viewBinding: GroupListBinding
+
+    private lateinit var adapter: GroupListAdapter
+
+    private val onItemClickListener = object : GroupListAdapter.OnItemClickListener {
+        override fun onClick(position: Int, item: BookGroupItem) {
+
+        }
+
+        override fun onMoreClick(position: Int, item: BookGroupItem) {
+
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +48,11 @@ class GroupListFragment: Fragment() {
     }
 
     private fun initRecyclerView() {
+        adapter = GroupListAdapter(requireContext())
+
+        adapter.setOnItemClickListener(onItemClickListener)
+
+        viewBinding.recyclerView.adapter = adapter
         viewBinding.recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 
