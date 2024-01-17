@@ -81,10 +81,7 @@ class ResultFragment: Fragment() {
             title,
             author,
             imageUrl,
-            description,
-            null,
-            BookItem.OWN_STATE_NOT_OWN,
-            BookItem.READ_STATE_NOT_YET
+            description
         )
 
         CoroutineScope(Dispatchers.Main).launch {
