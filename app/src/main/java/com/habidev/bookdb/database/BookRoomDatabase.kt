@@ -10,11 +10,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [BookItem::class],
-    version = 2,
+    entities = [BookItem::class, BookGroupItem::class],
+    version = 3,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(1, 2)
+        AutoMigration(1, 2),
+        AutoMigration(2, 3)
     ]
 )
 abstract class BookRoomDatabase: RoomDatabase() {
@@ -60,6 +61,7 @@ abstract class BookRoomDatabase: RoomDatabase() {
 
         suspend fun populateDatabase(bookDao: BookDao) {
             bookDao.deleteAllBooks()
+            bookDao.deleteAllGroups()
         }
     }
 }
