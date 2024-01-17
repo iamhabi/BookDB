@@ -15,9 +15,9 @@ data class BookItem(
     val link: String,
     val title: String,
     val author: String,
-    var group: String?,
     val imageUrl: String,
     val description: String,
+    var group: String?,
     var comment: String?,
     var readingState: Int, // 0: Not read yet, 1: Reading, 2: Done
     var ownState: Int      // 0: Not own, 1: Wanna buy, 2: Own
@@ -34,9 +34,9 @@ data class BookItem(
         link,
         title,
         author,
-        null,
         imageUrl,
         description,
+        null,
         null,
         OWN_STATE_NOT_OWN,
         READ_STATE_NOT_YET
@@ -47,9 +47,9 @@ data class BookItem(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
         parcel.readString(),
-        parcel.readString().toString(),
-        parcel.readString().toString(),
         parcel.readString(),
         parcel.readInt(),
         parcel.readInt()
@@ -61,9 +61,9 @@ data class BookItem(
         parcel.writeString(link)
         parcel.writeString(title)
         parcel.writeString(author)
-        parcel.writeString(group)
         parcel.writeString(imageUrl)
         parcel.writeString(description)
+        parcel.writeString(group)
         parcel.writeString(comment)
         parcel.writeInt(readingState)
         parcel.writeInt(ownState)
