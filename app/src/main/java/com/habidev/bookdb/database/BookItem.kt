@@ -15,6 +15,7 @@ data class BookItem(
     var link: String,
     var title: String,
     var author: String,
+    var group: String,
     var imageUrl: String,
     var description: String,
     var comment: String?,
@@ -23,6 +24,7 @@ data class BookItem(
 ): Parcelable {
     constructor(parcel: Parcel) : this (
         parcel.readLong(),
+        parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
@@ -39,6 +41,7 @@ data class BookItem(
         parcel.writeString(link)
         parcel.writeString(title)
         parcel.writeString(author)
+        parcel.writeString(group)
         parcel.writeString(imageUrl)
         parcel.writeString(description)
         parcel.writeString(comment)
