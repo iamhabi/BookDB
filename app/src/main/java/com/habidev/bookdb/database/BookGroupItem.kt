@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = BookDao.TABLE_NAME_BOOK_GROUP)
 data class BookGroupItem(
     @PrimaryKey(autoGenerate = true)
-    private val id: Int,
-    private val title: String
+    val id: Int,
+    var title: String
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
