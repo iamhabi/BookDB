@@ -11,17 +11,37 @@ import androidx.room.PrimaryKey
 @Entity(tableName = BookDao.TABLE_NAME_BOOK, indices = [Index(value = ["isbn"], unique = true)])
 data class BookItem(
     @PrimaryKey(autoGenerate = false)
-    var isbn: Long,
-    var link: String,
-    var title: String,
-    var author: String,
+    val isbn: Long,
+    val link: String,
+    val title: String,
+    val author: String,
     var group: String?,
-    var imageUrl: String,
-    var description: String,
+    val imageUrl: String,
+    val description: String,
     var comment: String?,
     var readingState: Int, // 0: Not read yet, 1: Reading, 2: Done
     var ownState: Int      // 0: Not own, 1: Wanna buy, 2: Own
 ): Parcelable {
+    constructor(
+        isbn: Long,
+        link: String,
+        title: String,
+        author: String,
+        imageUrl: String,
+        description: String
+    ): this(
+        isbn,
+        link,
+        title,
+        author,
+        null,
+        imageUrl,
+        description,
+        null,
+        OWN_STATE_NOT_OWN,
+        READ_STATE_NOT_YET
+    )
+
     constructor(parcel: Parcel) : this (
         parcel.readLong(),
         parcel.readString().toString(),
