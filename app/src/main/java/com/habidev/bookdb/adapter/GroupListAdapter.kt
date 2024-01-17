@@ -29,7 +29,7 @@ class GroupListAdapter(
     }
 
     private val items: MutableList<BookGroupItem> = mutableListOf()
-    private val onItemClickListener: OnItemClickListener
+    private var onItemClickListener: OnItemClickListener
 
     init {
         onItemClickListener = object : OnItemClickListener {
@@ -63,5 +63,49 @@ class GroupListAdapter(
         view.setOnClickListener {
             onItemClickListener.onClick(position, item)
         }
+    }
+
+    fun checkItemExist(bookItems: List<BookGroupItem>) {
+        val deletedItems = items.filter { groupItem ->
+            !bookItems.contains(groupItem)
+        }
+
+        val deletedIndex = mutableListOf<Int>()
+
+        for (item in deletedItems) {
+            val position = items.indexOf(item)
+
+            deletedIndex.add(position)
+
+            notifyItemRemoved(position)
+        }
+
+        for (index in deletedIndex) {
+            items.removeAt(index)
+        }
+    }
+
+    fun add(item: BookGroupItem) {
+        if (!items.contains(item)) {
+            items.add(item)
+
+            notifyItemInserted(itemCount - 1)
+        }
+    }
+
+    fun add(items: List<BookGroupItem>) {
+        for (item in items) {
+            add(item)
+        }
+    }
+
+    fun clear() {
+        notifyItemRangeRemoved(0, itemCount)
+
+        items.clear()
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.onItemClickListener = listener
     }
 }
