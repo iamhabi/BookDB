@@ -4,22 +4,23 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.habidev.bookdb.database.BookGroupItem
 import com.habidev.bookdb.databinding.GroupListItemBinding
 
 class GroupListAdapter(
     private val context: Context
 ): RecyclerView.Adapter<GroupListAdapter.ViewHolder>() {
     interface OnItemClickListener {
-        fun onClick(position: Int, item: String)
-        fun onMoreClick(position: Int, item: String)
+        fun onClick(position: Int, item: BookGroupItem)
+        fun onMoreClick(position: Int, item: BookGroupItem)
     }
 
     class ViewHolder(
         private val itemBinding: GroupListItemBinding,
         private val onItemClickListener: OnItemClickListener
     ): RecyclerView.ViewHolder(itemBinding.root) {
-        fun onBind(position: Int, item: String) {
-            itemBinding.textViewTitle.text = item
+        fun onBind(position: Int, item: BookGroupItem) {
+            itemBinding.textViewTitle.text = item.title
 
             itemBinding.btnMore.setOnClickListener {
                 onItemClickListener.onMoreClick(position, item)
@@ -27,16 +28,16 @@ class GroupListAdapter(
         }
     }
 
-    private val items: MutableList<String> = mutableListOf()
+    private val items: MutableList<BookGroupItem> = mutableListOf()
     private val onItemClickListener: OnItemClickListener
 
     init {
         onItemClickListener = object : OnItemClickListener {
-            override fun onClick(position: Int, item: String) {
+            override fun onClick(position: Int, item: BookGroupItem) {
 
             }
 
-            override fun onMoreClick(position: Int, item: String) {
+            override fun onMoreClick(position: Int, item: BookGroupItem) {
 
             }
         }
