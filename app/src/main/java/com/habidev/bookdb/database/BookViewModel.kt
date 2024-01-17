@@ -16,19 +16,35 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
 
     val allBooksLiveData: LiveData<List<BookItem>> = repository.allBooksFlow.asLiveData()
 
+    val allGroupsLiveData: LiveData<List<BookGroupItem>> = repository.allGroupsFlow.asLiveData()
+
     fun insertBook(bookItem: BookItem) = viewModelScope.launch {
         repository.insertBook(bookItem)
+    }
+
+    fun insertGroup(groupItem: BookGroupItem) = viewModelScope.launch {
+        repository.insertGroup(groupItem)
     }
 
     fun updateBook(bookItem: BookItem) = viewModelScope.launch {
         repository.updateBook(bookItem)
     }
 
+    fun updateGroup(groupItem: BookGroupItem) = viewModelScope.launch {
+        repository.updateGroup(groupItem)
+    }
+
     fun deleteBook(bookItem: BookItem) = viewModelScope.launch {
         repository.deleteBook(bookItem)
     }
 
+    fun deleteGroup(groupItem: BookGroupItem) = viewModelScope.launch {
+        repository.deleteGroup(groupItem)
+    }
+
     fun searchBook(query: String): List<BookItem> = repository.searchBook(query)
+
+    fun getBooksByGroup(groupItem: BookGroupItem): List<BookItem> = repository.getBooksByGroup(groupItem)
 }
 
 class BookViewModelFactory(private val repository: BookRepository): ViewModelProvider.Factory {
