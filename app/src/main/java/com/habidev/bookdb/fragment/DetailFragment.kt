@@ -3,14 +3,13 @@ package com.habidev.bookdb.fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
@@ -143,21 +142,15 @@ class DetailFragment: Fragment() {
             }
         }
 
-        viewBinding.editTextComment.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(comment: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (this@DetailFragment::bookItem.isInitialized) {
-                    bookItem.comment = comment.toString()
+        viewBinding.editTextComment.addTextChangedListener { text ->
+            if (this@DetailFragment::bookItem.isInitialized) {
+                text?.let {
+                    bookItem.comment = it.toString()
 
                     bookViewModel.updateBook(bookItem)
                 }
             }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
+        }
 
         viewBinding.editTextComment.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
