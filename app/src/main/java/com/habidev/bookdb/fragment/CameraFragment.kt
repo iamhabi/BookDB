@@ -63,8 +63,8 @@ class CameraFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewBinding.btnCapture.setOnClickListener {
-//            scanBarcode()
-            scanBarcodeTest()
+            scanBarcode()
+//            scanBarcodeTest()
         }
     }
 
