@@ -27,7 +27,9 @@ class GroupListFragment: Fragment() {
 
     private val onItemClickListener = object : GroupListAdapter.OnItemClickListener {
         override fun onClick(position: Int, item: BookGroupItem) {
+            bookViewModel.setGroup(item)
 
+            parentFragmentManager.popBackStack()
         }
 
         override fun onMoreClick(position: Int, item: BookGroupItem) {
@@ -82,6 +84,12 @@ class GroupListFragment: Fragment() {
         }
 
         viewBinding.layoutEmptySpace.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+        viewBinding.textViewGroupAll.setOnClickListener {
+            bookViewModel.setGroup(BookGroupItem(0, "All"))
+
             parentFragmentManager.popBackStack()
         }
 

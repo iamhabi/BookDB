@@ -15,6 +15,9 @@ import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.BookListBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class BookListFragment: Fragment() {
     private val bookViewModel: BookViewModel by activityViewModels()
@@ -73,12 +76,33 @@ class BookListFragment: Fragment() {
             adapter.checkItemExist(books)
             adapter.add(books)
         }
+
+        bookViewModel.groupLiveData.observe(requireActivity()) { groupItem ->
+            groupItem?.let {
+                adapter.clear()
+
+                if (it.title == "All") {
+                    bookViewModel.allBooksLiveData.value?.let { books ->
+                        adapter.add(books)
+                    }
+                } else {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val groupBookList = bookViewModel.getBooksByGroup(it)
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            adapter.add(groupBookList)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onStop() {
         super.onStop()
 
         bookViewModel.allBooksLiveData.removeObservers(requireActivity())
+        bookViewModel.groupLiveData.removeObservers(requireActivity())
     }
 
     private fun initRecyclerView() {
