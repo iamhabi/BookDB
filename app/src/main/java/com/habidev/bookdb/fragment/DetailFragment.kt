@@ -105,8 +105,7 @@ class DetailFragment: Fragment() {
         viewBinding.spinnerReadingState.adapter = readStateAdapter
         viewBinding.spinnerOwnState.adapter = ownStateAdapter
 
-        viewBinding.spinnerReadingState.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
+        viewBinding.spinnerReadingState.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -125,8 +124,7 @@ class DetailFragment: Fragment() {
             }
         }
 
-        viewBinding.spinnerOwnState.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
+        viewBinding.spinnerOwnState.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
