@@ -139,14 +139,16 @@ class DetailFragment: Fragment() {
                 position: Int,
                 id: Long
             ) {
-                if (position != 0) {
-                    if (this@DetailFragment::bookItem.isInitialized) {
+                if (this@DetailFragment::bookItem.isInitialized) {
+                    bookItem.group = if (position == 0) {
+                        null
+                    } else {
                         val group = groupList[position - 1]
 
-                        bookItem.group = group.title
-
-                        bookViewModel.updateBook(bookItem)
+                        group.title
                     }
+
+                    bookViewModel.updateBook(bookItem)
                 }
             }
 
