@@ -53,7 +53,11 @@ class GroupMoreFragment: BottomSheetDialogFragment() {
 
     private fun initViewListener() {
         viewBinding.textViewDelete.setOnClickListener {
-            groupItem?.let { bookViewModel.deleteGroup(it) }
+            groupItem?.let {
+                bookViewModel.deleteGroup(it)
+
+                dismiss()
+            }
         }
     }
 }
