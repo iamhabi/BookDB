@@ -20,6 +20,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class BookListFragment: Fragment() {
+    companion object {
+        private const val TAG = "BookDBList"
+    }
+
     private val bookViewModel: BookViewModel by activityViewModels()
 
     private lateinit var viewBinding: BookListBinding
