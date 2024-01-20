@@ -66,6 +66,7 @@ class DetailFragment: Fragment() {
 
         viewBinding.textViewTitle.text = bookItem.title
         viewBinding.textViewAuthor.text = bookItem.author
+        viewBinding.textViewGroup.text = bookItem.group
         viewBinding.textViewDescription.text = bookItem.description
         viewBinding.editTextComment.setText(bookItem.comment.toString(), TextView.BufferType.EDITABLE)
 
