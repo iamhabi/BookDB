@@ -46,12 +46,17 @@ class DetailFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        updateInfo()
         initViewListener()
 
         initGroupSpinner()
         initReadStateSpinner()
         initOwnStateSpinner()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        updateInfo()
     }
 
     override fun onStop() {
