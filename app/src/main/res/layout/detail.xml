@@ -99,15 +99,12 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/text_view_group"/>
+                    app:layout_constraintEnd_toStartOf="@id/spinner_group"/>
 
-                <TextView
-                    android:id="@+id/text_view_group"
+                <Spinner
+                    android:id="@+id/spinner_group"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/text_margin_vertical"
-                    android:textSize="@dimen/description_text_size"
-                    android:lineSpacingExtra="@dimen/text_line_space"
+                    android:layout_height="match_parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/text_view_group_header"
