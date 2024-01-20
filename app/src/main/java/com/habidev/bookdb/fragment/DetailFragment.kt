@@ -48,13 +48,24 @@ class DetailFragment: Fragment() {
 
         initViewListener()
 
-        initGroupSpinner()
         initReadStateSpinner()
         initOwnStateSpinner()
     }
 
     override fun onStart() {
         super.onStart()
+
+        bookViewModel.allGroupsLiveData.observe(requireActivity()) { groupList ->
+            this.groupList = groupList
+
+            initGroupSpinner(groupList)
+
+            groupList.indexOfFirst {
+                it.title == bookItem.group
+            }.let { index ->
+                viewBinding.spinnerGroup.setSelection(index + 1)
+            }
+        }
 
         updateInfo()
     }
@@ -88,17 +99,6 @@ class DetailFragment: Fragment() {
 
         viewBinding.spinnerReadingState.setSelection(bookItem.readingState)
         viewBinding.spinnerOwnState.setSelection(bookItem.ownState)
-
-        // TODO
-        //  set group
-
-        if (this::groupList.isInitialized) {
-            groupList.indexOfFirst {
-                it.title == bookItem.group
-            }.let { index ->
-                viewBinding.spinnerGroup.setSelection(index)
-            }
-        }
     }
 
     private fun initViewListener() {
@@ -139,12 +139,12 @@ class DetailFragment: Fragment() {
                 position: Int,
                 id: Long
             ) {
-                if (position == 0) {
+                if (position > groupList.lastIndex) {
                     // TODO
                     //  Dialog to create new group
                 } else {
                     if (this@DetailFragment::bookItem.isInitialized) {
-                        val group = groupList[position]
+                        val group = groupList[position - 1]
 
                         bookItem.group = group.title
 
@@ -196,28 +196,26 @@ class DetailFragment: Fragment() {
         }
     }
 
-    private fun initGroupSpinner() {
-        bookViewModel.allGroupsLiveData.observe(requireActivity()) { groupList ->
-            this.groupList = groupList
+    private fun initGroupSpinner(groupList: List<BookGroupItem>) {
+        val groupArray = arrayListOf<String>()
 
-            val groupArray = arrayListOf<String>()
+        groupArray.add("None")
 
-            for (group in groupList) {
-                groupArray.add(group.title)
-            }
-
-            groupArray.add("Create new group")
-
-            val groupAdapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                groupArray
-            )
-
-            groupAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
-
-            viewBinding.spinnerGroup.adapter = groupAdapter
+        for (group in groupList) {
+            groupArray.add(group.title)
         }
+
+        groupArray.add("Create new group")
+
+        val groupAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            groupArray
+        )
+
+        groupAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
+
+        viewBinding.spinnerGroup.adapter = groupAdapter
     }
 
     private fun initReadStateSpinner() {
