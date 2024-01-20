@@ -1,6 +1,7 @@
 package com.habidev.bookdb.database
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -14,9 +15,15 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
      */
     fun create() {}
 
+    val groupLiveData: MutableLiveData<BookGroupItem> = MutableLiveData()
+
     val allBooksLiveData: LiveData<List<BookItem>> = repository.allBooksFlow.asLiveData()
 
     val allGroupsLiveData: LiveData<List<BookGroupItem>> = repository.allGroupsFlow.asLiveData()
+
+    fun setGroup(groupItem: BookGroupItem) {
+        groupLiveData.value = groupItem
+    }
 
     fun insertBook(bookItem: BookItem) = viewModelScope.launch {
         repository.insertBook(bookItem)
