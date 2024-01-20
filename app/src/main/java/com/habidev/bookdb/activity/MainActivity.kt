@@ -6,6 +6,8 @@ import android.view.MotionEvent
 import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
+import com.habidev.bookdb.R
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.BookViewModelFactory
@@ -62,43 +64,83 @@ class MainActivity : AppCompatActivity(), SomeInterface {
 
     private fun initViewListener() {
         viewBinding.btnSearch.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .add(viewBinding.frameLayoutFull.id, searchFragment)
-                .addToBackStack(null)
-                .commit()
+            supportFragmentManager.commit {
+                setCustomAnimations(
+                    R.anim.slide_in_from_right,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.slide_out_to_right
+                )
+
+                add(viewBinding.frameLayoutFull.id, searchFragment)
+
+                addToBackStack(null)
+            }
         }
 
         viewBinding.btnMore.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .add(viewBinding.frameLayoutFull.id, groupListFragment)
-                .addToBackStack(null)
-                .commit()
+            supportFragmentManager.commit {
+                setCustomAnimations(
+                    R.anim.slide_in_from_left,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.slide_out_to_left
+                )
+
+                add(viewBinding.frameLayoutFull.id, groupListFragment)
+
+                addToBackStack(null)
+            }
         }
 
         viewBinding.btnOpenCamera.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .add(viewBinding.frameLayoutFull.id, cameraFragment)
-                .addToBackStack(null)
-                .commit()
+            supportFragmentManager.commit {
+                setCustomAnimations(
+                    R.anim.slide_in_from_right,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.slide_out_to_right
+                )
+
+                add(viewBinding.frameLayoutFull.id, cameraFragment)
+
+                addToBackStack(null)
+            }
         }
     }
 
     override fun showDetailInfo(bookItem: BookItem) {
         detailFragment.setBookItem(bookItem)
 
-        supportFragmentManager.beginTransaction()
-            .add(viewBinding.frameLayoutFull.id, detailFragment)
-            .addToBackStack(null)
-            .commit()
+        supportFragmentManager.commit {
+            setCustomAnimations(
+                R.anim.slide_in_from_right,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out_to_right
+            )
+
+            add(viewBinding.frameLayoutFull.id, detailFragment)
+
+            addToBackStack(null)
+        }
     }
 
     override fun showResultInfo(query: String) {
         resultFragment.setQuery(query)
 
-        supportFragmentManager.beginTransaction()
-            .add(viewBinding.frameLayoutFull.id, resultFragment)
-            .addToBackStack(null)
-            .commit()
+        supportFragmentManager.commit {
+            setCustomAnimations(
+                R.anim.slide_in_from_right,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out_to_right
+            )
+
+            add(viewBinding.frameLayoutFull.id, resultFragment)
+
+            addToBackStack(null)
+        }
     }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent?): Boolean {
