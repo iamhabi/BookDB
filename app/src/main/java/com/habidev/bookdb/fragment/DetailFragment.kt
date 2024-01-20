@@ -139,10 +139,7 @@ class DetailFragment: Fragment() {
                 position: Int,
                 id: Long
             ) {
-                if (position > groupList.lastIndex) {
-                    // TODO
-                    //  Dialog to create new group
-                } else {
+                if (position != 0) {
                     if (this@DetailFragment::bookItem.isInitialized) {
                         val group = groupList[position - 1]
 
@@ -204,8 +201,6 @@ class DetailFragment: Fragment() {
         for (group in groupList) {
             groupArray.add(group.title)
         }
-
-        groupArray.add("Create new group")
 
         val groupAdapter = ArrayAdapter(
             requireContext(),
