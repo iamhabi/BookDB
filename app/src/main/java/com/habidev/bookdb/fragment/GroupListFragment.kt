@@ -25,6 +25,8 @@ class GroupListFragment: Fragment() {
 
     private lateinit var adapter: GroupListAdapter
 
+    private lateinit var groupMoreFragment: GroupMoreFragment
+
     private val onItemClickListener = object : GroupListAdapter.OnItemClickListener {
         override fun onClick(position: Int, item: BookGroupItem) {
             bookViewModel.setGroup(item)
@@ -33,7 +35,8 @@ class GroupListFragment: Fragment() {
         }
 
         override fun onMoreClick(position: Int, item: BookGroupItem) {
-
+            groupMoreFragment.setGroup(item)
+            groupMoreFragment.show(childFragmentManager, null)
         }
     }
 
@@ -49,6 +52,8 @@ class GroupListFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        groupMoreFragment = GroupMoreFragment()
 
         initRecyclerView()
         initViewListener()
