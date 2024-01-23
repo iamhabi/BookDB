@@ -77,7 +77,6 @@ class BookListFragment: Fragment() {
         super.onStart()
 
         bookViewModel.allBooksLiveData.observe(requireActivity()) { books ->
-            adapter.checkItemExist(books)
             adapter.add(books)
         }
 
