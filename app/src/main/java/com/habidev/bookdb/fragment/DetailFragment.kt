@@ -31,6 +31,10 @@ class DetailFragment: Fragment() {
 
     private lateinit var bookItem: BookItem
 
+    private var preventCommentListener: Boolean = false
+    private var preventReadListener: Boolean = false
+    private var preventOwnListener: Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,6 +69,10 @@ class DetailFragment: Fragment() {
             return
         }
 
+        preventCommentListener = true
+        preventReadListener = true
+        preventOwnListener = true
+
         Glide
             .with(this)
             .load(Uri.parse(bookItem.imageUrl))
@@ -95,12 +103,14 @@ class DetailFragment: Fragment() {
         }
 
         viewBinding.editTextComment.addTextChangedListener { text ->
-            if (this@DetailFragment::bookItem.isInitialized) {
+            if (!preventCommentListener && this@DetailFragment::bookItem.isInitialized) {
                 text?.let {
                     bookItem.comment = it.toString()
 
                     bookViewModel.updateBook(bookItem)
                 }
+
+                preventCommentListener = false
             }
         }
 
@@ -119,10 +129,12 @@ class DetailFragment: Fragment() {
                 position: Int,
                 id: Long
             ) {
-                if (this@DetailFragment::bookItem.isInitialized) {
+                if (!preventReadListener && this@DetailFragment::bookItem.isInitialized) {
                     bookItem.readingState = position
 
                     bookViewModel.updateBook(bookItem)
+
+                    preventReadListener = false
                 }
             }
 
@@ -138,10 +150,12 @@ class DetailFragment: Fragment() {
                 position: Int,
                 id: Long
             ) {
-                if (this@DetailFragment::bookItem.isInitialized) {
+                if (!preventOwnListener && this@DetailFragment::bookItem.isInitialized) {
                     bookItem.ownState = position
 
                     bookViewModel.updateBook(bookItem)
+
+                    preventOwnListener = false
                 }
             }
 
