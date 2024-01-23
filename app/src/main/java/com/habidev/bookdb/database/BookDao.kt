@@ -19,7 +19,7 @@ interface BookDao {
     suspend fun insertBook(bookItem: BookItem): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertGroup(groupItem: BookGroupItem)
+    suspend fun insertGroup(groupItem: BookGroupItem): Long
 
     @Update
     suspend fun updateBook(bookItem: BookItem)

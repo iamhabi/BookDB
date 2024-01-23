@@ -19,8 +19,10 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     @WorkerThread
-    suspend fun insertGroup(groupItem: BookGroupItem) {
-        bookDao.insertGroup(groupItem)
+    suspend fun insertGroup(groupItem: BookGroupItem): Boolean {
+        val result = bookDao.insertGroup(groupItem)
+
+        return result != -1L
     }
 
     @WorkerThread
