@@ -25,9 +25,7 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
         groupLiveData.value = groupItem
     }
 
-    fun insertBook(bookItem: BookItem) = viewModelScope.launch {
-        repository.insertBook(bookItem)
-    }
+    suspend fun insertBook(bookItem: BookItem): Boolean = repository.insertBook(bookItem)
 
     fun insertGroup(groupItem: BookGroupItem) = viewModelScope.launch {
         repository.insertGroup(groupItem)

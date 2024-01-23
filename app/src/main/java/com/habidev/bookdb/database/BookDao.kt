@@ -15,8 +15,8 @@ interface BookDao {
         const val TABLE_NAME_BOOK_GROUP = "book_groups"
     }
 
-    @Insert
-    suspend fun insertBook(bookItem: BookItem)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertBook(bookItem: BookItem): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertGroup(groupItem: BookGroupItem)

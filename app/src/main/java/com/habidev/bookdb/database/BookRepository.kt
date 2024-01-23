@@ -8,9 +8,14 @@ class BookRepository(private val bookDao: BookDao) {
 
     val allGroupsFlow: Flow<List<BookGroupItem>> = bookDao.getGroupsFlow()
 
+    /**
+     * DB에 BookItem을 insert하고 성공 여부를 반환한다.
+     */
     @WorkerThread
-    suspend fun insertBook(bookItem: BookItem) {
-        bookDao.insertBook(bookItem)
+    suspend fun insertBook(bookItem: BookItem): Boolean {
+        val result = bookDao.insertBook(bookItem)
+
+        return result != -1L
     }
 
     @WorkerThread
