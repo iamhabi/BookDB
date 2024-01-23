@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
-import com.habidev.bookdb.database.BookGroupItem
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.DetailBinding
@@ -31,7 +30,6 @@ class DetailFragment: Fragment() {
     private lateinit var viewBinding: DetailBinding
 
     private lateinit var bookItem: BookItem
-    private lateinit var groupList: List<BookGroupItem>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,25 +53,7 @@ class DetailFragment: Fragment() {
     override fun onStart() {
         super.onStart()
 
-        bookViewModel.allGroupsLiveData.observe(requireActivity()) { groupList ->
-            this.groupList = groupList
-
-            initGroupSpinner(groupList)
-
-            groupList.indexOfFirst {
-                it.title == bookItem.group
-            }.let { index ->
-                viewBinding.spinnerGroup.setSelection(index + 1)
-            }
-        }
-
         updateInfo()
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        bookViewModel.allGroupsLiveData.removeObservers(requireActivity())
     }
 
     fun setBookItem(bookItem: BookItem) {
@@ -132,30 +112,6 @@ class DetailFragment: Fragment() {
             }
         }
 
-        viewBinding.spinnerGroup.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (this@DetailFragment::bookItem.isInitialized) {
-                    bookItem.group = if (position == 0) {
-                        null
-                    } else {
-                        val group = groupList[position - 1]
-
-                        group.title
-                    }
-
-                    bookViewModel.updateBook(bookItem)
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-        }
-
         viewBinding.spinnerReadingState.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -193,26 +149,6 @@ class DetailFragment: Fragment() {
 
             }
         }
-    }
-
-    private fun initGroupSpinner(groupList: List<BookGroupItem>) {
-        val groupArray = arrayListOf<String>()
-
-        groupArray.add("None")
-
-        for (group in groupList) {
-            groupArray.add(group.title)
-        }
-
-        val groupAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            groupArray
-        )
-
-        groupAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
-
-        viewBinding.spinnerGroup.adapter = groupAdapter
     }
 
     private fun initReadStateSpinner() {

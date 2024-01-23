@@ -82,42 +82,11 @@
                 app:layout_constraintTop_toBottomOf="@id/text_view_title"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/text_view_author">
-
-                <TextView
-                    android:id="@+id/text_view_group_header"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/text_margin_vertical"
-                    android:gravity="center_vertical"
-                    android:text="Group"
-                    android:textSize="@dimen/description_text_size"
-                    android:lineSpacingExtra="@dimen/text_line_space"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/spinner_group"/>
-
-                <Spinner
-                    android:id="@+id/spinner_group"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/text_view_group_header"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_reading_state"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/default_minimum_height"
                 android:layout_marginTop="@dimen/text_margin_vertical"
-                app:layout_constraintTop_toBottomOf="@id/layout_group">
+                app:layout_constraintTop_toBottomOf="@id/text_view_author">
 
                 <TextView
                     android:id="@+id/text_view_reading_state_header"
