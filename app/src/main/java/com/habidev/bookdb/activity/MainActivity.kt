@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity(), SomeInterface {
     }
 
     private fun showDialogMoveToSetting() {
-        val dialog = AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this, R.style.DialogStyle)
             .setTitle(R.string.permission_dialog_title)
             .setMessage(R.string.permission_dialog_message)
             .setPositiveButton(R.string.permission_dialog_pos_button) { _, _ ->
