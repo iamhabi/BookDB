@@ -3,10 +3,9 @@ package com.habidev.bookdb.database
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = BookDao.TABLE_NAME_BOOK_GROUP, indices = [Index(value = ["title"], unique = true)])
+@Entity(tableName = BookDao.TABLE_NAME_BOOK_GROUP)
 data class BookGroupItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
