@@ -12,13 +12,18 @@ import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
 import com.habidev.bookdb.database.BookItem
 
-class BookListAdapter(
-    private val context: Context
-): RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
+class BookListAdapter(private val context: Context): RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
     interface OnItemClickListener {
         fun onClick(position: Int, bookItem: BookItem)
         fun onLongClick(position: Int, bookItem: BookItem)
         fun onMoreClick(position: Int, bookItem: BookItem)
+    }
+
+    constructor(
+        layout: Int,
+        context: Context
+    ): this(context) {
+        this.layout = layout
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
@@ -26,13 +31,14 @@ class BookListAdapter(
     private val items: MutableList<BookItem> = mutableListOf()
     private var onItemClickListener: OnItemClickListener? = null
 
+    private var layout: Int = R.layout.book_list_item
     private var isGridLayout = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layout = if (isGridLayout) {
             R.layout.book_list_item_grid
         } else {
-            R.layout.book_list_item
+            layout
         }
 
         val view = LayoutInflater
