@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayoutMediator
+import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.SimpleViewPagerAdapter
 import com.habidev.bookdb.databinding.SearchBinding
 import com.habidev.bookdb.utils.Utils
@@ -59,6 +61,18 @@ class SearchFragment : Fragment() {
 
         viewBinding.viewPagerSearch.adapter = adapter
         viewBinding.viewPagerSearch.offscreenPageLimit = fragments.size
+
+        TabLayoutMediator(viewBinding.tabLayoutSearch, viewBinding.viewPagerSearch) { tab, position ->
+            when (position) {
+                0 -> {
+                    tab.text = resources.getString(R.string.database)
+                }
+
+                1 -> {
+                    tab.text = resources.getString(R.string.internet)
+                }
+            }
+        }.attach()
     }
 
     private fun performSearch(query: String) {
