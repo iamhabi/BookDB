@@ -11,5 +11,15 @@
     <string name="owning_state">Owning State</string>
     <string name="delete">Delete</string>
     <string name="open_camera">open camera</string>
-    <string name="add_group">Add group</string>
+    <string name="create_group">Create group</string>
+    <string name="database">Database</string>
+    <string name="internet">Internet</string>
+    <string name="capture">capture</string>
+    <string name="group_all">All</string>
+
+    <string name="create_new_group">Create new group</string>
+    <string name="created_new_group">Created new group</string>
+
+    <string name="insert_book_success_message">Added a book successfully</string>
+    <string name="insert_book_failure_message">Already in the database</string>
 </resources>

@@ -118,9 +118,9 @@ class ResultFragment: Fragment() {
                     val isInsertSuccess = bookViewModel.insertBook(bookItem)
 
                     val message = if (isInsertSuccess) {
-                        "Add successful"
+                        R.string.insert_book_success_message
                     } else {
-                        "Already on database"
+                        R.string.insert_book_failure_message
                     }
 
                     CoroutineScope(Dispatchers.Main).launch {

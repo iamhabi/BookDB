@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.GroupListAdapter
 import com.habidev.bookdb.database.BookGroupItem
 import com.habidev.bookdb.database.BookViewModel
@@ -109,7 +110,9 @@ class GroupListFragment: Fragment() {
 
                 bookViewModel.insertGroup(BookGroupItem(0, text))
 
-                Toast.makeText(requireContext(), "Created new group $text", Toast.LENGTH_SHORT).show()
+                val message = resources.getString(R.string.created_new_group)
+
+                Toast.makeText(requireContext(), "$message $text", Toast.LENGTH_SHORT).show()
             }
         }
 
