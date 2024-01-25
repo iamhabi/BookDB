@@ -71,7 +71,7 @@ class BookListAdapter(
             true
         }
 
-        btnMore.setOnClickListener {
+        btnMore?.setOnClickListener {
             onItemClickListener?.onMoreClick(position, item)
         }
     }
