@@ -2,30 +2,22 @@ package com.habidev.bookdb.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.habidev.bookdb.ApiKey
 import com.habidev.bookdb.R
 import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.databinding.RecyclerViewBaseBinding
+import com.habidev.bookdb.utils.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
 
 class SearchInternetFragment : Fragment() {
     companion object {
@@ -87,26 +79,14 @@ class SearchInternetFragment : Fragment() {
             return
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val con = connect("${ApiKey.URL}$query")
-
-                con?.requestMethod = "GET"
-                con?.setRequestProperty("X-Naver-Client-Id", ApiKey.CLIENT_ID)
-                con?.setRequestProperty("X-Naver-Client-Secret", ApiKey.CLIENT_SECRET)
-
-                val responseCode = con!!.responseCode
-                val result = if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-                    readBody(con.inputStream)
-                } else { // 에러 발생
-                    readBody(con.errorStream)
+        Utils.getBookInfo(
+            query,
+            object : Utils.Companion.OnGetBookInfoListener {
+                override fun onGetBookInfo(result: String) {
+                    showResult(result)
                 }
-
-                showResult(result)
-            } catch (e: Exception) {
-                Log.e("FAIL", e.toString())
             }
-        }
+        )
     }
 
     private fun showResult(resultJson: String) {
@@ -134,33 +114,6 @@ class SearchInternetFragment : Fragment() {
             CoroutineScope(Dispatchers.Main).launch  {
                 adapter.add(bookItem)
             }
-        }
-    }
-
-    private fun connect(apiUrl: String): HttpURLConnection? {
-        return try {
-            val url = URL(apiUrl)
-            url.openConnection() as HttpURLConnection
-        } catch (e: MalformedURLException) {
-            throw RuntimeException("API URL이 잘못되었습니다. : $apiUrl", e)
-        } catch (e: IOException) {
-            throw RuntimeException("연결이 실패했습니다. : $apiUrl", e)
-        }
-    }
-
-    private fun readBody(body: InputStream): String {
-        val streamReader = InputStreamReader(body)
-        try {
-            BufferedReader(streamReader).use { lineReader ->
-                val responseBody = StringBuilder()
-                var line: String?
-                while (lineReader.readLine().also { line = it } != null) {
-                    responseBody.append(line)
-                }
-                return responseBody.toString()
-            }
-        } catch (e: IOException) {
-            throw RuntimeException("API 응답을 읽는데 실패했습니다.", e)
         }
     }
 }
