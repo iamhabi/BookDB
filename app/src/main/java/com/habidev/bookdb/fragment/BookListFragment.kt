@@ -40,6 +40,11 @@ class BookListFragment: Fragment() {
             someInterface?.showDetailInfo(bookItem)
         }
 
+        override fun onLongClick(position: Int, bookItem: BookItem) {
+            bookMoreFragment.setBookItem(bookItem)
+            bookMoreFragment.show(childFragmentManager, null)
+        }
+
         override fun onMoreClick(position: Int, bookItem: BookItem) {
             bookMoreFragment.setBookItem(bookItem)
             bookMoreFragment.show(childFragmentManager, null)
