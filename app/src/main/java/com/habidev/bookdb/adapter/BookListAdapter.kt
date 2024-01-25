@@ -17,26 +17,16 @@ class BookListAdapter(
 ): RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
     interface OnItemClickListener {
         fun onClick(position: Int, bookItem: BookItem)
+        fun onLongClick(position: Int, bookItem: BookItem)
         fun onMoreClick(position: Int, bookItem: BookItem)
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
     private val items: MutableList<BookItem> = mutableListOf()
-    private var onItemClickListener: OnItemClickListener
+    private var onItemClickListener: OnItemClickListener? = null
 
     private var isGridLayout = false
-
-    init {
-        onItemClickListener = object : OnItemClickListener {
-            override fun onClick(position: Int, bookItem: BookItem) {
-
-            }
-
-            override fun onMoreClick(position: Int, bookItem: BookItem) {
-            }
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layout = if (isGridLayout) {
@@ -72,11 +62,17 @@ class BookListAdapter(
         textViewAuthor?.text = item.author
 
         view.setOnClickListener {
-            onItemClickListener.onClick(position, item)
+            onItemClickListener?.onClick(position, item)
+        }
+
+        view.setOnLongClickListener {
+            onItemClickListener?.onLongClick(position, item)
+
+            true
         }
 
         btnMore.setOnClickListener {
-            onItemClickListener.onMoreClick(position, item)
+            onItemClickListener?.onMoreClick(position, item)
         }
     }
 
