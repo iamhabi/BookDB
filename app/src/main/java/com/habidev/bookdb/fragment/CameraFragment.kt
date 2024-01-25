@@ -121,20 +121,19 @@ class CameraFragment: Fragment() {
             {
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
-                val preview = Preview.Builder()
-                    .build()
-                    .also {
-                        it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
-                    }
+                val preview = initPreview()
 
-                imageCapture = ImageCapture.Builder().build()
-
-                val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+                initImageCapture()
 
                 try {
                     cameraProvider.unbindAll()
 
-                    cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
+                    cameraProvider.bindToLifecycle(
+                        this,
+                        CameraSelector.DEFAULT_BACK_CAMERA,
+                        preview,
+                        imageCapture
+                    )
                 } catch(exc: Exception) {
                     Log.e(TAG, "Use case binding failed", exc)
                 }
@@ -148,6 +147,18 @@ class CameraFragment: Fragment() {
         if (this::cameraExecutor.isInitialized) {
             cameraExecutor.shutdown()
         }
+    }
+
+    private fun initImageCapture() {
+        imageCapture = ImageCapture.Builder().build()
+    }
+
+    private fun initPreview(): Preview {
+        return Preview.Builder()
+            .build()
+            .also {
+                it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
+            }
     }
 
     private fun toastFailToReadBarcode() {
