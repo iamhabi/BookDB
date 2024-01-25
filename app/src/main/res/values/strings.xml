@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">BookDB</string>
 
+    <string name="permission_dialog_title">Permission denied</string>
+    <string name="permission_dialog_message">Please accept camera permission to scan barcode</string>
+    <string name="permission_dialog_pos_button">Go to setting</string>
+    <string name="permission_dialog_neg_button">No</string>
+
     <string name="search">search</string>
     <string name="close">close</string>
     <string name="book_cover">book cover</string>
