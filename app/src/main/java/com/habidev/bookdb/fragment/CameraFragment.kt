@@ -7,12 +7,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import com.habidev.bookdb.R
 import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.databinding.CameraBinding
 import com.habidev.bookdb.utils.Utils
@@ -34,6 +36,8 @@ class CameraFragment: Fragment() {
 
     private var someInterface: SomeInterface? = null
 
+    private lateinit var toastFailToReadBarcode: Toast
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -52,6 +56,8 @@ class CameraFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        toastFailToReadBarcode = Toast.makeText(requireContext(), R.string.fail_to_read_barcode, Toast.LENGTH_SHORT)
 
         viewBinding.btnCapture.setOnClickListener {
             scanBarcode()
@@ -144,35 +150,38 @@ class CameraFragment: Fragment() {
         }
     }
 
+    private fun toastFailToReadBarcode() {
+        toastFailToReadBarcode.run {
+            cancel()
+            show()
+        }
+    }
+
     inner class ImageCapturedCallback : ImageCapture.OnImageCapturedCallback() {
         @SuppressLint("UnsafeOptInUsageError")
         override fun onCaptureSuccess(imageProxy: ImageProxy) {
             super.onCaptureSuccess(imageProxy)
 
-            val barcodeImage = imageProxy.image
-
-            if (barcodeImage != null) {
+            imageProxy.image?.let { barcodeImage ->
                 val fixedBarcodeImage = InputImage.fromMediaImage(barcodeImage, imageProxy.imageInfo.rotationDegrees)
 
                 BarcodeScanning.getClient()
                     .process(fixedBarcodeImage)
                     .addOnSuccessListener { barcodes ->
-                        for (barcode in barcodes) {
-                            val rawValue = barcode.rawValue // barcode
-
-                            Log.d(TAG, rawValue.toString())
-
-                            if (rawValue != null) {
-                                showInfo(rawValue)
+                        if (barcodes.isNotEmpty()) {
+                            barcodes.first().rawValue?.let {
+                                showInfo(it)
 
                                 shutDownCameraExecutor()
-
-                                break
                             }
+                        } else {
+                            toastFailToReadBarcode()
                         }
                     }
                     .addOnFailureListener { exception ->
                         Log.e("FAIL", exception.toString())
+
+                        toastFailToReadBarcode()
                     }
             }
         }
@@ -181,6 +190,8 @@ class CameraFragment: Fragment() {
             super.onError(exception)
 
             Log.e(TAG, exception.toString())
+
+            toastFailToReadBarcode()
         }
     }
 }

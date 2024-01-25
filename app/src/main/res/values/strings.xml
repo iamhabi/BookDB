@@ -22,6 +22,8 @@
     <string name="capture">capture</string>
     <string name="group_all">All</string>
 
+    <string name="fail_to_read_barcode">Fail to read barcode</string>
+
     <string name="create_new_group">Create new group</string>
     <string name="created_new_group">Created new group</string>
 
