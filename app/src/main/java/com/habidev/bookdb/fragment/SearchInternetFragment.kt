@@ -67,6 +67,9 @@ class SearchInternetFragment : Fragment() {
                 someInterface?.showResultInfo(bookItem.isbn.toString())
             }
 
+            override fun onLongClick(position: Int, bookItem: BookItem) {
+            }
+
             override fun onMoreClick(position: Int, bookItem: BookItem) {
             }
         })
