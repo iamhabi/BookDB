@@ -14,9 +14,6 @@ import com.habidev.bookdb.database.BookGroupItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.GroupListBinding
 import com.habidev.bookdb.utils.Utils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class GroupListFragment: Fragment() {
     companion object {
@@ -110,19 +107,9 @@ class GroupListFragment: Fragment() {
             } else {
                 viewBinding.editTextAddGroup.text.clear()
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    val isInsertSuccess = bookViewModel.insertGroup(BookGroupItem(0, text))
+                bookViewModel.insertGroup(BookGroupItem(0, text))
 
-                    val message = if (isInsertSuccess) {
-                        "Create successful"
-                    } else {
-                        "Already exist"
-                    }
-
-                    CoroutineScope(Dispatchers.Main).launch {
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                    }
-                }
+                Toast.makeText(requireContext(), "Created new group $text", Toast.LENGTH_SHORT).show()
             }
         }
 
