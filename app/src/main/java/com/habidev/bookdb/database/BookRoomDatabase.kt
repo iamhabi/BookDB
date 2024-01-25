@@ -11,12 +11,13 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [BookItem::class, BookGroupItem::class],
-    version = 4,
+    version = 5,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(1, 2),
         AutoMigration(2, 3),
-        AutoMigration(3, 4)
+        AutoMigration(3, 4),
+        AutoMigration(4, 5)
     ]
 )
 abstract class BookRoomDatabase: RoomDatabase() {
