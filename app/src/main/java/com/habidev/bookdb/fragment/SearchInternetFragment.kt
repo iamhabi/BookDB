@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.ApiKey
+import com.habidev.bookdb.R
 import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
@@ -60,7 +61,7 @@ class SearchInternetFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = BookListAdapter(requireContext())
+        adapter = BookListAdapter(R.layout.book_list_item_vanilla, requireContext())
 
         adapter.setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
             override fun onClick(position: Int, bookItem: BookItem) {
