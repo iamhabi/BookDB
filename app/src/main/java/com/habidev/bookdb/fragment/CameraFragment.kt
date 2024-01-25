@@ -1,9 +1,7 @@
 package com.habidev.bookdb.fragment
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,24 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.databinding.CameraBinding
+import com.habidev.bookdb.utils.Utils
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment: Fragment() {
     companion object {
         private const val TAG = "Barcode Reader"
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS =
-            arrayOf (
-                Manifest.permission.CAMERA
-            )
 
         private const val TEST_BARCODE: String = "9791162996522"
     }
@@ -38,8 +31,6 @@ class CameraFragment: Fragment() {
     private lateinit var cameraExecutor: ExecutorService
 
     private var imageCapture: ImageCapture? = null
-
-    private var isScanningBarcode = true
 
     private var someInterface: SomeInterface? = null
 
@@ -71,16 +62,8 @@ class CameraFragment: Fragment() {
     override fun onResume() {
         super.onResume()
 
-        if (allPermissionsGranted()) {
-            isScanningBarcode = true
-
+        if (Utils.isCamPermissionGranted(requireContext())) {
             startCamera()
-        } else {
-            activity?.let {
-                ActivityCompat.requestPermissions(
-                    it, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
-                )
-            }
         }
     }
 
@@ -100,10 +83,6 @@ class CameraFragment: Fragment() {
         super.onDestroy()
 
         shutDownCameraExecutor()
-    }
-
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all { permissions ->
-        context?.let { context -> ContextCompat.checkSelfPermission(context, permissions) } == PackageManager.PERMISSION_GRANTED
     }
 
     private fun showInfo(barcode: String) {
@@ -128,8 +107,6 @@ class CameraFragment: Fragment() {
                     BarcodeScanning.getClient()
                         .process(fixedBarcodeImage)
                         .addOnSuccessListener { barcodes ->
-                            isScanningBarcode = false
-
                             for (barcode in barcodes) {
                                 val rawValue = barcode.rawValue // barcode
 

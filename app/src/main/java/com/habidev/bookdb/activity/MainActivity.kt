@@ -1,10 +1,14 @@
 package com.habidev.bookdb.activity
 
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MotionEvent
 import android.widget.EditText
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.habidev.bookdb.R
@@ -56,6 +60,24 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         initViewListener()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (grantResults.isEmpty()) {
+            return
+        }
+
+        val result = grantResults[0]
+
+        if (requestCode == Utils.PERMISSION_CAMERA_REQUEST_CODE && result != PackageManager.PERMISSION_GRANTED) {
+            showDialogMoveToSetting()
+        }
+    }
+
     private fun initBookList() {
         supportFragmentManager.beginTransaction()
             .add(viewBinding.frameLayoutBookList.id, bookListFragment)
@@ -94,19 +116,38 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         }
 
         viewBinding.btnOpenCamera.setOnClickListener {
-            supportFragmentManager.commit {
-                setCustomAnimations(
-                    R.anim.slide_in_from_right,
-                    R.anim.fade_out,
-                    R.anim.fade_in,
-                    R.anim.slide_out_to_right
-                )
+            if (Utils.isCamPermissionGranted(this)) {
+                supportFragmentManager.commit {
+                    setCustomAnimations(
+                        R.anim.slide_in_from_right,
+                        R.anim.fade_out,
+                        R.anim.fade_in,
+                        R.anim.slide_out_to_right
+                    )
 
-                add(viewBinding.frameLayoutFull.id, cameraFragment)
+                    add(viewBinding.frameLayoutFull.id, cameraFragment)
 
-                addToBackStack(null)
+                    addToBackStack(null)
+                }
+            } else {
+                Utils.requestCameraPermission(this)
             }
         }
+    }
+
+    private fun showDialogMoveToSetting() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(R.string.permission_dialog_title)
+            .setMessage(R.string.permission_dialog_message)
+            .setPositiveButton(R.string.permission_dialog_pos_button) { _, _ ->
+                startActivity(Intent(Settings.ACTION_SETTINGS))
+            }
+            .setNegativeButton(R.string.permission_dialog_neg_button) { _, _ ->
+                // do nothing
+            }
+            .create()
+
+        dialog.show()
     }
 
     override fun showDetailInfo(bookItem: BookItem) {
