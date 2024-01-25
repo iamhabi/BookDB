@@ -20,8 +20,8 @@ class BookListAdapter(private val context: Context): RecyclerView.Adapter<BookLi
     }
 
     constructor(
-        layout: Int,
-        context: Context
+        context: Context,
+        layout: Int
     ): this(context) {
         this.layout = layout
     }

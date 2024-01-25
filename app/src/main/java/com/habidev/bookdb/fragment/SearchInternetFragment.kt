@@ -61,7 +61,7 @@ class SearchInternetFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = BookListAdapter(R.layout.book_list_item_vanilla, requireContext())
+        adapter = BookListAdapter(requireContext(), R.layout.book_list_item_vanilla)
 
         adapter.setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
             override fun onClick(position: Int, bookItem: BookItem) {
