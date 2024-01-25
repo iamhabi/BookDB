@@ -94,48 +94,9 @@ class CameraFragment: Fragment() {
         val imageCapture = imageCapture ?: return
 
         val executor = ContextCompat.getMainExecutor(requireContext())
-        val callback = object : ImageCapture.OnImageCapturedCallback() {
-            @SuppressLint("UnsafeOptInUsageError")
-            override fun onCaptureSuccess(imageProxy: ImageProxy) {
-                super.onCaptureSuccess(imageProxy)
-
-                val barcodeImage = imageProxy.image
-
-                if (barcodeImage != null) {
-                    val fixedBarcodeImage = InputImage.fromMediaImage(barcodeImage, imageProxy.imageInfo.rotationDegrees)
-
-                    BarcodeScanning.getClient()
-                        .process(fixedBarcodeImage)
-                        .addOnSuccessListener { barcodes ->
-                            for (barcode in barcodes) {
-                                val rawValue = barcode.rawValue // barcode
-
-                                Log.d(TAG, rawValue.toString())
-
-                                if (rawValue != null) {
-                                    showInfo(rawValue)
-
-                                    shutDownCameraExecutor()
-
-                                    break
-                                }
-                            }
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.e("FAIL", exception.toString())
-                        }
-                }
-            }
-
-            override fun onError(exception: ImageCaptureException) {
-                super.onError(exception)
-
-                Log.e(TAG, exception.toString())
-            }
-        }
 
         // Set up image capture listener, which is triggered after photo has been taken
-        imageCapture.takePicture(executor, callback)
+        imageCapture.takePicture(executor, ImageCapturedCallback())
     }
 
     private fun scanBarcodeTest() {
@@ -180,6 +141,46 @@ class CameraFragment: Fragment() {
     private fun shutDownCameraExecutor() {
         if (this::cameraExecutor.isInitialized) {
             cameraExecutor.shutdown()
+        }
+    }
+
+    inner class ImageCapturedCallback : ImageCapture.OnImageCapturedCallback() {
+        @SuppressLint("UnsafeOptInUsageError")
+        override fun onCaptureSuccess(imageProxy: ImageProxy) {
+            super.onCaptureSuccess(imageProxy)
+
+            val barcodeImage = imageProxy.image
+
+            if (barcodeImage != null) {
+                val fixedBarcodeImage = InputImage.fromMediaImage(barcodeImage, imageProxy.imageInfo.rotationDegrees)
+
+                BarcodeScanning.getClient()
+                    .process(fixedBarcodeImage)
+                    .addOnSuccessListener { barcodes ->
+                        for (barcode in barcodes) {
+                            val rawValue = barcode.rawValue // barcode
+
+                            Log.d(TAG, rawValue.toString())
+
+                            if (rawValue != null) {
+                                showInfo(rawValue)
+
+                                shutDownCameraExecutor()
+
+                                break
+                            }
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("FAIL", exception.toString())
+                    }
+            }
+        }
+
+        override fun onError(exception: ImageCaptureException) {
+            super.onError(exception)
+
+            Log.e(TAG, exception.toString())
         }
     }
 }
