@@ -3,6 +3,7 @@ package com.habidev.bookdb.activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MotionEvent
@@ -140,7 +141,15 @@ class MainActivity : AppCompatActivity(), SomeInterface {
             .setTitle(R.string.permission_dialog_title)
             .setMessage(R.string.permission_dialog_message)
             .setPositiveButton(R.string.permission_dialog_pos_button) { _, _ ->
-                startActivity(Intent(Settings.ACTION_SETTINGS))
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                val uri = Uri.fromParts("package", packageName, null)
+
+                intent.setData(uri)
+
+                startActivity(intent)
             }
             .setNegativeButton(R.string.permission_dialog_neg_button) { _, _ ->
                 // do nothing
