@@ -53,6 +53,26 @@ class SearchDBFragment : Fragment() {
         initRecyclerView()
     }
 
+    fun performSearch(query: String) {
+        if (!this::adapter.isInitialized) {
+            return
+        }
+
+        adapter.clear()
+
+        if (query == "") {
+            return
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val resultList = bookViewModel.searchBook(query)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                adapter.add(resultList)
+            }
+        }
+    }
+
     private fun initRecyclerView() {
         adapter = BookListAdapter(requireContext())
 
@@ -71,21 +91,5 @@ class SearchDBFragment : Fragment() {
 
         viewBinding.recyclerViewBase.adapter = adapter
         viewBinding.recyclerViewBase.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-    }
-
-    fun performSearch(query: String) {
-        adapter.clear()
-
-        if (query == "") {
-            return
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val resultList = bookViewModel.searchBook(query)
-
-            CoroutineScope(Dispatchers.Main).launch {
-                adapter.add(resultList)
-            }
-        }
     }
 }

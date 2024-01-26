@@ -52,27 +52,11 @@ class SearchInternetFragment : Fragment() {
         initRecyclerView()
     }
 
-    private fun initRecyclerView() {
-        adapter = BookListAdapter(requireContext(), R.layout.book_list_item_vanilla)
-
-        adapter.setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
-            override fun onClick(position: Int, bookItem: BookItem) {
-                someInterface?.showResultInfo(bookItem.isbn.toString())
-            }
-
-            override fun onLongClick(position: Int, bookItem: BookItem) {
-                someInterface?.showResultInfo(bookItem.isbn.toString())
-            }
-
-            override fun onMoreClick(position: Int, bookItem: BookItem) {
-            }
-        })
-
-        viewBinding.recyclerViewBase.adapter = adapter
-        viewBinding.recyclerViewBase.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-    }
-
     fun performSearch(query: String) {
+        if (!this::adapter.isInitialized) {
+            return
+        }
+
         adapter.clear()
 
         if (query == "") {
@@ -115,5 +99,25 @@ class SearchInternetFragment : Fragment() {
                 adapter.add(bookItem)
             }
         }
+    }
+
+    private fun initRecyclerView() {
+        adapter = BookListAdapter(requireContext(), R.layout.book_list_item_vanilla)
+
+        adapter.setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
+            override fun onClick(position: Int, bookItem: BookItem) {
+                someInterface?.showResultInfo(bookItem.isbn.toString())
+            }
+
+            override fun onLongClick(position: Int, bookItem: BookItem) {
+                someInterface?.showResultInfo(bookItem.isbn.toString())
+            }
+
+            override fun onMoreClick(position: Int, bookItem: BookItem) {
+            }
+        })
+
+        viewBinding.recyclerViewBase.adapter = adapter
+        viewBinding.recyclerViewBase.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 }
