@@ -19,11 +19,11 @@ class ApiClient {
         const val BOOK_SEARCH = "${BASE_URL}book..json?query="
         const val BOOK_DETAIL_SEARCH = "${BASE_URL}book_adv.json?query="
 
-        interface OnGetBookInfoListener {
-            fun onGetBookInfo(result: String)
+        interface OnResultListener {
+            fun onResult(result: String)
         }
 
-        fun search(query: String, detailSearch: Boolean = false, listener: OnGetBookInfoListener) {
+        fun search(query: String, detailSearch: Boolean = false, listener: OnResultListener) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val apiUrl = if (detailSearch) {
@@ -43,7 +43,7 @@ class ApiClient {
                             readBody(errorStream)
                         }
 
-                        listener.onGetBookInfo(result)
+                        listener.onResult(result)
                     }
                 } catch (e: Exception) {
                     Log.e("FAIL", e.toString())
