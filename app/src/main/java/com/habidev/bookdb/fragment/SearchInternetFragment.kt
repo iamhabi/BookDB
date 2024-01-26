@@ -118,6 +118,6 @@ class SearchInternetFragment : Fragment() {
         })
 
         viewBinding.recyclerViewBase.adapter = adapter
-        viewBinding.recyclerViewBase.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        viewBinding.recyclerViewBase.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
     }
 }
