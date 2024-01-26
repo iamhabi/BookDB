@@ -50,6 +50,10 @@ class ResultFragment: Fragment() {
 
         initViewListener()
 
+        savedInstanceState?.let { bundle ->
+            query = bundle.getString("query", "")
+        }
+
         if (this::query.isInitialized) {
             ApiClient.search(
                 query,
@@ -61,6 +65,12 @@ class ResultFragment: Fragment() {
                 }
             )
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString("query", query)
     }
 
     fun setQuery(query: String) {
