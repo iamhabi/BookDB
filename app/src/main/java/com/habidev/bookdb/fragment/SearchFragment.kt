@@ -98,7 +98,9 @@ class SearchFragment : Fragment() {
         })
 
         viewBinding.editTextSearch.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
+            if (hasFocus) {
+                Utils.showKeyboard(requireContext(), view)
+            } else {
                 Utils.hideKeyboard(requireContext(), view)
             }
         }
