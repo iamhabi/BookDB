@@ -38,7 +38,7 @@ class SearchFragment : Fragment() {
 
         initViewPager()
 
-        initListener()
+        initViewListener()
     }
 
     override fun onResume() {
@@ -76,15 +76,7 @@ class SearchFragment : Fragment() {
         searchInternetFrag.performSearch(query)
     }
 
-    private fun initListener() {
-        viewBinding.btnSearch.setOnClickListener {
-            Utils.hideKeyboard(requireContext(), viewBinding.editTextSearch)
-
-            val query: String = viewBinding.editTextSearch.text.toString()
-
-            performSearch(query)
-        }
-
+    private fun initViewListener() {
         viewBinding.editTextSearch.addTextChangedListener { text: Editable? ->
             text?.toString()?.let { query ->
                 performSearch(query)
