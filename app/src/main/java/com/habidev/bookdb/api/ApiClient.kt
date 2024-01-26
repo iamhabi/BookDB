@@ -17,9 +17,9 @@ class ApiClient {
         const val TAG = "ApiClient"
 
         // https://developers.naver.com/docs/serviceapi/search/book/book.md#%EC%B1%85
-        const val BASE_URL = "https://openapi.naver.com/v1/search/"
-        const val BOOK_SEARCH = "${BASE_URL}book..json?query="
-        const val BOOK_DETAIL_SEARCH = "${BASE_URL}book_adv.json?query="
+        private const val BASE_URL = "https://openapi.naver.com/v1/search/"
+        private const val BOOK_SEARCH = "${BASE_URL}book.json?query="
+        private const val BOOK_DETAIL_SEARCH = "${BASE_URL}book_adv.json?d_isbn="
 
         interface OnResultListener {
             fun onResult(result: String)
