@@ -14,6 +14,8 @@ import java.net.URL
 
 class ApiClient {
     companion object {
+        const val TAG = "ApiClient"
+
         // https://developers.naver.com/docs/serviceapi/search/book/book.md#%EC%B1%85
         const val BASE_URL = "https://openapi.naver.com/v1/search/"
         const val BOOK_SEARCH = "${BASE_URL}book..json?query="
