@@ -93,6 +93,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun initViewListener() {
+        viewBinding.btnClose.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         viewBinding.editTextSearch.addTextChangedListener { text: Editable? ->
             text?.toString()?.let { query ->
                 this.query = query
