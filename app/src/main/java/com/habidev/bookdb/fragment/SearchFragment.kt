@@ -23,6 +23,8 @@ class SearchFragment : Fragment() {
     private val searchDBFrag: SearchDBFragment = SearchDBFragment()
     private val searchInternetFrag: SearchInternetFragment = SearchInternetFragment()
 
+    private var query: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,6 +41,12 @@ class SearchFragment : Fragment() {
         initViewPager()
 
         initViewListener()
+
+        savedInstanceState?.let { bundle ->
+            query = bundle.getString("query", "")
+
+            viewBinding.editTextSearch.text = Editable.Factory.getInstance().newEditable(query)
+        }
     }
 
     override fun onResume() {
@@ -48,7 +56,15 @@ class SearchFragment : Fragment() {
             viewBinding.editTextSearch.requestFocus()
 
             Utils.showKeyboard(requireContext(), viewBinding.editTextSearch)
+        } else if (query != "") {
+            performSearch(query)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString("query", query)
     }
 
     private fun initViewPager() {
@@ -79,6 +95,8 @@ class SearchFragment : Fragment() {
     private fun initViewListener() {
         viewBinding.editTextSearch.addTextChangedListener { text: Editable? ->
             text?.toString()?.let { query ->
+                this.query = query
+
                 performSearch(query)
             }
         }
