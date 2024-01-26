@@ -63,14 +63,10 @@ class SearchFragment : Fragment() {
         viewBinding.viewPagerSearch.offscreenPageLimit = fragments.size
 
         TabLayoutMediator(viewBinding.tabLayoutSearch, viewBinding.viewPagerSearch) { tab, position ->
-            when (position) {
-                0 -> {
-                    tab.text = resources.getString(R.string.database)
-                }
-
-                1 -> {
-                    tab.text = resources.getString(R.string.internet)
-                }
+            tab.text = when (position) {
+                0 -> resources.getString(R.string.database)
+                1 -> resources.getString(R.string.internet)
+                else -> ""
             }
         }.attach()
     }
