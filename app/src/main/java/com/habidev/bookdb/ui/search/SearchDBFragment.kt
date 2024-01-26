@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.habidev.bookdb.SearchViewModel
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
@@ -24,6 +25,7 @@ class SearchDBFragment : Fragment() {
     }
 
     private val bookViewModel: BookViewModel by activityViewModels()
+    private val searchViewModel: SearchViewModel by activityViewModels()
 
     private lateinit var viewBinding: RecyclerViewBaseBinding
 
@@ -51,9 +53,19 @@ class SearchDBFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+
+        searchViewModel.query.observe(requireActivity()) { query ->
+            performSearch(query)
+        }
     }
 
-    fun performSearch(query: String) {
+    override fun onStop() {
+        super.onStop()
+
+        searchViewModel.query.removeObservers(requireActivity())
+    }
+
+    private fun performSearch(query: String) {
         if (!this::adapter.isInitialized) {
             return
         }

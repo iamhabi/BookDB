@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.habidev.bookdb.R
+import com.habidev.bookdb.SearchViewModel
 import com.habidev.bookdb.adapter.SimpleViewPagerAdapter
 import com.habidev.bookdb.databinding.SearchBinding
 import com.habidev.bookdb.utils.Utils
@@ -23,7 +25,7 @@ class SearchFragment : Fragment() {
     private lateinit var searchDBFrag: SearchDBFragment
     private lateinit var searchInternetFrag: SearchInternetFragment
 
-    private var query: String = ""
+    private val searchViewModel: SearchViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,12 +43,6 @@ class SearchFragment : Fragment() {
         initViewPager()
 
         initViewListener()
-
-        savedInstanceState?.let { bundle ->
-            query = bundle.getString("query", "")
-
-            viewBinding.editTextSearch.setText(query)
-        }
     }
 
     override fun onResume() {
@@ -56,20 +52,7 @@ class SearchFragment : Fragment() {
             viewBinding.editTextSearch.requestFocus()
 
             Utils.showKeyboard(requireContext(), viewBinding.editTextSearch)
-        } else {
-            performSearch(query)
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putString("query", query)
-    }
-
-    private fun performSearch(query: String) {
-        searchDBFrag.performSearch(query)
-        searchInternetFrag.performSearch(query)
     }
 
     private fun initViewPager() {
@@ -102,9 +85,7 @@ class SearchFragment : Fragment() {
 
         viewBinding.editTextSearch.addTextChangedListener { text: Editable? ->
             text?.toString()?.let { query ->
-                this.query = query
-
-                performSearch(query)
+                searchViewModel.setQuery(query)
             }
         }
 

@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.R
+import com.habidev.bookdb.SearchViewModel
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.api.ApiClient
 import com.habidev.bookdb.database.BookItem
@@ -23,6 +25,8 @@ class SearchInternetFragment : Fragment() {
     companion object {
         private const val TAG = "SearchInternet"
     }
+
+    private val searchViewModel: SearchViewModel by activityViewModels()
 
     private lateinit var viewBinding: RecyclerViewBaseBinding
 
@@ -50,9 +54,19 @@ class SearchInternetFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+
+        searchViewModel.query.observe(requireActivity()) { query ->
+            performSearch(query)
+        }
     }
 
-    fun performSearch(query: String) {
+    override fun onStop() {
+        super.onStop()
+
+        searchViewModel.query.removeObservers(requireActivity())
+    }
+
+    private fun performSearch(query: String) {
         if (!this::adapter.isInitialized) {
             return
         }
