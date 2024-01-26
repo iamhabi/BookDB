@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
+import com.habidev.bookdb.api.ApiClient
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.ResultBinding
-import com.habidev.bookdb.utils.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,10 +51,11 @@ class ResultFragment: Fragment() {
         initViewListener()
 
         if (this::query.isInitialized) {
-            Utils.getBookInfo(
+            ApiClient.search(
                 query,
-                object : Utils.Companion.OnGetBookInfoListener {
-                    override fun onGetBookInfo(result: String) {
+                true,
+                object : ApiClient.Companion.OnResultListener {
+                    override fun onResult(result: String) {
                         parseBookInfo(result)
                     }
                 }
