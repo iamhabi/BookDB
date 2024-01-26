@@ -1,4 +1,4 @@
-package com.habidev.bookdb.fragment
+package com.habidev.bookdb.ui.book
 
 import android.content.Intent
 import android.net.Uri

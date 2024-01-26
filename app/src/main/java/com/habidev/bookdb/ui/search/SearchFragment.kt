@@ -1,4 +1,4 @@
-package com.habidev.bookdb.fragment
+package com.habidev.bookdb.ui.search
 
 import android.os.Bundle
 import android.text.Editable

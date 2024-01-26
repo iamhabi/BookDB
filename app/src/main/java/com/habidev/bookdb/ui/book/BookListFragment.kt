@@ -1,4 +1,4 @@
-package com.habidev.bookdb.fragment
+package com.habidev.bookdb.ui.book
 
 import android.content.Context
 import android.os.Bundle
@@ -10,11 +10,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.BookListBinding
+import com.habidev.bookdb.ui.main.SomeInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

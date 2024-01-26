@@ -1,4 +1,4 @@
-package com.habidev.bookdb.activity
+package com.habidev.bookdb.ui.main
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,12 +18,12 @@ import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.BookViewModelFactory
 import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.databinding.ActivityMainBinding
-import com.habidev.bookdb.fragment.BookListFragment
-import com.habidev.bookdb.fragment.CameraFragment
-import com.habidev.bookdb.fragment.DetailFragment
-import com.habidev.bookdb.fragment.GroupListFragment
-import com.habidev.bookdb.fragment.ResultFragment
-import com.habidev.bookdb.fragment.SearchFragment
+import com.habidev.bookdb.ui.CameraFragment
+import com.habidev.bookdb.ui.DetailFragment
+import com.habidev.bookdb.ui.ResultFragment
+import com.habidev.bookdb.ui.book.BookListFragment
+import com.habidev.bookdb.ui.group.GroupListFragment
+import com.habidev.bookdb.ui.search.SearchFragment
 import com.habidev.bookdb.utils.Utils
 
 

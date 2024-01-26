@@ -1,4 +1,4 @@
-package com.habidev.bookdb.fragment
+package com.habidev.bookdb.ui.group
 
 import android.os.Bundle
 import android.view.LayoutInflater

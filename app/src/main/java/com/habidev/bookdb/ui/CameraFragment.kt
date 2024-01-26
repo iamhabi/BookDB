@@ -1,4 +1,4 @@
-package com.habidev.bookdb.fragment
+package com.habidev.bookdb.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,8 +15,8 @@ import androidx.fragment.app.Fragment
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.habidev.bookdb.R
-import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.databinding.CameraBinding
+import com.habidev.bookdb.ui.main.SomeInterface
 import com.habidev.bookdb.utils.Utils
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

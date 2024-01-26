@@ -1,4 +1,4 @@
-package com.habidev.bookdb.fragment
+package com.habidev.bookdb.ui.search
 
 import android.content.Context
 import android.os.Bundle
@@ -6,23 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.habidev.bookdb.R
-import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.adapter.BookListAdapter
-import com.habidev.bookdb.api.ApiClient
 import com.habidev.bookdb.database.BookItem
+import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.databinding.RecyclerViewBaseBinding
+import com.habidev.bookdb.ui.main.SomeInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 
-class SearchInternetFragment : Fragment() {
+class SearchDBFragment : Fragment() {
     companion object {
-        private const val TAG = "SearchInternet"
+        private const val TAG = "SearchDB"
     }
+
+    private val bookViewModel: BookViewModel by activityViewModels()
 
     private lateinit var viewBinding: RecyclerViewBaseBinding
 
@@ -63,46 +64,17 @@ class SearchInternetFragment : Fragment() {
             return
         }
 
-        ApiClient.search(
-            query = query,
-            listener =object : ApiClient.Companion.OnResultListener {
-                override fun onResult(result: String) {
-                    showResult(result)
-                }
-            }
-        )
-    }
+        CoroutineScope(Dispatchers.IO).launch {
+            val resultList = bookViewModel.searchBook(query)
 
-    private fun showResult(resultJson: String) {
-        val resultJsonArray = JSONObject(resultJson).getJSONArray("items")
-
-        for (i in 0 until resultJsonArray.length()) {
-            val jsonObject = resultJsonArray.getJSONObject(i)
-
-            val isbn = (jsonObject.get("isbn") as String).toLong()
-            val link = jsonObject.get("link") as String
-            val title = jsonObject.get("title") as String
-            val author = jsonObject.get("author") as String
-            val imageUrl = jsonObject.get("image") as String
-            val description = jsonObject.get("description") as String
-
-            val bookItem = BookItem(
-                isbn,
-                link,
-                title,
-                author,
-                imageUrl,
-                description
-            )
-
-            CoroutineScope(Dispatchers.Main).launch  {
-                adapter.add(bookItem)
+            CoroutineScope(Dispatchers.Main).launch {
+                adapter.add(resultList)
             }
         }
     }
 
     private fun initRecyclerView() {
-        adapter = BookListAdapter(requireContext(), R.layout.book_list_item_vanilla)
+        adapter = BookListAdapter(requireContext())
 
         adapter.setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
             override fun onClick(position: Int, bookItem: BookItem) {
