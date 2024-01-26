@@ -20,8 +20,8 @@ class SearchFragment : Fragment() {
 
     private lateinit var viewBinding: SearchBinding
 
-    private val searchDBFrag: SearchDBFragment = SearchDBFragment()
-    private val searchInternetFrag: SearchInternetFragment = SearchInternetFragment()
+    private lateinit var searchDBFrag: SearchDBFragment
+    private lateinit var searchInternetFrag: SearchInternetFragment
 
     private var query: String = ""
 
@@ -45,7 +45,7 @@ class SearchFragment : Fragment() {
         savedInstanceState?.let { bundle ->
             query = bundle.getString("query", "")
 
-            viewBinding.editTextSearch.text = Editable.Factory.getInstance().newEditable(query)
+            viewBinding.editTextSearch.setText(query)
         }
     }
 
@@ -56,7 +56,7 @@ class SearchFragment : Fragment() {
             viewBinding.editTextSearch.requestFocus()
 
             Utils.showKeyboard(requireContext(), viewBinding.editTextSearch)
-        } else if (query != "") {
+        } else {
             performSearch(query)
         }
     }
@@ -67,7 +67,15 @@ class SearchFragment : Fragment() {
         outState.putString("query", query)
     }
 
+    private fun performSearch(query: String) {
+        searchDBFrag.performSearch(query)
+        searchInternetFrag.performSearch(query)
+    }
+
     private fun initViewPager() {
+        searchDBFrag = SearchDBFragment()
+        searchInternetFrag = SearchInternetFragment()
+
         val fragments = arrayListOf(
             searchDBFrag,
             searchInternetFrag
@@ -85,11 +93,6 @@ class SearchFragment : Fragment() {
                 else -> ""
             }
         }.attach()
-    }
-
-    private fun performSearch(query: String) {
-        searchDBFrag.performSearch(query)
-        searchInternetFrag.performSearch(query)
     }
 
     private fun initViewListener() {
