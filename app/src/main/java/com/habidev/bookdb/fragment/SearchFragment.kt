@@ -2,10 +2,10 @@ package com.habidev.bookdb.fragment
 
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.habidev.bookdb.R
@@ -85,17 +85,11 @@ class SearchFragment : Fragment() {
             performSearch(query)
         }
 
-        viewBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        viewBinding.editTextSearch.addTextChangedListener { text: Editable? ->
+            text?.toString()?.let { query ->
+                performSearch(query)
             }
-
-            override fun onTextChanged(query: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                performSearch(query.toString())
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
+        }
 
         viewBinding.editTextSearch.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
