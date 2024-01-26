@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.habidev.bookdb.R
+import com.habidev.bookdb.SearchViewModel
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.BookViewModelFactory
@@ -40,6 +41,8 @@ class MainActivity : AppCompatActivity(), SomeInterface {
     private val bookViewModel: BookViewModel by viewModels {
         BookViewModelFactory((application as BooksApplication).repository)
     }
+
+    private val searchViewModel: SearchViewModel by viewModels()
 
     private val bookListFragment = BookListFragment()
     private val groupListFragment = GroupListFragment()
