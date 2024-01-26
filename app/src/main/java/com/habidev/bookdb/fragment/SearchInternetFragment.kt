@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.R
 import com.habidev.bookdb.activity.SomeInterface
 import com.habidev.bookdb.adapter.BookListAdapter
+import com.habidev.bookdb.api.ApiClient
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.databinding.RecyclerViewBaseBinding
-import com.habidev.bookdb.utils.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -79,10 +79,10 @@ class SearchInternetFragment : Fragment() {
             return
         }
 
-        Utils.getBookInfo(
-            query,
-            object : Utils.Companion.OnGetBookInfoListener {
-                override fun onGetBookInfo(result: String) {
+        ApiClient.search(
+            query = query,
+            listener =object : ApiClient.Companion.OnResultListener {
+                override fun onResult(result: String) {
                     showResult(result)
                 }
             }
