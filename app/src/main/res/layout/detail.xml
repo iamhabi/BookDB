@@ -148,13 +148,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/text_margin_vertical"
                 android:background="@null"
-                android:autofillHints="Comment"
+                android:hint="@string/add_comment"
+                android:autofillHints="@string/add_comment"
                 android:inputType="text"
                 android:textSize="@dimen/description_text_size"
                 android:lineSpacingExtra="@dimen/text_line_space"
                 app:layout_constraintTop_toBottomOf="@id/text_view_description"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:ignore="LabelFor" />
+                tools:ignore="LabelFor"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
