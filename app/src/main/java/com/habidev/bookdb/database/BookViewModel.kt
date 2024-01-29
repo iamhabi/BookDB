@@ -16,7 +16,7 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
 
     val allBooksLiveData: LiveData<List<BookItem>> = repository.allBooksFlow.asLiveData()
     val allGroupsLiveData: LiveData<List<GroupItem>> = repository.allGroupsFlow.asLiveData()
-    fun booksByGroupLiveData(group: String): LiveData<List<GroupBookItem>> = repository.booksByGroupFlow(group).asLiveData()
+    fun booksByGroupLiveData(group: String): LiveData<List<BookItem>> = repository.booksByGroupFlow(group).asLiveData()
 
     suspend fun insertBook(bookItem: BookItem): Boolean = repository.insertBook(bookItem)
 

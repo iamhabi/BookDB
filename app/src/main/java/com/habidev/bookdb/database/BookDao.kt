@@ -58,8 +58,8 @@ interface BookDao {
     @Query("SELECT * FROM $TABLE_NAME_BOOK")
     fun getBooksFlow(): Flow<List<BookItem>>
 
-    @Query("SELECT * FROM $TABLE_NAME_GROUP_BOOKS WHERE `group` = :group")
-    fun getBooksByGroup(group: String): Flow<List<GroupBookItem>>
+    @Query("SELECT * FROM $TABLE_NAME_BOOK WHERE isbn IN (SELECT isbn FROM $TABLE_NAME_GROUP_BOOKS WHERE `group` = :group)")
+    fun getBooksByGroup(group: String): Flow<List<BookItem>>
 
     @Query("SELECT * FROM $TABLE_NAME_GROUP")
     fun getGroupsFlow(): Flow<List<GroupItem>>
