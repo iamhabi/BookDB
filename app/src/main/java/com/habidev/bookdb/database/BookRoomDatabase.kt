@@ -72,6 +72,7 @@ abstract class BookRoomDatabase: RoomDatabase() {
         suspend fun populateDatabase(bookDao: BookDao) {
             bookDao.deleteAllBooks()
             bookDao.deleteAllGroups()
+            bookDao.deleteAllGroupBooks()
         }
     }
 }
