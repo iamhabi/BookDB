@@ -22,6 +22,7 @@ class BookMoreFragment : BottomSheetDialogFragment() {
 
     interface OnMoreListener {
         fun onRemove(bookItem: BookItem)
+        fun onAddToGroup(bookItem: BookItem)
     }
 
     private val bookViewModel: BookViewModel by activityViewModels()
@@ -82,6 +83,14 @@ class BookMoreFragment : BottomSheetDialogFragment() {
         viewBinding.btnDelete.setOnClickListener {
             this.bookItem?.let {
                 onMoreListener?.onRemove(it)
+            }
+
+            dismiss()
+        }
+
+        viewBinding.btnAddToGroup.setOnClickListener {
+            this.bookItem?.let {
+                onMoreListener?.onAddToGroup(it)
             }
 
             dismiss()
