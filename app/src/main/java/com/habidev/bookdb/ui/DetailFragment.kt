@@ -83,7 +83,10 @@ class DetailFragment: Fragment() {
         viewBinding.textViewTitle.text = bookItem.title
         viewBinding.textViewAuthor.text = bookItem.author
         viewBinding.textViewDescription.text = bookItem.description
-        viewBinding.editTextComment.setText(bookItem.comment.toString(), TextView.BufferType.EDITABLE)
+
+        bookItem.comment?.let { comment ->
+            viewBinding.editTextComment.setText(comment, TextView.BufferType.EDITABLE)
+        }
 
         viewBinding.spinnerReadingState.setSelection(bookItem.readingState)
         viewBinding.spinnerOwnState.setSelection(bookItem.ownState)
