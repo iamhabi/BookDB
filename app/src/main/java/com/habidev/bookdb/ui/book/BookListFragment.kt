@@ -131,6 +131,11 @@ class BookListFragment: Fragment() {
 
                 bookViewModel.deleteBook(bookItem)
             }
+
+            override fun onAddToGroup(bookItem: BookItem) {
+                // TODO
+                //  show dialog group list
+            }
         })
     }
 
