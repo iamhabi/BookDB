@@ -29,4 +29,5 @@
 
     <string name="insert_book_success_message">Added a book successfully</string>
     <string name="insert_book_failure_message">Already in the database</string>
+    <string name="add_to_group">Add to group</string>
 </resources>

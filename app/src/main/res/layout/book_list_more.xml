@@ -41,11 +41,20 @@
         app:drawableTint="@android:color/holo_red_light"
         app:layout_constraintTop_toBottomOf="@id/text_view_title"/>
 
+    <TextView
+        android:id="@+id/btn_add_to_group"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_minimum_height"
+        android:gravity="center_vertical"
+        android:text="@string/add_to_group"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/text_view_delete"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_reading_state"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_minimum_height"
-        app:layout_constraintTop_toBottomOf="@id/text_view_delete">
+        app:layout_constraintTop_toBottomOf="@id/btn_add_to_group">
 
         <TextView
             android:id="@+id/text_view_reading_state_header"
