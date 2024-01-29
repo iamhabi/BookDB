@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
+import com.habidev.bookdb.database.GroupItem
 import com.habidev.bookdb.databinding.BookListBinding
 import com.habidev.bookdb.ui.main.SomeInterface
 
@@ -100,12 +101,12 @@ class BookListFragment: Fragment() {
         }
     }
 
-    fun updateBooksByGroup(group: String) {
+    fun updateBooksByGroup(groupItem: GroupItem) {
         removeObservers()
 
         adapter.clear()
 
-        booksByGroupLiveData = bookViewModel.booksByGroupLiveData(group)
+        booksByGroupLiveData = bookViewModel.booksByGroupLiveData(groupItem)
 
         booksByGroupLiveData?.observe(requireActivity()) { books ->
             adapter.add(books)

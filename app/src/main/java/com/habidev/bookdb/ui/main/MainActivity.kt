@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity(), SomeInterface {
             }
 
             override fun onGroupSelected(groupItem: GroupItem) {
-                bookListFragment.updateBooksByGroup(groupItem.title)
+                bookListFragment.updateBooksByGroup(groupItem)
             }
         })
     }
