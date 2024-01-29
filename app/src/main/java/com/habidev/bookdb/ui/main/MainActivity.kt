@@ -112,13 +112,12 @@ class MainActivity : AppCompatActivity(), SomeInterface {
             .setTitle(R.string.permission_dialog_title)
             .setMessage(R.string.permission_dialog_message)
             .setPositiveButton(R.string.permission_dialog_pos_button) { _, _ ->
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
                 val uri = Uri.fromParts("package", packageName, null)
 
-                intent.setData(uri)
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    data = uri
+                }
 
                 startActivity(intent)
             }
