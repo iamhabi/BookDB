@@ -21,6 +21,11 @@ class GroupListFragment: Fragment() {
         private const val TAG = "BookDBGroupList"
     }
 
+    interface OnGroupListener {
+        fun onAllSelected()
+        fun onGroupSelected(groupItem: GroupItem)
+    }
+
     private val bookViewModel: BookViewModel by activityViewModels()
 
     private lateinit var viewBinding: GroupListBinding
@@ -29,9 +34,11 @@ class GroupListFragment: Fragment() {
 
     private lateinit var groupMoreFragment: GroupMoreFragment
 
+    private var listener: OnGroupListener? = null
+
     private val onItemClickListener = object : GroupListAdapter.OnItemClickListener {
         override fun onClick(position: Int, item: GroupItem) {
-            bookViewModel.setGroup(item)
+            listener?.onGroupSelected(item)
 
             parentFragmentManager.popBackStack()
         }
@@ -76,6 +83,10 @@ class GroupListFragment: Fragment() {
         bookViewModel.allGroupsLiveData.removeObservers(requireActivity())
     }
 
+    fun setOnGroupListener(listener: OnGroupListener) {
+        this.listener = listener
+    }
+
     private fun initRecyclerView() {
         adapter = GroupListAdapter(requireContext())
 
@@ -95,7 +106,7 @@ class GroupListFragment: Fragment() {
         }
 
         viewBinding.textViewGroupAll.setOnClickListener {
-            bookViewModel.setGroup(GroupItem(0, "All"))
+            listener?.onAllSelected()
 
             parentFragmentManager.popBackStack()
         }
