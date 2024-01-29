@@ -18,8 +18,8 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
     val groupLiveData: MutableLiveData<GroupItem> = MutableLiveData()
 
     val allBooksLiveData: LiveData<List<BookItem>> = repository.allBooksFlow.asLiveData()
-
     val allGroupsLiveData: LiveData<List<GroupItem>> = repository.allGroupsFlow.asLiveData()
+    fun booksByGroupLiveData(group: String): LiveData<List<GroupBookItem>> = repository.booksByGroupFlow(group).asLiveData()
 
     fun setGroup(groupItem: GroupItem) {
         groupLiveData.value = groupItem
@@ -48,8 +48,6 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
     }
 
     fun searchBook(query: String): List<BookItem> = repository.searchBook(query)
-
-    fun getBooksByGroup(groupItem: GroupItem): List<BookItem> = repository.getBooksByGroup(groupItem)
 }
 
 class BookViewModelFactory(private val repository: BookRepository): ViewModelProvider.Factory {
