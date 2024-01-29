@@ -31,6 +31,7 @@ class BookListFragment: Fragment() {
     private lateinit var gridLayoutManager: GridLayoutManager
 
     private lateinit var bookMoreFragment: BookMoreFragment
+    private lateinit var groupSelectFragment: GroupSelectFragment
 
     private val onItemClickListener = object: BookListAdapter.OnItemClickListener {
         override fun onClick(position: Int, bookItem: BookItem) {
@@ -70,6 +71,8 @@ class BookListFragment: Fragment() {
         initRecyclerView()
         initViewListener()
         initBookMoreFrag()
+
+        groupSelectFragment = GroupSelectFragment()
     }
 
     override fun onStart() {
@@ -109,8 +112,7 @@ class BookListFragment: Fragment() {
             }
 
             override fun onAddToGroup(bookItem: BookItem) {
-                val groupSelectFragment = GroupSelectFragment()
-
+                groupSelectFragment.setBookItem(bookItem)
                 groupSelectFragment.show(childFragmentManager, null)
             }
         })
