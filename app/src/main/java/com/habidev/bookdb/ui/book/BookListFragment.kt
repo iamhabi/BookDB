@@ -41,13 +41,11 @@ class BookListFragment: Fragment() {
         }
 
         override fun onLongClick(position: Int, bookItem: BookItem) {
-            bookMoreFragment.setBookItem(bookItem)
-            bookMoreFragment.show(childFragmentManager, null)
+            showMore(bookItem)
         }
 
         override fun onMoreClick(position: Int, bookItem: BookItem) {
-            bookMoreFragment.setBookItem(bookItem)
-            bookMoreFragment.show(childFragmentManager, null)
+            showMore(bookItem)
         }
     }
 
@@ -72,10 +70,9 @@ class BookListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bookMoreFragment = BookMoreFragment()
-
         initRecyclerView()
         initViewListener()
+        initBookMoreFrag()
     }
 
     override fun onStart() {
@@ -125,6 +122,18 @@ class BookListFragment: Fragment() {
         viewBinding.recyclerView.layoutManager = linearLayoutManager
     }
 
+    private fun initBookMoreFrag() {
+        bookMoreFragment = BookMoreFragment()
+
+        bookMoreFragment.setListener(object : BookMoreFragment.OnMoreListener {
+            override fun onRemove(bookItem: BookItem) {
+                adapter.remove(bookItem)
+
+                bookViewModel.deleteBook(bookItem)
+            }
+        })
+    }
+
     private fun initViewListener() {
         viewBinding.btnToggleListLayout.setOnCheckedChangeListener { _, isChecked ->
             viewBinding.recyclerView.layoutManager = if (isChecked) {
@@ -136,6 +145,13 @@ class BookListFragment: Fragment() {
             adapter.changeLayout(isChecked)
 
             viewBinding.recyclerView.adapter = adapter
+        }
+    }
+
+    private fun showMore(bookItem: BookItem) {
+        bookMoreFragment.run {
+            setBookItem(bookItem)
+            show(this@BookListFragment.childFragmentManager, null)
         }
     }
 }
