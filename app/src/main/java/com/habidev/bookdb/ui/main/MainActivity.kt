@@ -19,6 +19,7 @@ import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.BookViewModelFactory
 import com.habidev.bookdb.database.BooksApplication
+import com.habidev.bookdb.database.GroupItem
 import com.habidev.bookdb.databinding.ActivityMainBinding
 import com.habidev.bookdb.ui.CameraFragment
 import com.habidev.bookdb.ui.DetailFragment
@@ -87,6 +88,16 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         supportFragmentManager.beginTransaction()
             .add(viewBinding.frameLayoutBookList.id, bookListFragment)
             .commit()
+
+        groupListFragment.setOnGroupListener(object : GroupListFragment.OnGroupListener {
+            override fun onAllSelected() {
+
+            }
+
+            override fun onGroupSelected(groupItem: GroupItem) {
+
+            }
+        })
     }
 
     private fun initViewListener() {
