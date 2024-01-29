@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 class BookRepository(private val bookDao: BookDao) {
     val allBooksFlow: Flow<List<BookItem>> = bookDao.getBooksFlow()
     val allGroupsFlow: Flow<List<GroupItem>> = bookDao.getGroupsFlow()
-    fun booksByGroupFlow(group: String): Flow<List<BookItem>> = bookDao.getBooksByGroup(group)
+    fun booksByGroupFlow(groupItem: GroupItem): Flow<List<BookItem>> = bookDao.getBooksByGroup(groupItem.id)
 
     /**
      * DB에 BookItem을 insert하고 성공 여부를 반환한다.
