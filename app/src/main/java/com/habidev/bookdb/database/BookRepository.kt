@@ -24,8 +24,8 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     @WorkerThread
-    suspend fun insertBookIntoGroup(isbn: Long, group: String) {
-        bookDao.insertBookIntoGroup(GroupBookItem(-1, group, isbn))
+    suspend fun insertBookIntoGroup(isbn: Long, groupId: Int) {
+        bookDao.insertBookIntoGroup(GroupBookItem(-1, groupId, isbn))
     }
 
     @WorkerThread
