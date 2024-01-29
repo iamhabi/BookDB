@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class GroupBookItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    var title: String,
+    var group: String,
     var isbn: Long
 ): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -21,7 +21,7 @@ data class GroupBookItem(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
-        parcel.writeString(title)
+        parcel.writeString(group)
         parcel.writeLong(isbn)
     }
 
