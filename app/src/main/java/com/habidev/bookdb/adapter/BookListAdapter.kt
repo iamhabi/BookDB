@@ -98,6 +98,18 @@ class BookListAdapter(private val context: Context): RecyclerView.Adapter<BookLi
         }
     }
 
+    fun remove(item: BookItem) {
+        items.indexOf(item).let { index ->
+            if (index == -1) {
+                return
+            }
+
+            notifyItemRemoved(index)
+
+            items.removeAt(index)
+        }
+    }
+
     fun clear() {
         notifyItemRangeRemoved(0, itemCount)
 
