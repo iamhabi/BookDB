@@ -2,6 +2,7 @@ package com.habidev.bookdb.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.database.GroupItem
@@ -15,21 +16,27 @@ class GroupListAdapter(
         fun onMoreClick(position: Int, item: GroupItem)
     }
 
-    class ViewHolder(
+    inner class ViewHolder(
         private val itemBinding: GroupListItemBinding,
         private val onItemClickListener: OnItemClickListener
     ): RecyclerView.ViewHolder(itemBinding.root) {
         fun onBind(position: Int, item: GroupItem) {
             itemBinding.textViewTitle.text = item.title
 
-            itemBinding.btnMore.setOnClickListener {
-                onItemClickListener.onMoreClick(position, item)
+            if (useMore) {
+                itemBinding.btnMore.setOnClickListener {
+                    onItemClickListener.onMoreClick(position, item)
+                }
+            } else {
+                itemBinding.btnMore.visibility = View.GONE
             }
         }
     }
 
     private val items: MutableList<GroupItem> = mutableListOf()
     private var onItemClickListener: OnItemClickListener
+
+    private var useMore: Boolean = true
 
     init {
         onItemClickListener = object : OnItemClickListener {
@@ -63,6 +70,10 @@ class GroupListAdapter(
         view.setOnClickListener {
             onItemClickListener.onClick(position, item)
         }
+    }
+
+    fun useMore(useMore: Boolean) {
+        this.useMore = useMore
     }
 
     fun checkItemExist(bookItems: List<GroupItem>) {
