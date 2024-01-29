@@ -109,8 +109,9 @@ class BookListFragment: Fragment() {
             }
 
             override fun onAddToGroup(bookItem: BookItem) {
-                // TODO
-                //  show dialog group list
+                val groupSelectFragment = GroupSelectFragment()
+
+                groupSelectFragment.show(childFragmentManager, null)
             }
         })
     }
