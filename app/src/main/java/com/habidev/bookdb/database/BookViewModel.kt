@@ -15,19 +15,19 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
      */
     fun create() {}
 
-    val groupLiveData: MutableLiveData<BookGroupItem> = MutableLiveData()
+    val groupLiveData: MutableLiveData<GroupItem> = MutableLiveData()
 
     val allBooksLiveData: LiveData<List<BookItem>> = repository.allBooksFlow.asLiveData()
 
-    val allGroupsLiveData: LiveData<List<BookGroupItem>> = repository.allGroupsFlow.asLiveData()
+    val allGroupsLiveData: LiveData<List<GroupItem>> = repository.allGroupsFlow.asLiveData()
 
-    fun setGroup(groupItem: BookGroupItem) {
+    fun setGroup(groupItem: GroupItem) {
         groupLiveData.value = groupItem
     }
 
     suspend fun insertBook(bookItem: BookItem): Boolean = repository.insertBook(bookItem)
 
-    fun insertGroup(groupItem: BookGroupItem) = viewModelScope.launch {
+    fun insertGroup(groupItem: GroupItem) = viewModelScope.launch {
         repository.insertGroup(groupItem)
     }
 
@@ -35,7 +35,7 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
         repository.updateBook(bookItem)
     }
 
-    fun updateGroup(groupItem: BookGroupItem) = viewModelScope.launch {
+    fun updateGroup(groupItem: GroupItem) = viewModelScope.launch {
         repository.updateGroup(groupItem)
     }
 
@@ -43,13 +43,13 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
         repository.deleteBook(bookItem)
     }
 
-    fun deleteGroup(groupItem: BookGroupItem) = viewModelScope.launch {
+    fun deleteGroup(groupItem: GroupItem) = viewModelScope.launch {
         repository.deleteGroup(groupItem)
     }
 
     fun searchBook(query: String): List<BookItem> = repository.searchBook(query)
 
-    fun getBooksByGroup(groupItem: BookGroupItem): List<BookItem> = repository.getBooksByGroup(groupItem)
+    fun getBooksByGroup(groupItem: GroupItem): List<BookItem> = repository.getBooksByGroup(groupItem)
 }
 
 class BookViewModelFactory(private val repository: BookRepository): ViewModelProvider.Factory {

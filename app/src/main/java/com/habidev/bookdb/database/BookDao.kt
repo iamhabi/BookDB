@@ -19,19 +19,19 @@ interface BookDao {
     suspend fun insertBook(bookItem: BookItem): Long
 
     @Insert
-    suspend fun insertGroup(groupItem: BookGroupItem)
+    suspend fun insertGroup(groupItem: GroupItem)
 
     @Update
     suspend fun updateBook(bookItem: BookItem)
 
     @Update
-    suspend fun updateGroup(groupItem: BookGroupItem)
+    suspend fun updateGroup(groupItem: GroupItem)
 
     @Delete
     suspend fun deleteBook(bookItem: BookItem)
 
     @Delete
-    suspend fun deleteGroup(groupItem: BookGroupItem)
+    suspend fun deleteGroup(groupItem: GroupItem)
 
     @Query("DELETE FROM $TABLE_NAME_BOOK")
     suspend fun deleteAllBooks()
@@ -52,5 +52,5 @@ interface BookDao {
     fun getBooksByGroup(group: String): List<BookItem>
 
     @Query("SELECT * FROM $TABLE_NAME_BOOK_GROUP")
-    fun getGroupsFlow(): Flow<List<BookGroupItem>>
+    fun getGroupsFlow(): Flow<List<GroupItem>>
 }

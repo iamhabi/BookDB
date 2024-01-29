@@ -4,22 +4,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.habidev.bookdb.database.BookGroupItem
+import com.habidev.bookdb.database.GroupItem
 import com.habidev.bookdb.databinding.GroupListItemBinding
 
 class GroupListAdapter(
     private val context: Context
 ): RecyclerView.Adapter<GroupListAdapter.ViewHolder>() {
     interface OnItemClickListener {
-        fun onClick(position: Int, item: BookGroupItem)
-        fun onMoreClick(position: Int, item: BookGroupItem)
+        fun onClick(position: Int, item: GroupItem)
+        fun onMoreClick(position: Int, item: GroupItem)
     }
 
     class ViewHolder(
         private val itemBinding: GroupListItemBinding,
         private val onItemClickListener: OnItemClickListener
     ): RecyclerView.ViewHolder(itemBinding.root) {
-        fun onBind(position: Int, item: BookGroupItem) {
+        fun onBind(position: Int, item: GroupItem) {
             itemBinding.textViewTitle.text = item.title
 
             itemBinding.btnMore.setOnClickListener {
@@ -28,16 +28,16 @@ class GroupListAdapter(
         }
     }
 
-    private val items: MutableList<BookGroupItem> = mutableListOf()
+    private val items: MutableList<GroupItem> = mutableListOf()
     private var onItemClickListener: OnItemClickListener
 
     init {
         onItemClickListener = object : OnItemClickListener {
-            override fun onClick(position: Int, item: BookGroupItem) {
+            override fun onClick(position: Int, item: GroupItem) {
 
             }
 
-            override fun onMoreClick(position: Int, item: BookGroupItem) {
+            override fun onMoreClick(position: Int, item: GroupItem) {
 
             }
         }
@@ -65,7 +65,7 @@ class GroupListAdapter(
         }
     }
 
-    fun checkItemExist(bookItems: List<BookGroupItem>) {
+    fun checkItemExist(bookItems: List<GroupItem>) {
         val deletedItems = items.filter { groupItem ->
             !bookItems.contains(groupItem)
         }
@@ -85,7 +85,7 @@ class GroupListAdapter(
         }
     }
 
-    fun add(item: BookGroupItem) {
+    fun add(item: GroupItem) {
         if (!items.contains(item)) {
             items.add(item)
 
@@ -93,7 +93,7 @@ class GroupListAdapter(
         }
     }
 
-    fun add(items: List<BookGroupItem>) {
+    fun add(items: List<GroupItem>) {
         for (item in items) {
             add(item)
         }

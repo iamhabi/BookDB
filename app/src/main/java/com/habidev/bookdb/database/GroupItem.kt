@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = BookDao.TABLE_NAME_BOOK_GROUP)
-data class BookGroupItem(
+data class GroupItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     var title: String
@@ -25,12 +25,12 @@ data class BookGroupItem(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<BookGroupItem> {
-        override fun createFromParcel(parcel: Parcel): BookGroupItem {
-            return BookGroupItem(parcel)
+    companion object CREATOR : Parcelable.Creator<GroupItem> {
+        override fun createFromParcel(parcel: Parcel): GroupItem {
+            return GroupItem(parcel)
         }
 
-        override fun newArray(size: Int): Array<BookGroupItem?> {
+        override fun newArray(size: Int): Array<GroupItem?> {
             return arrayOfNulls(size)
         }
     }

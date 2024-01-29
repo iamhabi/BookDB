@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.habidev.bookdb.database.BookGroupItem
 import com.habidev.bookdb.database.BookViewModel
+import com.habidev.bookdb.database.GroupItem
 import com.habidev.bookdb.databinding.GroupListMoreBinding
 
 class GroupMoreFragment: BottomSheetDialogFragment() {
@@ -19,7 +19,7 @@ class GroupMoreFragment: BottomSheetDialogFragment() {
 
     private lateinit var viewBinding: GroupListMoreBinding
 
-    private var groupItem: BookGroupItem? = null
+    private var groupItem: GroupItem? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +43,7 @@ class GroupMoreFragment: BottomSheetDialogFragment() {
         updateInfo()
     }
 
-    fun setGroup(groupItem: BookGroupItem) {
+    fun setGroup(groupItem: GroupItem) {
         this.groupItem = groupItem
     }
 

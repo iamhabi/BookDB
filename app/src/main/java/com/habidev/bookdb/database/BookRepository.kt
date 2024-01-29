@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 class BookRepository(private val bookDao: BookDao) {
     val allBooksFlow: Flow<List<BookItem>> = bookDao.getBooksFlow()
 
-    val allGroupsFlow: Flow<List<BookGroupItem>> = bookDao.getGroupsFlow()
+    val allGroupsFlow: Flow<List<GroupItem>> = bookDao.getGroupsFlow()
 
     /**
      * DB에 BookItem을 insert하고 성공 여부를 반환한다.
@@ -19,7 +19,7 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     @WorkerThread
-    suspend fun insertGroup(groupItem: BookGroupItem) {
+    suspend fun insertGroup(groupItem: GroupItem) {
         bookDao.insertGroup(groupItem)
     }
 
@@ -29,7 +29,7 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     @WorkerThread
-    suspend fun updateGroup(groupItem: BookGroupItem) {
+    suspend fun updateGroup(groupItem: GroupItem) {
         bookDao.updateGroup(groupItem)
     }
 
@@ -39,7 +39,7 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     @WorkerThread
-    suspend fun deleteGroup(groupItem: BookGroupItem) {
+    suspend fun deleteGroup(groupItem: GroupItem) {
         bookDao.deleteGroup(groupItem)
     }
 
@@ -47,5 +47,5 @@ class BookRepository(private val bookDao: BookDao) {
     fun searchBook(query: String): List<BookItem> = bookDao.searchBook(query)
 
     @WorkerThread
-    fun getBooksByGroup(groupItem: BookGroupItem): List<BookItem> = bookDao.getBooksByGroup(groupItem.title)
+    fun getBooksByGroup(groupItem: GroupItem): List<BookItem> = bookDao.getBooksByGroup(groupItem.title)
 }
