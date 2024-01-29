@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,6 +50,8 @@ class BookListFragment: Fragment() {
 
     private var someInterface: SomeInterface? = null
 
+    private var booksByGroupLiveData: LiveData<List<BookItem>>? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -78,15 +81,40 @@ class BookListFragment: Fragment() {
     override fun onStart() {
         super.onStart()
 
-        bookViewModel.allBooksLiveData.observe(requireActivity()) { books ->
-            adapter.add(books)
-        }
+        updateAllBooks()
     }
 
     override fun onStop() {
         super.onStop()
 
+        removeObservers()
+    }
+
+    fun updateAllBooks() {
+        removeObservers()
+
+        adapter.clear()
+
+        bookViewModel.allBooksLiveData.observe(requireActivity()) { books ->
+            adapter.add(books)
+        }
+    }
+
+    fun updateBooksByGroup(group: String) {
+        removeObservers()
+
+        adapter.clear()
+
+        booksByGroupLiveData = bookViewModel.booksByGroupLiveData(group)
+
+        booksByGroupLiveData?.observe(requireActivity()) { books ->
+            adapter.add(books)
+        }
+    }
+
+    private fun removeObservers() {
         bookViewModel.allBooksLiveData.removeObservers(requireActivity())
+        booksByGroupLiveData?.removeObservers(requireActivity())
     }
 
     private fun initRecyclerView() {

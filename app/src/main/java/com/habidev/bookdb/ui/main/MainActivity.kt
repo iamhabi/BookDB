@@ -91,11 +91,11 @@ class MainActivity : AppCompatActivity(), SomeInterface {
 
         groupListFragment.setOnGroupListener(object : GroupListFragment.OnGroupListener {
             override fun onAllSelected() {
-
+                bookListFragment.updateAllBooks()
             }
 
             override fun onGroupSelected(groupItem: GroupItem) {
-
+                bookListFragment.updateBooksByGroup(groupItem.title)
             }
         })
     }
