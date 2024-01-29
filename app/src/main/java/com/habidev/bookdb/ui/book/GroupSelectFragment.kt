@@ -10,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.GroupListAdapter
+import com.habidev.bookdb.database.BookItem
 import com.habidev.bookdb.database.BookViewModel
 import com.habidev.bookdb.database.GroupItem
 import com.habidev.bookdb.databinding.GroupSelectBinding
@@ -24,6 +25,8 @@ class GroupSelectFragment : BottomSheetDialogFragment(R.layout.group_select) {
     private lateinit var viewBinding: GroupSelectBinding
 
     private lateinit var adapter: GroupListAdapter
+
+    private var bookItem: BookItem? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +53,10 @@ class GroupSelectFragment : BottomSheetDialogFragment(R.layout.group_select) {
         bookViewModel.allGroupsLiveData.removeObservers(requireActivity())
     }
 
+    fun setBookItem(bookItem: BookItem) {
+        this.bookItem = bookItem
+    }
+
     private fun initGroupList() {
         val context = requireContext()
 
@@ -63,6 +70,12 @@ class GroupSelectFragment : BottomSheetDialogFragment(R.layout.group_select) {
         adapter.setOnItemClickListener(object : GroupListAdapter.OnItemClickListener {
             override fun onClick(position: Int, item: GroupItem) {
                 Log.d(TAG, "onClick $position")
+
+                bookItem?.let {
+                    bookViewModel.insertBookIntoGroup(it, item)
+                }
+
+                dismiss()
             }
 
             override fun onMoreClick(position: Int, item: GroupItem) {
