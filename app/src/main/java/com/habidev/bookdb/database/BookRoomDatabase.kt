@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.DeleteColumn
+import androidx.room.RenameColumn
 import androidx.room.RenameTable
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
         GroupItem::class,
         GroupBookItem::class
                ],
-    version = 8,
+    version = 9,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(1, 2),
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
         AutoMigration(5, 6),
         AutoMigration(6, 7, GroupTableNameChanged::class),
         AutoMigration(7, 8, DeleteGroupFromBook::class),
+        AutoMigration(8, 9, RenameGroupToGroupId::class),
     ]
 )
 abstract class BookRoomDatabase: RoomDatabase() {
@@ -90,3 +92,10 @@ class GroupTableNameChanged : AutoMigrationSpec
     columnName = "group"
 )
 class DeleteGroupFromBook : AutoMigrationSpec
+
+@RenameColumn(
+    tableName = BookDao.TABLE_NAME_GROUP_BOOKS,
+    fromColumnName = "group",
+    toColumnName = "groupId"
+)
+class RenameGroupToGroupId : AutoMigrationSpec
