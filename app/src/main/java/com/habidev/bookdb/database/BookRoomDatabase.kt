@@ -12,7 +12,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [BookItem::class, GroupItem::class],
+    entities = [
+        BookItem::class,
+        GroupItem::class,
+        GroupBookItem::class
+               ],
     version = 7,
     exportSchema = true,
     autoMigrations = [
