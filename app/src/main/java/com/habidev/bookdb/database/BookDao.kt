@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface BookDao {
     companion object {
         const val TABLE_NAME_BOOK = "books"
-        const val TABLE_NAME_BOOK_GROUP = "book_groups"
+        const val TABLE_NAME_GROUP = "groups"
     }
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -36,7 +36,7 @@ interface BookDao {
     @Query("DELETE FROM $TABLE_NAME_BOOK")
     suspend fun deleteAllBooks()
 
-    @Query("DELETE FROM $TABLE_NAME_BOOK_GROUP")
+    @Query("DELETE FROM $TABLE_NAME_GROUP")
     suspend fun deleteAllGroups()
 
     @Query("SELECT * FROM $TABLE_NAME_BOOK WHERE isbn = :isbn")
@@ -51,6 +51,6 @@ interface BookDao {
     @Query("SELECT * FROM $TABLE_NAME_BOOK WHERE `group` = :group")
     fun getBooksByGroup(group: String): List<BookItem>
 
-    @Query("SELECT * FROM $TABLE_NAME_BOOK_GROUP")
+    @Query("SELECT * FROM $TABLE_NAME_GROUP")
     fun getGroupsFlow(): Flow<List<GroupItem>>
 }

@@ -5,7 +5,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = BookDao.TABLE_NAME_BOOK_GROUP)
+@Entity(tableName = BookDao.TABLE_NAME_GROUP)
 data class GroupItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
