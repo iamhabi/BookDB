@@ -23,7 +23,7 @@ interface BookDao {
     suspend fun insertGroup(groupItem: GroupItem)
 
     @Insert
-    suspend fun insertBookToGroup(groupBookItem: GroupBookItem)
+    suspend fun insertBookIntoGroup(groupBookItem: GroupBookItem)
 
     @Update
     suspend fun updateBook(bookItem: BookItem)

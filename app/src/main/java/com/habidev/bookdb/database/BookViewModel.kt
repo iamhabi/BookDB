@@ -27,6 +27,10 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
 
     suspend fun insertBook(bookItem: BookItem): Boolean = repository.insertBook(bookItem)
 
+    fun insertBookIntoGroup(bookItem: BookItem, group: String) = viewModelScope.launch {
+        repository.insertBookIntoGroup(bookItem.isbn, group)
+    }
+
     fun insertGroup(groupItem: GroupItem) = viewModelScope.launch {
         repository.insertGroup(groupItem)
     }
@@ -41,6 +45,10 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
 
     fun deleteBook(bookItem: BookItem) = viewModelScope.launch {
         repository.deleteBook(bookItem)
+    }
+
+    fun deleteBookFromGroup(groupBookItem: GroupBookItem) = viewModelScope.launch {
+        repository.deleteBookFromGroup(groupBookItem)
     }
 
     fun deleteGroup(groupItem: GroupItem) = viewModelScope.launch {

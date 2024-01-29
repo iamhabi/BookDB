@@ -24,6 +24,11 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     @WorkerThread
+    suspend fun insertBookIntoGroup(isbn: Long, group: String) {
+        bookDao.insertBookIntoGroup(GroupBookItem(-1, group, isbn))
+    }
+
+    @WorkerThread
     suspend fun updateBook(bookItem: BookItem) {
         bookDao.updateBook(bookItem)
     }
@@ -41,6 +46,11 @@ class BookRepository(private val bookDao: BookDao) {
     @WorkerThread
     suspend fun deleteGroup(groupItem: GroupItem) {
         bookDao.deleteGroup(groupItem)
+    }
+
+    @WorkerThread
+    suspend fun deleteBookFromGroup(groupBookItem: GroupBookItem) {
+        bookDao.deleteBookFromGroup(groupBookItem)
     }
 
     @WorkerThread
