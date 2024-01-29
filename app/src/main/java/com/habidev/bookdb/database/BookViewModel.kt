@@ -20,8 +20,8 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
 
     suspend fun insertBook(bookItem: BookItem): Boolean = repository.insertBook(bookItem)
 
-    fun insertBookIntoGroup(bookItem: BookItem, group: String) = viewModelScope.launch {
-        repository.insertBookIntoGroup(bookItem.isbn, group)
+    fun insertBookIntoGroup(bookItem: BookItem, groupItem: GroupItem) = viewModelScope.launch {
+        repository.insertBookIntoGroup(bookItem.isbn, groupItem.title)
     }
 
     fun insertGroup(groupItem: GroupItem) = viewModelScope.launch {
