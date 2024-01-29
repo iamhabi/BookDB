@@ -11,6 +11,7 @@ import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.habidev.bookdb.R
 import com.habidev.bookdb.SearchViewModel
@@ -90,49 +91,16 @@ class MainActivity : AppCompatActivity(), SomeInterface {
 
     private fun initViewListener() {
         viewBinding.btnSearch.setOnClickListener {
-            supportFragmentManager.commit {
-                setCustomAnimations(
-                    R.anim.slide_in_from_right,
-                    R.anim.fade_out,
-                    R.anim.fade_in,
-                    R.anim.slide_out_to_right
-                )
-
-                add(viewBinding.frameLayoutFull.id, searchFragment)
-
-                addToBackStack(null)
-            }
+            showFrag(searchFragment)
         }
 
         viewBinding.btnMore.setOnClickListener {
-            supportFragmentManager.commit {
-                setCustomAnimations(
-                    R.anim.slide_in_from_left,
-                    R.anim.fade_out,
-                    R.anim.fade_in,
-                    R.anim.slide_out_to_left
-                )
-
-                add(viewBinding.frameLayoutFull.id, groupListFragment)
-
-                addToBackStack(null)
-            }
+            showFrag(groupListFragment, slideFromRight = false)
         }
 
         viewBinding.btnOpenCamera.setOnClickListener {
             if (Utils.isCamPermissionGranted(this)) {
-                supportFragmentManager.commit {
-                    setCustomAnimations(
-                        R.anim.slide_in_from_right,
-                        R.anim.fade_out,
-                        R.anim.fade_in,
-                        R.anim.slide_out_to_right
-                    )
-
-                    add(viewBinding.frameLayoutFull.id, cameraFragment)
-
-                    addToBackStack(null)
-                }
+                showFrag(cameraFragment)
             } else {
                 Utils.requestCameraPermission(this)
             }
@@ -162,38 +130,40 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         dialog.show()
     }
 
-    override fun showDetailInfo(bookItem: BookItem) {
-        detailFragment.setBookItem(bookItem)
-
+    private fun showFrag(frag: Fragment, slideFromRight: Boolean = true) {
         supportFragmentManager.commit {
-            setCustomAnimations(
-                R.anim.slide_in_from_right,
-                R.anim.fade_out,
-                R.anim.fade_in,
-                R.anim.slide_out_to_right
-            )
+            if (slideFromRight) {
+                setCustomAnimations(
+                    R.anim.slide_in_from_right,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.slide_out_to_right
+                )
+            } else {
+                setCustomAnimations(
+                    R.anim.slide_in_from_left,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.slide_out_to_left
+                )
+            }
 
-            add(viewBinding.frameLayoutFull.id, detailFragment)
+            add(viewBinding.frameLayoutFull.id, frag)
 
             addToBackStack(null)
         }
     }
 
+    override fun showDetailInfo(bookItem: BookItem) {
+        detailFragment.setBookItem(bookItem)
+
+        showFrag(detailFragment)
+    }
+
     override fun showResultInfo(query: String) {
         resultFragment.setQuery(query)
 
-        supportFragmentManager.commit {
-            setCustomAnimations(
-                R.anim.slide_in_from_right,
-                R.anim.fade_out,
-                R.anim.fade_in,
-                R.anim.slide_out_to_right
-            )
-
-            add(viewBinding.frameLayoutFull.id, resultFragment)
-
-            addToBackStack(null)
-        }
+        showFrag(resultFragment)
     }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent?): Boolean {
