@@ -3,6 +3,7 @@ package com.habidev.bookdb.database
 import android.content.Context
 import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteColumn
 import androidx.room.RenameTable
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
         GroupItem::class,
         GroupBookItem::class
                ],
-    version = 7,
+    version = 8,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(1, 2),
@@ -25,7 +26,8 @@ import kotlinx.coroutines.launch
         AutoMigration(3, 4),
         AutoMigration(4, 5),
         AutoMigration(5, 6),
-        AutoMigration(6, 7, GroupTableNameChanged::class)
+        AutoMigration(6, 7, GroupTableNameChanged::class),
+        AutoMigration(7, 8, DeleteGroupFromBook::class),
     ]
 )
 abstract class BookRoomDatabase: RoomDatabase() {
@@ -82,3 +84,9 @@ abstract class BookRoomDatabase: RoomDatabase() {
     toTableName = BookDao.TABLE_NAME_GROUP
 )
 class GroupTableNameChanged : AutoMigrationSpec
+
+@DeleteColumn(
+    tableName = BookDao.TABLE_NAME_BOOK,
+    columnName = "group"
+)
+class DeleteGroupFromBook : AutoMigrationSpec
