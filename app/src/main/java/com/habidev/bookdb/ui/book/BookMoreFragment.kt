@@ -20,11 +20,17 @@ class BookMoreFragment : BottomSheetDialogFragment() {
         private const val TAG = "BookMore"
     }
 
+    interface OnMoreListener {
+        fun onRemove(bookItem: BookItem)
+    }
+
     private val bookViewModel: BookViewModel by activityViewModels()
 
     private lateinit var viewBinding: BookListMoreBinding
 
     private var bookItem: BookItem? = null
+
+    private var onMoreListener: OnMoreListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +58,10 @@ class BookMoreFragment : BottomSheetDialogFragment() {
         this.bookItem = bookItem
     }
 
+    fun setListener(listener: OnMoreListener) {
+        this.onMoreListener = listener
+    }
+
     private fun updateInfo(bookItem: BookItem?) {
         val item = bookItem ?: return
 
@@ -70,9 +80,9 @@ class BookMoreFragment : BottomSheetDialogFragment() {
         }
 
         viewBinding.textViewDelete.setOnClickListener {
-            val bookItem = this.bookItem ?: return@setOnClickListener
-
-            bookViewModel.deleteBook(bookItem)
+            this.bookItem?.let {
+                onMoreListener?.onRemove(it)
+            }
 
             dismiss()
         }
