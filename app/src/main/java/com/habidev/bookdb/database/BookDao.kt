@@ -13,6 +13,7 @@ interface BookDao {
     companion object {
         const val TABLE_NAME_BOOK = "books"
         const val TABLE_NAME_GROUP = "groups"
+        const val TABLE_NAME_GROUP_BOOKS = "group_books"
     }
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
