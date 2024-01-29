@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/text_view_delete"
+        android:id="@+id/btn_delete"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_minimum_height"
         android:text="@string/delete"

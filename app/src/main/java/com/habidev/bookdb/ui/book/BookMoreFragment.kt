@@ -79,7 +79,7 @@ class BookMoreFragment : BottomSheetDialogFragment() {
             startActivity(intent)
         }
 
-        viewBinding.textViewDelete.setOnClickListener {
+        viewBinding.btnDelete.setOnClickListener {
             this.bookItem?.let {
                 onMoreListener?.onRemove(it)
             }

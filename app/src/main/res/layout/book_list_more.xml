@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/text_view_delete"
+        android:id="@+id/btn_delete"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_minimum_height"
         android:text="@string/delete"
@@ -48,7 +48,7 @@
         android:gravity="center_vertical"
         android:text="@string/add_to_group"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/text_view_delete"/>
+        app:layout_constraintTop_toBottomOf="@id/btn_delete"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_reading_state"
