@@ -93,6 +93,8 @@ class DetailFragment: Fragment() {
     }
 
     private fun initViewListener() {
+        Utils.setUpEditTextCloseKeyboard(requireActivity(), viewBinding.root)
+
         viewBinding.btnOpenInBrowser.setOnClickListener {
             if (this::bookItem.isInitialized) {
                 val link: Uri = Uri.parse(bookItem.link)
@@ -119,9 +121,9 @@ class DetailFragment: Fragment() {
 
         viewBinding.editTextComment.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                Utils.showKeyboard(requireContext(), view)
+                Utils.showKeyBoard(requireActivity(), view)
             } else {
-                Utils.hideKeyboard(requireContext(), view)
+                Utils.closeKeyBoard(requireActivity())
             }
         }
 
