@@ -2,12 +2,9 @@ package com.habidev.bookdb.ui.main
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.MotionEvent
-import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -174,25 +171,5 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         resultFragment.setQuery(query)
 
         showFrag(resultFragment)
-    }
-
-    override fun dispatchTouchEvent(motionEvent: MotionEvent?): Boolean {
-        motionEvent?.let { event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val view = currentFocus
-                if (view is EditText) {
-                    val outRect = Rect()
-
-                    view.getGlobalVisibleRect(outRect)
-
-                    if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-                        view.clearFocus()
-                        Utils.hideKeyboard(this@MainActivity, view)
-                    }
-                }
-            }
-        }
-
-        return super.dispatchTouchEvent(motionEvent)
     }
 }
