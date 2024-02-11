@@ -97,6 +97,8 @@ class GroupListFragment: Fragment() {
     }
 
     private fun initViewListener() {
+        Utils.setUpEditTextCloseKeyboard(requireActivity(), viewBinding.root)
+
         viewBinding.btnClose.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -115,24 +117,25 @@ class GroupListFragment: Fragment() {
             val text = viewBinding.editTextAddGroup.text.toString()
 
             if (text == "") {
-                viewBinding.editTextAddGroup.requestFocus()
-            } else {
-                viewBinding.editTextAddGroup.text.clear()
-
-                bookViewModel.insertGroup(GroupItem(0, text))
-
-                val message = resources.getString(R.string.created_new_group)
-
-                Toast.makeText(requireContext(), "$message $text", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            bookViewModel.insertGroup(GroupItem(0, text))
+
+            val message = resources.getString(R.string.created_new_group)
+
+            Toast.makeText(requireContext(), "$message $text", Toast.LENGTH_SHORT).show()
+
+            viewBinding.editTextAddGroup.text.clear()
+
+            Utils.closeKeyBoard(requireActivity())
         }
 
         viewBinding.editTextAddGroup.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                Utils.showKeyboard(requireContext(), view)
+                Utils.showKeyBoard(requireActivity(), view)
             } else {
-                view.clearFocus()
-                Utils.hideKeyboard(requireContext(), view)
+                Utils.closeKeyBoard(requireActivity())
             }
         }
     }
