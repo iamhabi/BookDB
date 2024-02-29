@@ -121,9 +121,9 @@ class DetailFragment: Fragment() {
 
         viewBinding.editTextComment.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                Utils.showKeyBoard(requireActivity(), view)
+                Utils.showKeyboard(requireActivity(), view)
             } else {
-                Utils.closeKeyBoard(requireActivity())
+                Utils.closeKeyboard(requireActivity())
             }
         }
 

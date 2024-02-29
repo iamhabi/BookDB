@@ -128,14 +128,14 @@ class GroupListFragment: Fragment() {
 
             viewBinding.editTextAddGroup.text.clear()
 
-            Utils.closeKeyBoard(requireActivity())
+            Utils.closeKeyboard(requireActivity())
         }
 
         viewBinding.editTextAddGroup.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                Utils.showKeyBoard(requireActivity(), view)
+                Utils.showKeyboard(requireActivity(), view)
             } else {
-                Utils.closeKeyBoard(requireActivity())
+                Utils.closeKeyboard(requireActivity())
             }
         }
     }

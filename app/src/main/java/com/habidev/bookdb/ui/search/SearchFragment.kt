@@ -51,7 +51,7 @@ class SearchFragment : Fragment() {
         if (viewBinding.editTextSearch.text.toString() == "") {
             viewBinding.editTextSearch.requestFocus()
 
-            Utils.showKeyBoard(requireActivity(), viewBinding.editTextSearch)
+            Utils.showKeyboard(requireActivity(), viewBinding.editTextSearch)
         }
     }
 
@@ -93,9 +93,9 @@ class SearchFragment : Fragment() {
 
         viewBinding.editTextSearch.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                Utils.showKeyBoard(requireActivity(), view)
+                Utils.showKeyboard(requireActivity(), view)
             } else {
-                Utils.closeKeyBoard(requireActivity())
+                Utils.closeKeyboard(requireActivity())
             }
         }
     }

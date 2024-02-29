@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -34,12 +35,12 @@ class Utils {
             )
         }
 
-        fun showKeyBoard(activity: Activity, view: View) {
+        fun showKeyboard(activity: Activity, view: View) {
             val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         }
 
-        fun closeKeyBoard(activity: Activity) {
+        fun closeKeyboard(activity: Activity) {
             activity.currentFocus?.let { view ->
                 val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
@@ -48,10 +49,18 @@ class Utils {
 
         fun setUpEditTextCloseKeyboard(activity: Activity, view: View) {
             if (view !is EditText) {
-                view.setOnTouchListener { _, _ ->
-                    closeKeyBoard(activity)
-                    activity.currentFocus?.clearFocus()
-                    view.performClick()
+                view.setOnTouchListener { _, motionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            closeKeyboard(activity)
+                            activity.currentFocus?.clearFocus()
+                        }
+
+                        MotionEvent.ACTION_UP -> {
+                            view.performClick()
+                        }
+                    }
+
                     false
                 }
             }
