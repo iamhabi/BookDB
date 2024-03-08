@@ -12,11 +12,9 @@ import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
-
 import com.habidev.bookdb.data.BookItem;
 import com.habidev.bookdb.data.GroupBookItem;
 import com.habidev.bookdb.data.GroupItem;
-
 import java.lang.Class;
 import java.lang.Exception;
 import java.lang.Long;

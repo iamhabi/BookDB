@@ -189,15 +189,15 @@ public final class BookDatabase_Impl extends BookDatabase {
   public List<Migration> getAutoMigrations(
       @NonNull final Map<Class<? extends AutoMigrationSpec>, AutoMigrationSpec> autoMigrationSpecs) {
     final List<Migration> _autoMigrations = new ArrayList<Migration>();
-    _autoMigrations.add(new BookRoomDatabase_AutoMigration_1_2_Impl());
-    _autoMigrations.add(new BookRoomDatabase_AutoMigration_2_3_Impl());
-    _autoMigrations.add(new BookRoomDatabase_AutoMigration_3_4_Impl());
-    _autoMigrations.add(new BookRoomDatabase_AutoMigration_4_5_Impl());
-    _autoMigrations.add(new BookRoomDatabase_AutoMigration_5_6_Impl());
-    _autoMigrations.add(new BookRoomDatabase_AutoMigration_6_7_Impl());
-    _autoMigrations.add(new BookRoomDatabase_AutoMigration_7_8_Impl());
-    _autoMigrations.add(new BookRoomDatabase_AutoMigration_8_9_Impl());
-    _autoMigrations.add(new BookRoomDatabase_AutoMigration_9_10_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_1_2_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_2_3_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_3_4_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_4_5_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_5_6_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_6_7_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_7_8_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_8_9_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_9_10_Impl());
     return _autoMigrations;
   }
 
