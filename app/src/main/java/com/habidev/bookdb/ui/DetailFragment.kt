@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -32,8 +29,6 @@ class DetailFragment: Fragment() {
     private lateinit var bookItem: BookItem
 
     private var preventCommentListener: Boolean = false
-    private var preventReadListener: Boolean = false
-    private var preventOwnListener: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,9 +44,6 @@ class DetailFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViewListener()
-
-        initReadStateSpinner()
-        initOwnStateSpinner()
     }
 
     override fun onStart() {
@@ -70,8 +62,6 @@ class DetailFragment: Fragment() {
         }
 
         preventCommentListener = true
-        preventReadListener = true
-        preventOwnListener = true
 
         Glide
             .with(this)
@@ -87,9 +77,6 @@ class DetailFragment: Fragment() {
         bookItem.comment?.let { comment ->
             viewBinding.editTextComment.setText(comment, TextView.BufferType.EDITABLE)
         }
-
-        viewBinding.spinnerReadingState.setSelection(bookItem.readingState)
-        viewBinding.spinnerOwnState.setSelection(bookItem.ownState)
     }
 
     private fun initViewListener() {
@@ -126,71 +113,5 @@ class DetailFragment: Fragment() {
                 Utils.closeKeyboard(requireActivity())
             }
         }
-
-        viewBinding.spinnerReadingState.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (!preventReadListener && this@DetailFragment::bookItem.isInitialized) {
-                    bookItem.readingState = position
-
-                    bookViewModel.updateBook(bookItem)
-
-                    preventReadListener = false
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
-
-        viewBinding.spinnerOwnState.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (!preventOwnListener && this@DetailFragment::bookItem.isInitialized) {
-                    bookItem.ownState = position
-
-                    bookViewModel.updateBook(bookItem)
-
-                    preventOwnListener = false
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
-    }
-
-    private fun initReadStateSpinner() {
-        val readStateAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            BookItem.READ_STATE
-        )
-
-        readStateAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
-
-        viewBinding.spinnerReadingState.adapter = readStateAdapter
-    }
-
-    private fun initOwnStateSpinner() {
-        val ownStateAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            BookItem.OWN_STATE
-        )
-
-        ownStateAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
-
-        viewBinding.spinnerOwnState.adapter = ownStateAdapter
     }
 }

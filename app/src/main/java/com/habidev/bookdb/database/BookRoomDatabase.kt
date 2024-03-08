@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
         GroupItem::class,
         GroupBookItem::class
                ],
-    version = 9,
+    version = 10,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(1, 2),
@@ -27,9 +27,10 @@ import kotlinx.coroutines.launch
         AutoMigration(3, 4),
         AutoMigration(4, 5),
         AutoMigration(5, 6),
-        AutoMigration(6, 7, GroupTableNameChanged::class),
-        AutoMigration(7, 8, DeleteGroupFromBook::class),
-        AutoMigration(8, 9, RenameGroupToGroupId::class),
+        AutoMigration(6, 7, BookRoomDatabase.GroupTableNameChanged::class),
+        AutoMigration(7, 8, BookRoomDatabase.DeleteGroupFromBook::class),
+        AutoMigration(8, 9, BookRoomDatabase.RenameGroupToGroupId::class),
+        AutoMigration(9, 10, BookRoomDatabase.DeleteReadingAndOwningState::class),
     ]
 )
 abstract class BookRoomDatabase: RoomDatabase() {
@@ -79,23 +80,35 @@ abstract class BookRoomDatabase: RoomDatabase() {
             bookDao.deleteAllGroupBooks()
         }
     }
+
+    @RenameTable(
+        fromTableName = "book_groups",
+        toTableName = BookDao.TABLE_NAME_GROUP
+    )
+    class GroupTableNameChanged : AutoMigrationSpec
+
+    @DeleteColumn(
+        tableName = BookDao.TABLE_NAME_BOOK,
+        columnName = "group"
+    )
+    class DeleteGroupFromBook : AutoMigrationSpec
+
+    @RenameColumn(
+        tableName = BookDao.TABLE_NAME_GROUP_BOOKS,
+        fromColumnName = "group",
+        toColumnName = "groupId"
+    )
+    class RenameGroupToGroupId : AutoMigrationSpec
+
+    @DeleteColumn.Entries(
+        DeleteColumn(
+            tableName = BookDao.TABLE_NAME_BOOK,
+            columnName = "readingState"
+        ),
+        DeleteColumn(
+            tableName = BookDao.TABLE_NAME_BOOK,
+            columnName = "ownState"
+        )
+    )
+    class DeleteReadingAndOwningState : AutoMigrationSpec
 }
-
-@RenameTable(
-    fromTableName = "book_groups",
-    toTableName = BookDao.TABLE_NAME_GROUP
-)
-class GroupTableNameChanged : AutoMigrationSpec
-
-@DeleteColumn(
-    tableName = BookDao.TABLE_NAME_BOOK,
-    columnName = "group"
-)
-class DeleteGroupFromBook : AutoMigrationSpec
-
-@RenameColumn(
-    tableName = BookDao.TABLE_NAME_GROUP_BOOKS,
-    fromColumnName = "group",
-    toColumnName = "groupId"
-)
-class RenameGroupToGroupId : AutoMigrationSpec

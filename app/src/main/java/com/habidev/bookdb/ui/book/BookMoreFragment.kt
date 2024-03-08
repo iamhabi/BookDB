@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.habidev.bookdb.database.BookItem
@@ -67,9 +64,6 @@ class BookMoreFragment : BottomSheetDialogFragment() {
         val item = bookItem ?: return
 
         viewBinding.textViewTitle.text = item.title
-
-        viewBinding.spinnerReadingState.setSelection(item.readingState)
-        viewBinding.spinnerOwnState.setSelection(item.ownState)
     }
 
     private fun initViewListener() {
@@ -94,62 +88,6 @@ class BookMoreFragment : BottomSheetDialogFragment() {
             }
 
             dismiss()
-        }
-
-        val readStateAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            BookItem.READ_STATE
-        )
-
-        val ownStateAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            BookItem.OWN_STATE
-        )
-
-        readStateAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
-        ownStateAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
-
-        viewBinding.spinnerReadingState.adapter = readStateAdapter
-        viewBinding.spinnerOwnState.adapter = ownStateAdapter
-
-        viewBinding.spinnerReadingState.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val bookItem = this@BookMoreFragment.bookItem ?: return
-
-                bookItem.readingState = position
-
-                bookViewModel.updateBook(bookItem)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
-
-        viewBinding.spinnerOwnState.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val bookItem = this@BookMoreFragment.bookItem ?: return
-
-                bookItem.ownState = position
-
-                bookViewModel.updateBook(bookItem)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
         }
     }
 }
