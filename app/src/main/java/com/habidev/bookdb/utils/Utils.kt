@@ -9,9 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 
 class Utils {
     companion object {
@@ -19,6 +22,14 @@ class Utils {
 
         private const val PERMISSION_CAMERA = Manifest.permission.CAMERA
         const val PERMISSION_CAMERA_REQUEST_CODE = 50234
+
+        @JvmStatic
+        @BindingAdapter("imageUrl")
+        fun loadImage(view: ImageView, url: String?) {
+            Glide.with(view.context)
+                .load(url)
+                .into(view)
+        }
 
         fun isCamPermissionGranted(context: Context): Boolean {
             return ContextCompat.checkSelfPermission(

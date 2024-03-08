@@ -24,6 +24,7 @@ import com.habidev.bookdb.ui.search.SearchFragment
 import com.habidev.bookdb.utils.Utils
 import com.habidev.bookdb.viewmodel.BookDBViewModel
 import com.habidev.bookdb.viewmodel.BookViewModelFactory
+import com.habidev.bookdb.viewmodel.DetailInfoViewModel
 import com.habidev.bookdb.viewmodel.SearchViewModel
 
 
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity(), SomeInterface {
     }
 
     private val searchViewModel: SearchViewModel by viewModels()
+    private val detailInfoViewModel: DetailInfoViewModel by viewModels()
 
     private val bookListFragment = BookListFragment()
     private val groupListFragment = GroupListFragment()
@@ -158,7 +160,7 @@ class MainActivity : AppCompatActivity(), SomeInterface {
     }
 
     override fun showDetailInfo(bookItem: BookItem) {
-        detailFragment.setBookItem(bookItem)
+        detailInfoViewModel.setBookItem(bookItem)
 
         showFrag(detailFragment)
     }
