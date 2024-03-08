@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
-import com.habidev.bookdb.database.BookItem
+import com.habidev.bookdb.data.BookItem
 
 class BookListAdapter(private val context: Context): RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
     interface OnItemClickListener {

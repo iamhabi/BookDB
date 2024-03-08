@@ -10,10 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.R
-import com.habidev.bookdb.SearchViewModel
+import com.habidev.bookdb.viwemodel.SearchViewModel
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.api.ApiClient
-import com.habidev.bookdb.database.BookItem
+import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.RecyclerViewBaseBinding
 import com.habidev.bookdb.ui.main.SomeInterface
 import kotlinx.coroutines.CoroutineScope

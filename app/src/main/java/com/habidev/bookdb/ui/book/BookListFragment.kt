@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.adapter.BookListAdapter
-import com.habidev.bookdb.database.BookItem
-import com.habidev.bookdb.database.BookViewModel
-import com.habidev.bookdb.database.GroupItem
+import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.BookListBinding
 import com.habidev.bookdb.ui.main.SomeInterface
 
@@ -23,7 +23,7 @@ class BookListFragment: Fragment() {
         private const val TAG = "BookDBList"
     }
 
-    private val bookViewModel: BookViewModel by activityViewModels()
+    private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: BookListBinding
 
@@ -96,7 +96,7 @@ class BookListFragment: Fragment() {
 
         adapter.clear()
 
-        bookViewModel.allBooksLiveData.observe(requireActivity()) { books ->
+        bookDBViewModel.allBooksLiveData.observe(requireActivity()) { books ->
             adapter.add(books)
         }
     }
@@ -106,7 +106,7 @@ class BookListFragment: Fragment() {
 
         adapter.clear()
 
-        booksByGroupLiveData = bookViewModel.booksByGroupLiveData(groupItem)
+        booksByGroupLiveData = bookDBViewModel.booksByGroupLiveData(groupItem)
 
         booksByGroupLiveData?.observe(requireActivity()) { books ->
             adapter.add(books)
@@ -114,7 +114,7 @@ class BookListFragment: Fragment() {
     }
 
     private fun removeObservers() {
-        bookViewModel.allBooksLiveData.removeObservers(requireActivity())
+        bookDBViewModel.allBooksLiveData.removeObservers(requireActivity())
         booksByGroupLiveData?.removeObservers(requireActivity())
     }
 
@@ -137,7 +137,7 @@ class BookListFragment: Fragment() {
             override fun onRemove(bookItem: BookItem) {
                 adapter.remove(bookItem)
 
-                bookViewModel.deleteBook(bookItem)
+                bookDBViewModel.deleteBook(bookItem)
             }
 
             override fun onAddToGroup(bookItem: BookItem) {

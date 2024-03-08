@@ -10,9 +10,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.GroupListAdapter
-import com.habidev.bookdb.database.BookItem
-import com.habidev.bookdb.database.BookViewModel
-import com.habidev.bookdb.database.GroupItem
+import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.GroupSelectBinding
 
 class GroupSelectFragment : BottomSheetDialogFragment(R.layout.group_select) {
@@ -20,7 +20,7 @@ class GroupSelectFragment : BottomSheetDialogFragment(R.layout.group_select) {
         private const val TAG = "GroupSelect"
     }
 
-    private val bookViewModel: BookViewModel by activityViewModels()
+    private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: GroupSelectBinding
 
@@ -42,7 +42,7 @@ class GroupSelectFragment : BottomSheetDialogFragment(R.layout.group_select) {
     override fun onStart() {
         super.onStart()
 
-        bookViewModel.allGroupsLiveData.observe(requireActivity()) { groups ->
+        bookDBViewModel.allGroupsLiveData.observe(requireActivity()) { groups ->
             adapter.add(groups)
         }
     }
@@ -50,7 +50,7 @@ class GroupSelectFragment : BottomSheetDialogFragment(R.layout.group_select) {
     override fun onStop() {
         super.onStop()
 
-        bookViewModel.allGroupsLiveData.removeObservers(requireActivity())
+        bookDBViewModel.allGroupsLiveData.removeObservers(requireActivity())
     }
 
     fun setBookItem(bookItem: BookItem) {
@@ -72,7 +72,7 @@ class GroupSelectFragment : BottomSheetDialogFragment(R.layout.group_select) {
                 Log.d(TAG, "onClick $position")
 
                 bookItem?.let {
-                    bookViewModel.insertBookIntoGroup(it, item)
+                    bookDBViewModel.insertBookIntoGroup(it, item)
                 }
 
                 dismiss()

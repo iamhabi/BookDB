@@ -1,9 +1,10 @@
-package com.habidev.bookdb.database
+package com.habidev.bookdb.data
 
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.habidev.bookdb.database.BookDao
 
 @Entity(tableName = BookDao.TABLE_NAME_GROUP)
 data class GroupItem(

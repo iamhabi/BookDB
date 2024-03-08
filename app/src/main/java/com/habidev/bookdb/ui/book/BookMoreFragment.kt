@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.habidev.bookdb.database.BookItem
-import com.habidev.bookdb.database.BookViewModel
+import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.databinding.BookListMoreBinding
 
 class BookMoreFragment : BottomSheetDialogFragment() {
@@ -22,7 +22,7 @@ class BookMoreFragment : BottomSheetDialogFragment() {
         fun onAddToGroup(bookItem: BookItem)
     }
 
-    private val bookViewModel: BookViewModel by activityViewModels()
+    private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: BookListMoreBinding
 

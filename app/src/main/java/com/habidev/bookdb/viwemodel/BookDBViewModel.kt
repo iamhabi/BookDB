@@ -1,21 +1,22 @@
-package com.habidev.bookdb.database
+package com.habidev.bookdb.viwemodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.database.BookRepository
+import com.habidev.bookdb.data.GroupBookItem
+import com.habidev.bookdb.data.GroupItem
 import kotlinx.coroutines.launch
 
-class BookViewModel(private val repository: BookRepository): ViewModel() {
-    /**
-     * Do Nothing
-     * Create ViewModel
-     */
-    fun create() {}
+class BookDBViewModel(private val repository: BookRepository): ViewModel() {
+    fun init() {}
 
     val allBooksLiveData: LiveData<List<BookItem>> = repository.allBooksFlow.asLiveData()
     val allGroupsLiveData: LiveData<List<GroupItem>> = repository.allGroupsFlow.asLiveData()
+
     fun booksByGroupLiveData(groupItem: GroupItem): LiveData<List<BookItem>> = repository.booksByGroupFlow(groupItem).asLiveData()
 
     suspend fun insertBook(bookItem: BookItem): Boolean = repository.insertBook(bookItem)
@@ -53,9 +54,9 @@ class BookViewModel(private val repository: BookRepository): ViewModel() {
 
 class BookViewModelFactory(private val repository: BookRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(BookViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(BookDBViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return BookViewModel(repository) as T
+            return BookDBViewModel(repository) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel Class")

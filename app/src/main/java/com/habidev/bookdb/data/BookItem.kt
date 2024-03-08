@@ -1,4 +1,4 @@
-package com.habidev.bookdb.database
+package com.habidev.bookdb.data
 
 import android.os.Build
 import android.os.Parcel
@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.habidev.bookdb.database.BookDao
 
 @Entity(tableName = BookDao.TABLE_NAME_BOOK, indices = [Index(value = ["isbn"], unique = true)])
 data class BookItem(

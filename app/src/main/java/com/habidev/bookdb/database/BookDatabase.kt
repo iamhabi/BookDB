@@ -10,6 +10,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.data.GroupBookItem
+import com.habidev.bookdb.data.GroupItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -27,28 +30,28 @@ import kotlinx.coroutines.launch
         AutoMigration(3, 4),
         AutoMigration(4, 5),
         AutoMigration(5, 6),
-        AutoMigration(6, 7, BookRoomDatabase.GroupTableNameChanged::class),
-        AutoMigration(7, 8, BookRoomDatabase.DeleteGroupFromBook::class),
-        AutoMigration(8, 9, BookRoomDatabase.RenameGroupToGroupId::class),
-        AutoMigration(9, 10, BookRoomDatabase.DeleteReadingAndOwningState::class),
+        AutoMigration(6, 7, BookDatabase.GroupTableNameChanged::class),
+        AutoMigration(7, 8, BookDatabase.DeleteGroupFromBook::class),
+        AutoMigration(8, 9, BookDatabase.RenameGroupToGroupId::class),
+        AutoMigration(9, 10, BookDatabase.DeleteReadingAndOwningState::class),
     ]
 )
-abstract class BookRoomDatabase: RoomDatabase() {
+abstract class BookDatabase: RoomDatabase() {
 
     abstract fun bookDao(): BookDao
 
     companion object {
         @Volatile
-        private var INSTANCE: BookRoomDatabase? = null
+        private var INSTANCE: BookDatabase? = null
 
         fun getDatabase(
             context: Context,
             scope: CoroutineScope
-        ): BookRoomDatabase {
+        ): BookDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    BookRoomDatabase::class.java,
+                    BookDatabase::class.java,
                     "books_database"
                 )
                     .addCallback(BookDatabaseCallback(scope))

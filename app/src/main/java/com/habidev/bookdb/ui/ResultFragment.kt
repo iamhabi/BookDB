@@ -12,8 +12,8 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
 import com.habidev.bookdb.api.ApiClient
-import com.habidev.bookdb.database.BookItem
-import com.habidev.bookdb.database.BookViewModel
+import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.databinding.ResultBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ class ResultFragment: Fragment() {
         private const val TAG = "BookDBResultFrag"
     }
 
-    private val bookViewModel: BookViewModel by activityViewModels()
+    private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: ResultBinding
 
@@ -126,7 +126,7 @@ class ResultFragment: Fragment() {
         viewBinding.btnAddBookmark.setOnClickListener {
             if (this::bookItem.isInitialized) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val isInsertSuccess = bookViewModel.insertBook(bookItem)
+                    val isInsertSuccess = bookDBViewModel.insertBook(bookItem)
 
                     val message = if (isInsertSuccess) {
                         R.string.insert_book_success_message

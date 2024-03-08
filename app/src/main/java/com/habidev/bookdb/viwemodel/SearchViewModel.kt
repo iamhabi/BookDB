@@ -1,4 +1,4 @@
-package com.habidev.bookdb
+package com.habidev.bookdb.viwemodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

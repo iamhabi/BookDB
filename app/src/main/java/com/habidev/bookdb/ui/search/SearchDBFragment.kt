@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.habidev.bookdb.SearchViewModel
+import com.habidev.bookdb.viwemodel.SearchViewModel
 import com.habidev.bookdb.adapter.BookListAdapter
-import com.habidev.bookdb.database.BookItem
-import com.habidev.bookdb.database.BookViewModel
+import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.databinding.RecyclerViewBaseBinding
 import com.habidev.bookdb.ui.main.SomeInterface
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +24,7 @@ class SearchDBFragment : Fragment() {
         private const val TAG = "SearchDB"
     }
 
-    private val bookViewModel: BookViewModel by activityViewModels()
+    private val bookDBViewModel: BookDBViewModel by activityViewModels()
     private val searchViewModel: SearchViewModel by activityViewModels()
 
     private lateinit var viewBinding: RecyclerViewBaseBinding
@@ -77,7 +77,7 @@ class SearchDBFragment : Fragment() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            val resultList = bookViewModel.searchBook(query)
+            val resultList = bookDBViewModel.searchBook(query)
 
             CoroutineScope(Dispatchers.Main).launch {
                 adapter.add(resultList)

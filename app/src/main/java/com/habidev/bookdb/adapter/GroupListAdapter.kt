@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.habidev.bookdb.database.GroupItem
+import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.GroupListItemBinding
 
 class GroupListAdapter(

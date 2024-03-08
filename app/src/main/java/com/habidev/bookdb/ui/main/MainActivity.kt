@@ -11,12 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.habidev.bookdb.R
-import com.habidev.bookdb.SearchViewModel
-import com.habidev.bookdb.database.BookItem
-import com.habidev.bookdb.database.BookViewModel
-import com.habidev.bookdb.database.BookViewModelFactory
+import com.habidev.bookdb.viwemodel.SearchViewModel
+import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.viwemodel.BookViewModelFactory
 import com.habidev.bookdb.database.BooksApplication
-import com.habidev.bookdb.database.GroupItem
+import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.ActivityMainBinding
 import com.habidev.bookdb.ui.CameraFragment
 import com.habidev.bookdb.ui.DetailFragment
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         private const val TAG = "BookDBMainAct"
     }
 
-    private val bookViewModel: BookViewModel by viewModels {
+    private val bookDBViewModel: BookDBViewModel by viewModels {
         BookViewModelFactory((application as BooksApplication).repository)
     }
 
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        bookViewModel.create()
+        bookDBViewModel.init()
 
         initBookList()
         initViewListener()

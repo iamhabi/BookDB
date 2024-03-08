@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.GroupListAdapter
-import com.habidev.bookdb.database.BookViewModel
-import com.habidev.bookdb.database.GroupItem
+import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.GroupListBinding
 import com.habidev.bookdb.utils.Utils
 
@@ -26,7 +26,7 @@ class GroupListFragment: Fragment() {
         fun onGroupSelected(groupItem: GroupItem)
     }
 
-    private val bookViewModel: BookViewModel by activityViewModels()
+    private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: GroupListBinding
 
@@ -71,7 +71,7 @@ class GroupListFragment: Fragment() {
     override fun onStart() {
         super.onStart()
 
-        bookViewModel.allGroupsLiveData.observe(requireActivity()) { groups ->
+        bookDBViewModel.allGroupsLiveData.observe(requireActivity()) { groups ->
             adapter.clear()
             adapter.add(groups)
         }
@@ -80,7 +80,7 @@ class GroupListFragment: Fragment() {
     override fun onStop() {
         super.onStop()
 
-        bookViewModel.allGroupsLiveData.removeObservers(requireActivity())
+        bookDBViewModel.allGroupsLiveData.removeObservers(requireActivity())
     }
 
     fun setOnGroupListener(listener: OnGroupListener) {
@@ -120,7 +120,7 @@ class GroupListFragment: Fragment() {
                 return@setOnClickListener
             }
 
-            bookViewModel.insertGroup(GroupItem(0, text))
+            bookDBViewModel.insertGroup(GroupItem(0, text))
 
             val message = resources.getString(R.string.created_new_group)
 

@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
-import com.habidev.bookdb.database.BookItem
-import com.habidev.bookdb.database.BookViewModel
+import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.databinding.DetailBinding
 import com.habidev.bookdb.utils.Utils
 
@@ -22,7 +22,7 @@ class DetailFragment: Fragment() {
         private const val TAG = "BookDBDetailFrag"
     }
 
-    private val bookViewModel: BookViewModel by activityViewModels()
+    private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: DetailBinding
 
@@ -99,7 +99,7 @@ class DetailFragment: Fragment() {
                 text?.let {
                     bookItem.comment = it.toString()
 
-                    bookViewModel.updateBook(bookItem)
+                    bookDBViewModel.updateBook(bookItem)
                 }
 
                 preventCommentListener = false
