@@ -6,23 +6,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.habidev.bookdb.data.BookItem
-import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.databinding.BookListMoreBinding
 
 class BookMoreFragment : BottomSheetDialogFragment() {
-    companion object {
-        private const val TAG = "BookMore"
-    }
-
     interface OnMoreListener {
         fun onRemove(bookItem: BookItem)
         fun onAddToGroup(bookItem: BookItem)
     }
-
-    private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: BookListMoreBinding
 

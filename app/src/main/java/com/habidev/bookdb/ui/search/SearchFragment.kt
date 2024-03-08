@@ -10,16 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.habidev.bookdb.R
-import com.habidev.bookdb.viwemodel.SearchViewModel
 import com.habidev.bookdb.adapter.SimpleViewPagerAdapter
 import com.habidev.bookdb.databinding.SearchBinding
 import com.habidev.bookdb.utils.Utils
+import com.habidev.bookdb.viwemodel.SearchViewModel
 
 class SearchFragment : Fragment() {
-    companion object {
-        private const val TAG = "Search"
-    }
-
     private lateinit var viewBinding: SearchBinding
 
     private lateinit var searchDBFrag: SearchDBFragment

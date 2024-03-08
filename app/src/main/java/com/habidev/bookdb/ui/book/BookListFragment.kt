@@ -13,16 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.data.BookItem
-import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.BookListBinding
 import com.habidev.bookdb.ui.main.SomeInterface
+import com.habidev.bookdb.viwemodel.BookDBViewModel
 
 class BookListFragment: Fragment() {
-    companion object {
-        private const val TAG = "BookDBList"
-    }
-
     private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: BookListBinding

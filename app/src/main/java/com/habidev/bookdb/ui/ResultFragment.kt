@@ -13,18 +13,14 @@ import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
 import com.habidev.bookdb.api.ApiClient
 import com.habidev.bookdb.data.BookItem
-import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.databinding.ResultBinding
+import com.habidev.bookdb.viwemodel.BookDBViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 class ResultFragment: Fragment() {
-    companion object {
-        private const val TAG = "BookDBResultFrag"
-    }
-
     private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: ResultBinding

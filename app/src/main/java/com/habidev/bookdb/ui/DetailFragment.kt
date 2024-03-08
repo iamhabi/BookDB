@@ -13,15 +13,11 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
 import com.habidev.bookdb.data.BookItem
-import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.databinding.DetailBinding
 import com.habidev.bookdb.utils.Utils
+import com.habidev.bookdb.viwemodel.BookDBViewModel
 
 class DetailFragment: Fragment() {
-    companion object {
-        private const val TAG = "BookDBDetailFrag"
-    }
-
     private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: DetailBinding

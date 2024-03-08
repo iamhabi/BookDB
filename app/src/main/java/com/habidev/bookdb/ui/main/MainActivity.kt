@@ -11,12 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.habidev.bookdb.R
-import com.habidev.bookdb.viwemodel.SearchViewModel
 import com.habidev.bookdb.data.BookItem
-import com.habidev.bookdb.viwemodel.BookDBViewModel
-import com.habidev.bookdb.viwemodel.BookViewModelFactory
-import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.data.GroupItem
+import com.habidev.bookdb.database.BooksApplication
 import com.habidev.bookdb.databinding.ActivityMainBinding
 import com.habidev.bookdb.ui.CameraFragment
 import com.habidev.bookdb.ui.DetailFragment
@@ -25,6 +22,9 @@ import com.habidev.bookdb.ui.book.BookListFragment
 import com.habidev.bookdb.ui.group.GroupListFragment
 import com.habidev.bookdb.ui.search.SearchFragment
 import com.habidev.bookdb.utils.Utils
+import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.viwemodel.BookViewModelFactory
+import com.habidev.bookdb.viwemodel.SearchViewModel
 
 
 interface SomeInterface {
@@ -33,10 +33,6 @@ interface SomeInterface {
 }
 
 class MainActivity : AppCompatActivity(), SomeInterface {
-    companion object {
-        private const val TAG = "BookDBMainAct"
-    }
-
     private val bookDBViewModel: BookDBViewModel by viewModels {
         BookViewModelFactory((application as BooksApplication).repository)
     }

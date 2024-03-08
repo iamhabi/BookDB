@@ -11,16 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.GroupListAdapter
-import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.GroupListBinding
 import com.habidev.bookdb.utils.Utils
+import com.habidev.bookdb.viwemodel.BookDBViewModel
 
 class GroupListFragment: Fragment() {
-    companion object {
-        private const val TAG = "BookDBGroupList"
-    }
-
     interface OnGroupListener {
         fun onAllSelected()
         fun onGroupSelected(groupItem: GroupItem)
