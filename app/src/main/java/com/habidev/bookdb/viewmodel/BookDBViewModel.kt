@@ -1,4 +1,4 @@
-package com.habidev.bookdb.viwemodel
+package com.habidev.bookdb.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.habidev.bookdb.data.BookItem
-import com.habidev.bookdb.database.BookRepository
 import com.habidev.bookdb.data.GroupBookItem
 import com.habidev.bookdb.data.GroupItem
+import com.habidev.bookdb.database.BookRepository
 import kotlinx.coroutines.launch
 
 class BookDBViewModel(private val repository: BookRepository): ViewModel() {

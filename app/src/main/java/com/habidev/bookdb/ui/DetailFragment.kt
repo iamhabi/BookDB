@@ -15,7 +15,7 @@ import com.habidev.bookdb.R
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.DetailBinding
 import com.habidev.bookdb.utils.Utils
-import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.viewmodel.BookDBViewModel
 
 class DetailFragment: Fragment() {
     private val bookDBViewModel: BookDBViewModel by activityViewModels()

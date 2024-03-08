@@ -13,7 +13,7 @@ import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.SimpleViewPagerAdapter
 import com.habidev.bookdb.databinding.SearchBinding
 import com.habidev.bookdb.utils.Utils
-import com.habidev.bookdb.viwemodel.SearchViewModel
+import com.habidev.bookdb.viewmodel.SearchViewModel
 
 class SearchFragment : Fragment() {
     private lateinit var viewBinding: SearchBinding

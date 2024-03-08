@@ -15,7 +15,7 @@ import com.habidev.bookdb.api.ApiClient
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.RecyclerViewBaseBinding
 import com.habidev.bookdb.ui.main.SomeInterface
-import com.habidev.bookdb.viwemodel.SearchViewModel
+import com.habidev.bookdb.viewmodel.SearchViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

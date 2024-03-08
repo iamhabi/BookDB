@@ -11,9 +11,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.GroupListAdapter
 import com.habidev.bookdb.data.BookItem
-import com.habidev.bookdb.viwemodel.BookDBViewModel
 import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.GroupSelectBinding
+import com.habidev.bookdb.viewmodel.BookDBViewModel
 
 class GroupSelectFragment : BottomSheetDialogFragment(R.layout.group_select) {
     companion object {

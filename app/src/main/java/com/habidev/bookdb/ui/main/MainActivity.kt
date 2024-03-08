@@ -22,9 +22,9 @@ import com.habidev.bookdb.ui.book.BookListFragment
 import com.habidev.bookdb.ui.group.GroupListFragment
 import com.habidev.bookdb.ui.search.SearchFragment
 import com.habidev.bookdb.utils.Utils
-import com.habidev.bookdb.viwemodel.BookDBViewModel
-import com.habidev.bookdb.viwemodel.BookViewModelFactory
-import com.habidev.bookdb.viwemodel.SearchViewModel
+import com.habidev.bookdb.viewmodel.BookDBViewModel
+import com.habidev.bookdb.viewmodel.BookViewModelFactory
+import com.habidev.bookdb.viewmodel.SearchViewModel
 
 
 interface SomeInterface {

@@ -14,7 +14,7 @@ import com.habidev.bookdb.R
 import com.habidev.bookdb.api.ApiClient
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.ResultBinding
-import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.viewmodel.BookDBViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

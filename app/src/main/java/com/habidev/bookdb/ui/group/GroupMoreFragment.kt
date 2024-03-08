@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.GroupListMoreBinding
-import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.viewmodel.BookDBViewModel
 
 class GroupMoreFragment: BottomSheetDialogFragment() {
     private val bookDBViewModel: BookDBViewModel by activityViewModels()

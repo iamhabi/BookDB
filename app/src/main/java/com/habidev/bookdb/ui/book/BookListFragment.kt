@@ -16,7 +16,7 @@ import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.BookListBinding
 import com.habidev.bookdb.ui.main.SomeInterface
-import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.viewmodel.BookDBViewModel
 
 class BookListFragment: Fragment() {
     private val bookDBViewModel: BookDBViewModel by activityViewModels()

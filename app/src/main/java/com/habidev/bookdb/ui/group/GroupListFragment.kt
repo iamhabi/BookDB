@@ -14,7 +14,7 @@ import com.habidev.bookdb.adapter.GroupListAdapter
 import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.GroupListBinding
 import com.habidev.bookdb.utils.Utils
-import com.habidev.bookdb.viwemodel.BookDBViewModel
+import com.habidev.bookdb.viewmodel.BookDBViewModel
 
 class GroupListFragment: Fragment() {
     interface OnGroupListener {
