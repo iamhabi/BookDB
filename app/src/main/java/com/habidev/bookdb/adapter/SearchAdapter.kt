@@ -27,7 +27,7 @@ class SearchAdapter(
             SearchHeaderBinding.bind(view).textViewSearchHeader.text = context.resources.getString(titleId)
         }
 
-        fun onBind(item: BookItem, view: View) {
+        fun onBind(item: BookItem, view: View, position: Int) {
             BookListItemBinding.bind(view).let { binding ->
                 Glide.with(binding.imageViewBookCover)
                     .load(item.imageUrl)
@@ -78,7 +78,7 @@ class SearchAdapter(
 
         when (viewType) {
             ViewTypes.HEADER -> holder.onTitle(holder.itemView)
-            else -> holder.onBind(items[position - 1], holder.itemView)
+            else -> holder.onBind(items[position - 1], holder.itemView, position)
         }
     }
 
@@ -102,6 +102,14 @@ class SearchAdapter(
     fun add(items: List<BookItem>) {
         for (item in items) {
             add(item)
+        }
+    }
+
+    fun deleteNotMatchedItems(query: String) {
+        items.filter { item ->
+            !item.title.contains(query)
+        }.let { notMatchedItems ->
+            notMatchedItems.forEach { remove(it) }
         }
     }
 

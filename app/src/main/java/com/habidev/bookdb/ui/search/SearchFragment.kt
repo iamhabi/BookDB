@@ -2,10 +2,10 @@ package com.habidev.bookdb.ui.search
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,6 +18,7 @@ import com.habidev.bookdb.adapter.SearchAdapter
 import com.habidev.bookdb.api.ApiClient
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.SearchBinding
+import com.habidev.bookdb.ui.book.BookMoreFragment
 import com.habidev.bookdb.ui.main.SomeInterface
 import com.habidev.bookdb.utils.Utils
 import com.habidev.bookdb.viewmodel.BookDBViewModel
@@ -32,22 +33,11 @@ class SearchFragment : Fragment() {
     private var dbAdapter: SearchAdapter? = null
     private var internetAdapter: SearchAdapter? = null
 
-    private val adapterListener = object : BookListAdapter.OnItemClickListener {
-        override fun onClick(position: Int, bookItem: BookItem) {
-            someInterface?.showResultInfo(bookItem.isbn.toString())
-        }
-
-        override fun onLongClick(position: Int, bookItem: BookItem) {
-            someInterface?.showResultInfo(bookItem.isbn.toString())
-        }
-
-        override fun onMoreClick(position: Int, bookItem: BookItem) {
-        }
-    }
-
     private var someInterface: SomeInterface? = null
 
     private val bookDBViewModel: BookDBViewModel by activityViewModels()
+
+    private val bookMoreFragment: BookMoreFragment = BookMoreFragment()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,12 +72,33 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun searchDatabase(query: String) {
-        dbAdapter?.clear()
+    override fun onStop() {
+        super.onStop()
 
+        viewBinding.editTextSearch.setText("")
+    }
+
+    private fun showResultInfo(bookItem: BookItem) {
+        someInterface?.showResultInfo(bookItem.isbn.toString())
+
+        Utils.closeKeyboard(requireActivity())
+    }
+
+    private fun showMore(bookItem: BookItem) {
+        bookMoreFragment.run {
+            setBookItem(bookItem)
+            show(this@SearchFragment.childFragmentManager, null)
+        }
+    }
+
+    private fun searchDatabase(query: String) {
         if (query == "") {
+            dbAdapter?.clear()
+
             return
         }
+
+        dbAdapter?.deleteNotMatchedItems(query)
 
         CoroutineScope(Dispatchers.IO).launch {
             val resultList = bookDBViewModel.searchBook(query)
@@ -99,11 +110,13 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchInternet(query: String) {
-        internetAdapter?.clear()
-
         if (query == "") {
+            internetAdapter?.clear()
+
             return
         }
+
+        internetAdapter?.deleteNotMatchedItems(query)
 
         ApiClient.search(
             query = query,
@@ -148,14 +161,37 @@ class SearchFragment : Fragment() {
             requireContext(),
             R.string.database
         ).apply {
-            setOnItemClickListener(adapterListener)
+            setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
+                override fun onClick(position: Int, bookItem: BookItem) {
+                    showResultInfo(bookItem)
+                }
+
+                override fun onLongClick(position: Int, bookItem: BookItem) {
+                    showResultInfo(bookItem)
+                }
+
+                override fun onMoreClick(position: Int, bookItem: BookItem) {
+                    showMore(bookItem)
+                }
+            })
         }
 
         internetAdapter = SearchAdapter(
             requireContext(),
             R.string.internet
         ).apply {
-            setOnItemClickListener(adapterListener)
+            setOnItemClickListener(object : BookListAdapter.OnItemClickListener {
+                override fun onClick(position: Int, bookItem: BookItem) {
+                    showResultInfo(bookItem)
+                }
+
+                override fun onLongClick(position: Int, bookItem: BookItem) {
+                    showResultInfo(bookItem)
+                }
+
+                override fun onMoreClick(position: Int, bookItem: BookItem) {
+                }
+            })
         }
 
         val concatAdapter = ConcatAdapter(dbAdapter, internetAdapter)
@@ -172,10 +208,21 @@ class SearchFragment : Fragment() {
             parentFragmentManager.popBackStack()
         }
 
-        viewBinding.editTextSearch.addTextChangedListener { text: Editable? ->
+        viewBinding.editTextSearch.setOnEditorActionListener { view, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                view.text.toString().let { query ->
+                    searchInternet(query)
+                }
+
+                Utils.closeKeyboard(requireActivity())
+            }
+
+            false
+        }
+
+        viewBinding.editTextSearch.addTextChangedListener { text ->
             text?.toString()?.let { query ->
                 searchDatabase(query)
-                searchInternet(query)
             }
         }
 
