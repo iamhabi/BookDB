@@ -53,6 +53,7 @@ class Utils {
 
         fun closeKeyboard(activity: Activity) {
             activity.currentFocus?.let { view ->
+                view.clearFocus()
                 val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
