@@ -1,5 +1,6 @@
 package com.habidev.bookdb.ui.search
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
@@ -8,20 +9,51 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.tabs.TabLayoutMediator
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.R
-import com.habidev.bookdb.adapter.SimpleViewPagerAdapter
+import com.habidev.bookdb.adapter.BookListAdapter
+import com.habidev.bookdb.adapter.SearchAdapter
+import com.habidev.bookdb.api.ApiClient
+import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.SearchBinding
+import com.habidev.bookdb.ui.main.SomeInterface
 import com.habidev.bookdb.utils.Utils
-import com.habidev.bookdb.viewmodel.SearchViewModel
+import com.habidev.bookdb.viewmodel.BookDBViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 class SearchFragment : Fragment() {
     private lateinit var viewBinding: SearchBinding
 
-    private lateinit var searchDBFrag: SearchDBFragment
-    private lateinit var searchInternetFrag: SearchInternetFragment
+    private var dbAdapter: SearchAdapter? = null
+    private var internetAdapter: SearchAdapter? = null
 
-    private val searchViewModel: SearchViewModel by activityViewModels()
+    private val adapterListener = object : BookListAdapter.OnItemClickListener {
+        override fun onClick(position: Int, bookItem: BookItem) {
+            someInterface?.showResultInfo(bookItem.isbn.toString())
+        }
+
+        override fun onLongClick(position: Int, bookItem: BookItem) {
+            someInterface?.showResultInfo(bookItem.isbn.toString())
+        }
+
+        override fun onMoreClick(position: Int, bookItem: BookItem) {
+        }
+    }
+
+    private var someInterface: SomeInterface? = null
+
+    private val bookDBViewModel: BookDBViewModel by activityViewModels()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        someInterface = context as? SomeInterface
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +68,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViewPager()
-
+        initRecyclerView()
         initViewListener()
     }
 
@@ -51,27 +82,87 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun initViewPager() {
-        searchDBFrag = SearchDBFragment()
-        searchInternetFrag = SearchInternetFragment()
+    private fun searchDatabase(query: String) {
+        dbAdapter?.clear()
 
-        val fragments = arrayListOf(
-            searchDBFrag,
-            searchInternetFrag
-        )
+        if (query == "") {
+            return
+        }
 
-        val adapter = SimpleViewPagerAdapter(requireActivity(), fragments)
+        CoroutineScope(Dispatchers.IO).launch {
+            val resultList = bookDBViewModel.searchBook(query)
 
-        viewBinding.viewPagerSearch.adapter = adapter
-        viewBinding.viewPagerSearch.offscreenPageLimit = fragments.size
-
-        TabLayoutMediator(viewBinding.tabLayoutSearch, viewBinding.viewPagerSearch) { tab, position ->
-            tab.text = when (position) {
-                0 -> resources.getString(R.string.database)
-                1 -> resources.getString(R.string.internet)
-                else -> ""
+            CoroutineScope(Dispatchers.Main).launch {
+                dbAdapter?.add(resultList)
             }
-        }.attach()
+        }
+    }
+
+    private fun searchInternet(query: String) {
+        internetAdapter?.clear()
+
+        if (query == "") {
+            return
+        }
+
+        ApiClient.search(
+            query = query,
+            listener = object : ApiClient.Companion.OnResultListener {
+                override fun onResult(result: String) {
+                    parseResult(result)
+                }
+            }
+        )
+    }
+
+    private fun parseResult(resultJson: String) {
+        val resultJsonArray = JSONObject(resultJson).getJSONArray("items")
+
+        for (i in 0 until resultJsonArray.length()) {
+            val jsonObject = resultJsonArray.getJSONObject(i)
+
+            val isbn = (jsonObject.get("isbn") as String).toLong()
+            val link = jsonObject.get("link") as String
+            val title = jsonObject.get("title") as String
+            val author = jsonObject.get("author") as String
+            val imageUrl = jsonObject.get("image") as String
+            val description = jsonObject.get("description") as String
+
+            val bookItem = BookItem(
+                isbn,
+                link,
+                title,
+                author,
+                imageUrl,
+                description
+            )
+
+            CoroutineScope(Dispatchers.Main).launch {
+                internetAdapter?.add(bookItem)
+            }
+        }
+    }
+
+    private fun initRecyclerView() {
+        dbAdapter = SearchAdapter(
+            requireContext(),
+            R.string.database
+        ).apply {
+            setOnItemClickListener(adapterListener)
+        }
+
+        internetAdapter = SearchAdapter(
+            requireContext(),
+            R.string.internet
+        ).apply {
+            setOnItemClickListener(adapterListener)
+        }
+
+        val concatAdapter = ConcatAdapter(dbAdapter, internetAdapter)
+        val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+
+        viewBinding.recyclerViewSearchResult.adapter = concatAdapter
+        viewBinding.recyclerViewSearchResult.layoutManager = layoutManager
     }
 
     private fun initViewListener() {
@@ -83,7 +174,8 @@ class SearchFragment : Fragment() {
 
         viewBinding.editTextSearch.addTextChangedListener { text: Editable? ->
             text?.toString()?.let { query ->
-                searchViewModel.setQuery(query)
+                searchDatabase(query)
+                searchInternet(query)
             }
         }
 
