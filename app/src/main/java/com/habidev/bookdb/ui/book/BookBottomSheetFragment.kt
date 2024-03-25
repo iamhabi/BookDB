@@ -10,7 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.BookListMoreBinding
 
-class BookMoreFragment : BottomSheetDialogFragment() {
+class BookBottomSheetFragment : BottomSheetDialogFragment() {
     interface OnMoreListener {
         fun onRemove(bookItem: BookItem)
         fun onAddToGroup(bookItem: BookItem)

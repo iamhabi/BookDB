@@ -28,7 +28,7 @@ class BookListFragment: Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var gridLayoutManager: GridLayoutManager
 
-    private lateinit var bookMoreFragment: BookMoreFragment
+    private lateinit var bookBottomSheetFragment: BookBottomSheetFragment
     private lateinit var groupSelectFragment: GroupSelectFragment
 
     private val onItemClickListener = object: BookListAdapter.OnItemClickListener {
@@ -127,9 +127,9 @@ class BookListFragment: Fragment() {
     }
 
     private fun initBookMoreFrag() {
-        bookMoreFragment = BookMoreFragment()
+        bookBottomSheetFragment = BookBottomSheetFragment()
 
-        bookMoreFragment.setListener(object : BookMoreFragment.OnMoreListener {
+        bookBottomSheetFragment.setListener(object : BookBottomSheetFragment.OnMoreListener {
             override fun onRemove(bookItem: BookItem) {
                 adapter.remove(bookItem)
 
@@ -158,7 +158,7 @@ class BookListFragment: Fragment() {
     }
 
     private fun showMore(bookItem: BookItem) {
-        bookMoreFragment.run {
+        bookBottomSheetFragment.run {
             setBookItem(bookItem)
             show(this@BookListFragment.childFragmentManager, null)
         }
