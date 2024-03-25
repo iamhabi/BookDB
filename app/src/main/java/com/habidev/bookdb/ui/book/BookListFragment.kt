@@ -134,7 +134,12 @@ class BookListFragment: Fragment() {
         adapter.setOnItemClickListener(onItemClickListener)
 
         linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        gridLayoutManager = GridLayoutManager(context, 2)
+
+        val isTablet: Boolean = resources.getBoolean(R.bool.isTablet)
+
+        val spanCount = if (isTablet) 3 else 2
+
+        gridLayoutManager = GridLayoutManager(context, spanCount)
 
         viewBinding.recyclerView.adapter = adapter
         viewBinding.recyclerView.layoutManager = linearLayoutManager
