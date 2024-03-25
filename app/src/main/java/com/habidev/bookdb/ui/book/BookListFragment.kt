@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.data.GroupItem
@@ -28,8 +29,23 @@ class BookListFragment: Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var gridLayoutManager: GridLayoutManager
 
-    private lateinit var bookBottomSheetFragment: BookBottomSheetFragment
-    private lateinit var groupSelectFragment: GroupSelectFragment
+    private val groupSelectFragment = GroupSelectFragment()
+
+    private val bookMoreDialogFragment = BookMoreDialogFragment()
+    private val bookMoreBottomSheetFragment = BookMoreBottomSheetFragment()
+
+    private val bookMoreListener = object : BookMoreBottomSheetFragment.OnMoreListener {
+        override fun onRemove(bookItem: BookItem) {
+            adapter.remove(bookItem)
+
+            bookDBViewModel.deleteBook(bookItem)
+        }
+
+        override fun onAddToGroup(bookItem: BookItem) {
+            groupSelectFragment.setBookItem(bookItem)
+            groupSelectFragment.show(childFragmentManager, null)
+        }
+    }
 
     private val onItemClickListener = object: BookListAdapter.OnItemClickListener {
         override fun onClick(position: Int, bookItem: BookItem) {
@@ -71,8 +87,6 @@ class BookListFragment: Fragment() {
         initRecyclerView()
         initViewListener()
         initBookMoreFrag()
-
-        groupSelectFragment = GroupSelectFragment()
     }
 
     override fun onStart() {
@@ -127,20 +141,8 @@ class BookListFragment: Fragment() {
     }
 
     private fun initBookMoreFrag() {
-        bookBottomSheetFragment = BookBottomSheetFragment()
-
-        bookBottomSheetFragment.setListener(object : BookBottomSheetFragment.OnMoreListener {
-            override fun onRemove(bookItem: BookItem) {
-                adapter.remove(bookItem)
-
-                bookDBViewModel.deleteBook(bookItem)
-            }
-
-            override fun onAddToGroup(bookItem: BookItem) {
-                groupSelectFragment.setBookItem(bookItem)
-                groupSelectFragment.show(childFragmentManager, null)
-            }
-        })
+        bookMoreDialogFragment.setListener(bookMoreListener)
+        bookMoreBottomSheetFragment.setListener(bookMoreListener)
     }
 
     private fun initViewListener() {
@@ -158,9 +160,18 @@ class BookListFragment: Fragment() {
     }
 
     private fun showMore(bookItem: BookItem) {
-        bookBottomSheetFragment.run {
-            setBookItem(bookItem)
-            show(this@BookListFragment.childFragmentManager, null)
+        val isTablet: Boolean = resources.getBoolean(R.bool.isTablet)
+
+        if (isTablet) {
+            bookMoreDialogFragment.run {
+                setBookItem(bookItem)
+                show(this@BookListFragment.childFragmentManager, null)
+            }
+        } else {
+            bookMoreBottomSheetFragment.run {
+                setBookItem(bookItem)
+                show(this@BookListFragment.childFragmentManager, null)
+            }
         }
     }
 }

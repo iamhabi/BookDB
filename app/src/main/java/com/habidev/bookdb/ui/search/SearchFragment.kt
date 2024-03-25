@@ -18,7 +18,7 @@ import com.habidev.bookdb.adapter.SearchAdapter
 import com.habidev.bookdb.api.ApiClient
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.SearchBinding
-import com.habidev.bookdb.ui.book.BookBottomSheetFragment
+import com.habidev.bookdb.ui.book.BookMoreBottomSheetFragment
 import com.habidev.bookdb.ui.main.SomeInterface
 import com.habidev.bookdb.utils.Utils
 import com.habidev.bookdb.viewmodel.BookDBViewModel
@@ -37,7 +37,7 @@ class SearchFragment : Fragment() {
 
     private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
-    private val bookBottomSheetFragment: BookBottomSheetFragment = BookBottomSheetFragment()
+    private val bookMoreBottomSheetFragment: BookMoreBottomSheetFragment = BookMoreBottomSheetFragment()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -85,7 +85,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showMore(bookItem: BookItem) {
-        bookBottomSheetFragment.run {
+        bookMoreBottomSheetFragment.run {
             setBookItem(bookItem)
             show(this@SearchFragment.childFragmentManager, null)
         }
