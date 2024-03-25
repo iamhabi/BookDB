@@ -41,6 +41,12 @@ class DetailFragment: Fragment(R.layout.detail) {
         preventCommentListener = true
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        viewBinding.scrollView.scrollTo(0, 0)
+    }
+
     private fun initViewListener() {
         Utils.setUpEditTextCloseKeyboard(requireActivity(), viewBinding.root)
 
