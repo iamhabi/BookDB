@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.habidev.bookdb.R
-import com.habidev.bookdb.api.ApiClient
+import com.habidev.bookdb.api.SearchClient
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.ResultBinding
 import com.habidev.bookdb.viewmodel.BookDBViewModel
@@ -51,15 +51,12 @@ class ResultFragment: Fragment() {
         }
 
         if (this::query.isInitialized) {
-            ApiClient.search(
+            SearchClient.search(
                 query,
-                true,
-                object : ApiClient.Companion.OnResultListener {
-                    override fun onResult(result: String) {
-                        parseBookInfo(result)
-                    }
-                }
-            )
+                true
+            ) { result ->
+                parseBookInfo(result)
+            }
         }
     }
 

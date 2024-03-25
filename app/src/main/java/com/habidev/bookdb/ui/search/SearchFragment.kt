@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.adapter.SearchAdapter
-import com.habidev.bookdb.api.ApiClient
+import com.habidev.bookdb.api.SearchClient
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.SearchBinding
 import com.habidev.bookdb.ui.book.BookMoreBottomSheetFragment
@@ -118,14 +118,9 @@ class SearchFragment : Fragment() {
 
         internetAdapter?.deleteNotMatchedItems(query)
 
-        ApiClient.search(
-            query = query,
-            listener = object : ApiClient.Companion.OnResultListener {
-                override fun onResult(result: String) {
-                    parseResult(result)
-                }
-            }
-        )
+        SearchClient.search(query) { result ->
+            parseResult(result)
+        }
     }
 
     private fun parseResult(resultJson: String) {
