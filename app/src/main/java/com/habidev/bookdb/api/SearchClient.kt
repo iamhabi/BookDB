@@ -38,6 +38,28 @@ class SearchClient {
             }
         }
 
+        fun searchDetail(query: String, callback: (BookItem) -> Unit) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val retrofit = buildRetrofit()
+
+                val searchService = retrofit.create(SearchService::class.java)
+
+                val call = searchService.search(query)
+
+                call.enqueue(object : Callback<SearchResult> {
+                    override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                        if (response.isSuccessful) {
+                            response.body()?.items?.first()?.let(callback)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<SearchResult>, throwable: Throwable) {
+                        Log.e(TAG, call.toString(), throwable)
+                    }
+                })
+            }
+        }
+
         private fun buildRetrofit(): Retrofit {
             val httpClient = OkHttpClient.Builder()
 
