@@ -2,9 +2,7 @@ package com.habidev.bookdb.ui.book
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
@@ -19,7 +17,7 @@ import com.habidev.bookdb.databinding.BookListBinding
 import com.habidev.bookdb.ui.main.SomeInterface
 import com.habidev.bookdb.viewmodel.BookDBViewModel
 
-class BookListFragment: Fragment() {
+class BookListFragment: Fragment(R.layout.book_list) {
     private val bookDBViewModel: BookDBViewModel by activityViewModels()
 
     private lateinit var viewBinding: BookListBinding
@@ -71,18 +69,10 @@ class BookListFragment: Fragment() {
         someInterface = context as? SomeInterface
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        viewBinding = BookListBinding.inflate(inflater, container, false)
-
-        return viewBinding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewBinding = BookListBinding.bind(view)
 
         initRecyclerView()
         initViewListener()
