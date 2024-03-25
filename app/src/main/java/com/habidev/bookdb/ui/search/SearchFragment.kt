@@ -25,7 +25,6 @@ import com.habidev.bookdb.viewmodel.BookDBViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 
 class SearchFragment : Fragment() {
     private lateinit var viewBinding: SearchBinding
@@ -119,34 +118,10 @@ class SearchFragment : Fragment() {
         internetAdapter?.deleteNotMatchedItems(query)
 
         SearchClient.search(query) { result ->
-            parseResult(result)
-        }
-    }
-
-    private fun parseResult(resultJson: String) {
-        val resultJsonArray = JSONObject(resultJson).getJSONArray("items")
-
-        for (i in 0 until resultJsonArray.length()) {
-            val jsonObject = resultJsonArray.getJSONObject(i)
-
-            val isbn = (jsonObject.get("isbn") as String).toLong()
-            val link = jsonObject.get("link") as String
-            val title = jsonObject.get("title") as String
-            val author = jsonObject.get("author") as String
-            val imageUrl = jsonObject.get("image") as String
-            val description = jsonObject.get("description") as String
-
-            val bookItem = BookItem(
-                isbn,
-                link,
-                title,
-                author,
-                imageUrl,
-                description
-            )
-
-            CoroutineScope(Dispatchers.Main).launch {
-                internetAdapter?.add(bookItem)
+            for (item in result) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    internetAdapter?.add(item)
+                }
             }
         }
     }

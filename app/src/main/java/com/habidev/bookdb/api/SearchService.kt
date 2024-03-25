@@ -13,8 +13,8 @@ interface SearchService {
     }
 
     @GET(BOOK_SEARCH)
-    fun search(@Query("query") query: String): Call<String>
+    fun search(@Query("query") query: String): Call<SearchResult>
 
     @GET(BOOK_DETAIL_SEARCH)
-    fun searchDetail(@Query("d_isbn") query: String): Call<String>
+    fun searchDetail(@Query("d_isbn") query: String): Call<SearchResult>
 }

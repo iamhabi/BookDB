@@ -7,16 +7,23 @@ import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import com.habidev.bookdb.database.BookDao
 
 @Entity(tableName = BookDao.TABLE_NAME_BOOK, indices = [Index(value = ["isbn"], unique = true)])
 data class BookItem(
     @PrimaryKey(autoGenerate = false)
+    @SerializedName("isbn")
     val isbn: Long,
+    @SerializedName("link")
     val link: String,
+    @SerializedName("title")
     val title: String,
+    @SerializedName("author")
     val author: String,
+    @SerializedName("image")
     val imageUrl: String,
+    @SerializedName("description")
     val description: String,
     var comment: String?,
 ): Parcelable {

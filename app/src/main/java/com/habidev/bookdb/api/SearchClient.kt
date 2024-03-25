@@ -1,6 +1,7 @@
 package com.habidev.bookdb.api
 
 import android.util.Log
+import com.habidev.bookdb.data.BookItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -9,30 +10,28 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchClient {
     companion object {
-        const val TAG = "ApiClient"
+        const val TAG = "SearchClient"
 
-        fun search(query: String, isDetailSearch: Boolean = false, callback: (String) -> Unit) {
+        fun search(query: String, callback: (List<BookItem>) -> Unit) {
             CoroutineScope(Dispatchers.IO).launch {
                 val retrofit = buildRetrofit()
 
                 val searchService = retrofit.create(SearchService::class.java)
 
-                val call = if (isDetailSearch) {
-                    searchService.searchDetail(query)
-                } else {
-                    searchService.search(query)
-                }
+                val call = searchService.search(query)
 
-                call.enqueue(object : Callback<String> {
-                    override fun onResponse(call: Call<String>, response: Response<String>) {
-                        response.body()?.let(callback)
+                call.enqueue(object : Callback<SearchResult> {
+                    override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                        if (response.isSuccessful) {
+                            response.body()?.items?.let(callback)
+                        }
                     }
 
-                    override fun onFailure(call: Call<String>, throwable: Throwable) {
+                    override fun onFailure(call: Call<SearchResult>, throwable: Throwable) {
                         Log.e(TAG, call.toString(), throwable)
                     }
                 })
@@ -56,7 +55,7 @@ class SearchClient {
 
             return Retrofit.Builder()
                 .baseUrl(SearchService.BASE_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build()
         }

@@ -55,7 +55,7 @@ class ResultFragment: Fragment() {
                 query,
                 true
             ) { result ->
-                parseBookInfo(result)
+
             }
         }
     }
