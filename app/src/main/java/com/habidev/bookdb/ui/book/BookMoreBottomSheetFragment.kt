@@ -3,14 +3,14 @@ package com.habidev.bookdb.ui.book
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.habidev.bookdb.R
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.BookListMoreBinding
 
-class BookMoreBottomSheetFragment : BottomSheetDialogFragment() {
+class BookMoreBottomSheetFragment : BottomSheetDialogFragment(R.layout.book_list_more) {
     interface OnMoreListener {
         fun onRemove(bookItem: BookItem)
         fun onAddToGroup(bookItem: BookItem)
@@ -22,26 +22,16 @@ class BookMoreBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var onMoreListener: OnMoreListener? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        viewBinding = BookListMoreBinding.inflate(inflater, container, false)
-
-        return viewBinding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        DataBindingUtil.bind<BookListMoreBinding>(view)?.let { binding ->
+            viewBinding = binding
+
+            viewBinding.item = bookItem
+        }
+
         initViewListener()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        updateInfo(bookItem)
     }
 
     fun setBookItem(bookItem: BookItem) {
@@ -50,12 +40,6 @@ class BookMoreBottomSheetFragment : BottomSheetDialogFragment() {
 
     fun setListener(listener: OnMoreListener) {
         this.onMoreListener = listener
-    }
-
-    private fun updateInfo(bookItem: BookItem?) {
-        val item = bookItem ?: return
-
-        viewBinding.textViewTitle.text = item.title
     }
 
     private fun initViewListener() {

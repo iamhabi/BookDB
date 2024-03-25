@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.habidev.bookdb.R
 import com.habidev.bookdb.data.BookItem
@@ -20,7 +21,11 @@ class BookMoreDialogFragment : DialogFragment(R.layout.book_list_more) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewBinding = BookListMoreBinding.bind(view)
+        DataBindingUtil.bind<BookListMoreBinding>(view)?.let { binding ->
+            viewBinding = binding
+
+            viewBinding.item = bookItem
+        }
 
         dialog?.window?.setLayout(
             LayoutParams.MATCH_PARENT,
@@ -30,24 +35,12 @@ class BookMoreDialogFragment : DialogFragment(R.layout.book_list_more) {
         initViewListener()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        updateInfo(bookItem)
-    }
-
     fun setBookItem(bookItem: BookItem) {
         this.bookItem = bookItem
     }
 
     fun setListener(listener: BookMoreBottomSheetFragment.OnMoreListener) {
         this.onMoreListener = listener
-    }
-
-    private fun updateInfo(bookItem: BookItem?) {
-        val item = bookItem ?: return
-
-        viewBinding.textViewTitle.text = item.title
     }
 
     private fun initViewListener() {
