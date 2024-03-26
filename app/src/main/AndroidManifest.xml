@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_book_db_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BookDB"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".ui.main.MainActivity"
