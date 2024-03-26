@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.BookListAdapter
 import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.data.GroupBookItem
 import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.BookListBinding
 import com.habidev.bookdb.ui.main.SomeInterface
@@ -32,36 +33,11 @@ class BookListFragment: Fragment(R.layout.book_list) {
     private val bookMoreDialogFragment = BookMoreDialogFragment()
     private val bookMoreBottomSheetFragment = BookMoreBottomSheetFragment()
 
-    private val bookMoreListener = object : BookMoreBottomSheetFragment.OnMoreListener {
-        override fun onRemove(bookItem: BookItem) {
-            adapter.remove(bookItem)
-
-            bookDBViewModel.deleteBook(bookItem)
-        }
-
-        override fun onAddToGroup(bookItem: BookItem) {
-            groupSelectFragment.setBookItem(bookItem)
-            groupSelectFragment.show(childFragmentManager, null)
-        }
-    }
-
-    private val onItemClickListener = object: BookListAdapter.OnItemClickListener {
-        override fun onClick(position: Int, bookItem: BookItem) {
-            someInterface?.showDetailInfo(bookItem)
-        }
-
-        override fun onLongClick(position: Int, bookItem: BookItem) {
-            showMore(bookItem)
-        }
-
-        override fun onMoreClick(position: Int, bookItem: BookItem) {
-            showMore(bookItem)
-        }
-    }
-
     private var someInterface: SomeInterface? = null
 
     private var booksByGroupLiveData: LiveData<List<BookItem>>? = null
+
+    private var groupItem: GroupItem? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -99,9 +75,13 @@ class BookListFragment: Fragment(R.layout.book_list) {
         bookDBViewModel.allBooksLiveData.observe(requireActivity()) { books ->
             adapter.add(books)
         }
+
+        groupItem = null
     }
 
     fun updateBooksByGroup(groupItem: GroupItem) {
+        this.groupItem = groupItem
+
         removeObservers()
 
         adapter.clear()
@@ -121,7 +101,7 @@ class BookListFragment: Fragment(R.layout.book_list) {
     private fun initRecyclerView() {
         adapter = BookListAdapter(requireContext())
 
-        adapter.setOnItemClickListener(onItemClickListener)
+        adapter.setOnItemClickListener(OnItemClickListener())
 
         linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
@@ -136,8 +116,8 @@ class BookListFragment: Fragment(R.layout.book_list) {
     }
 
     private fun initBookMoreFrag() {
-        bookMoreDialogFragment.setListener(bookMoreListener)
-        bookMoreBottomSheetFragment.setListener(bookMoreListener)
+        bookMoreDialogFragment.setListener(BookMoreListener())
+        bookMoreBottomSheetFragment.setListener(BookMoreListener())
     }
 
     private fun initViewListener() {
@@ -167,6 +147,37 @@ class BookListFragment: Fragment(R.layout.book_list) {
                 setBookItem(bookItem)
                 show(this@BookListFragment.childFragmentManager, null)
             }
+        }
+    }
+
+    inner class BookMoreListener : BookMoreBottomSheetFragment.OnMoreListener {
+        override fun onRemove(bookItem: BookItem) {
+            adapter.remove(bookItem)
+
+            if (groupItem == null) {
+                bookDBViewModel.deleteBook(bookItem)
+            } else {
+                bookDBViewModel.deleteBookFromGroup(GroupBookItem(0, groupItem!!.id, bookItem.isbn))
+            }
+        }
+
+        override fun onAddToGroup(bookItem: BookItem) {
+            groupSelectFragment.setBookItem(bookItem)
+            groupSelectFragment.show(childFragmentManager, null)
+        }
+    }
+
+    inner class OnItemClickListener : BookListAdapter.OnItemClickListener {
+        override fun onClick(position: Int, bookItem: BookItem) {
+            someInterface?.showDetailInfo(bookItem)
+        }
+
+        override fun onLongClick(position: Int, bookItem: BookItem) {
+            showMore(bookItem)
+        }
+
+        override fun onMoreClick(position: Int, bookItem: BookItem) {
+            showMore(bookItem)
         }
     }
 }
