@@ -53,7 +53,7 @@ class BookRepository(private val bookDao: BookDao) {
 
     @WorkerThread
     suspend fun deleteBookFromGroup(groupBookItem: GroupBookItem) {
-        bookDao.deleteBookFromGroup(groupBookItem)
+        bookDao.deleteBookFromGroup(groupBookItem.isbn, groupBookItem.groupId)
     }
 
     @WorkerThread

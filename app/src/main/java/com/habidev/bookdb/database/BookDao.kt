@@ -40,8 +40,8 @@ interface BookDao {
     @Delete
     suspend fun deleteGroup(groupItem: GroupItem)
 
-    @Delete
-    suspend fun deleteBookFromGroup(groupBookItem: GroupBookItem)
+    @Query("DELETE FROM $TABLE_NAME_GROUP_BOOKS WHERE isbn = :isbn AND groupId = :groupId")
+    suspend fun deleteBookFromGroup(isbn: Long, groupId: Int)
 
     @Query("DELETE FROM $TABLE_NAME_BOOK")
     suspend fun deleteAllBooks()

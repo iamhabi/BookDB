@@ -46,11 +46,11 @@ public final class BookDao_Impl implements BookDao {
 
   private final EntityDeletionOrUpdateAdapter<GroupItem> __deletionAdapterOfGroupItem;
 
-  private final EntityDeletionOrUpdateAdapter<GroupBookItem> __deletionAdapterOfGroupBookItem;
-
   private final EntityDeletionOrUpdateAdapter<BookItem> __updateAdapterOfBookItem;
 
   private final EntityDeletionOrUpdateAdapter<GroupItem> __updateAdapterOfGroupItem;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteBookFromGroup;
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteAllBooks;
 
@@ -162,19 +162,6 @@ public final class BookDao_Impl implements BookDao {
         statement.bindLong(1, entity.getId());
       }
     };
-    this.__deletionAdapterOfGroupBookItem = new EntityDeletionOrUpdateAdapter<GroupBookItem>(__db) {
-      @Override
-      @NonNull
-      protected String createQuery() {
-        return "DELETE FROM `group_books` WHERE `id` = ?";
-      }
-
-      @Override
-      protected void bind(@NonNull final SupportSQLiteStatement statement,
-          @NonNull final GroupBookItem entity) {
-        statement.bindLong(1, entity.getId());
-      }
-    };
     this.__updateAdapterOfBookItem = new EntityDeletionOrUpdateAdapter<BookItem>(__db) {
       @Override
       @NonNull
@@ -236,6 +223,14 @@ public final class BookDao_Impl implements BookDao {
           statement.bindString(2, entity.getTitle());
         }
         statement.bindLong(3, entity.getId());
+      }
+    };
+    this.__preparedStmtOfDeleteBookFromGroup = new SharedSQLiteStatement(__db) {
+      @Override
+      @NonNull
+      public String createQuery() {
+        final String _query = "DELETE FROM group_books WHERE isbn = ? AND groupId = ?";
+        return _query;
       }
     };
     this.__preparedStmtOfDeleteAllBooks = new SharedSQLiteStatement(__db) {
@@ -358,25 +353,6 @@ public final class BookDao_Impl implements BookDao {
   }
 
   @Override
-  public Object deleteBookFromGroup(final GroupBookItem groupBookItem,
-      final Continuation<? super Unit> $completion) {
-    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
-      @Override
-      @NonNull
-      public Unit call() throws Exception {
-        __db.beginTransaction();
-        try {
-          __deletionAdapterOfGroupBookItem.handle(groupBookItem);
-          __db.setTransactionSuccessful();
-          return Unit.INSTANCE;
-        } finally {
-          __db.endTransaction();
-        }
-      }
-    }, $completion);
-  }
-
-  @Override
   public Object updateBook(final BookItem bookItem, final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
@@ -408,6 +384,34 @@ public final class BookDao_Impl implements BookDao {
           return Unit.INSTANCE;
         } finally {
           __db.endTransaction();
+        }
+      }
+    }, $completion);
+  }
+
+  @Override
+  public Object deleteBookFromGroup(final long isbn, final int groupId,
+      final Continuation<? super Unit> $completion) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      @NonNull
+      public Unit call() throws Exception {
+        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteBookFromGroup.acquire();
+        int _argIndex = 1;
+        _stmt.bindLong(_argIndex, isbn);
+        _argIndex = 2;
+        _stmt.bindLong(_argIndex, groupId);
+        try {
+          __db.beginTransaction();
+          try {
+            _stmt.executeUpdateDelete();
+            __db.setTransactionSuccessful();
+            return Unit.INSTANCE;
+          } finally {
+            __db.endTransaction();
+          }
+        } finally {
+          __preparedStmtOfDeleteBookFromGroup.release(_stmt);
         }
       }
     }, $completion);
