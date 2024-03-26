@@ -1,4 +1,4 @@
-package com.habidev.bookdb.api
+package com.habidev.bookdb.api.search
 
 import com.habidev.bookdb.data.BookItem
 

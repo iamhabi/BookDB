@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.habidev.bookdb.R
-import com.habidev.bookdb.api.SearchClient
+import com.habidev.bookdb.api.search.SearchClient
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.ResultBinding
 import com.habidev.bookdb.viewmodel.BookDBViewModel
