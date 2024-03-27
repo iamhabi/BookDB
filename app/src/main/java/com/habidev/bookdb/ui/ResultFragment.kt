@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.habidev.bookdb.R
+import com.habidev.bookdb.api.BookDBClient
 import com.habidev.bookdb.api.search.SearchClient
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.databinding.ResultBinding
@@ -71,6 +72,8 @@ class ResultFragment: Fragment(R.layout.result) {
 
         viewBinding.btnAddBookmark.setOnClickListener {
             bookItem ?: return@setOnClickListener
+
+            BookDBClient.addBookJson(bookItem!!)
 
             CoroutineScope(Dispatchers.IO).launch {
                 val isInsertSuccess = bookDBViewModel.insertBook(bookItem!!)
