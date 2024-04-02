@@ -28,7 +28,15 @@ class SearchClient {
                 call.enqueue(object : Callback<SearchResult> {
                     override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                         if (response.isSuccessful) {
-                            response.body()?.items?.let(callback)
+                            response.body()?.items?.let { items ->
+                                val list: MutableList<BookItem> = mutableListOf()
+
+                                for (item in items) {
+                                    list.add(parseSubtitle(item))
+                                }
+
+                                callback(list)
+                            }
                         }
                     }
 
@@ -50,7 +58,9 @@ class SearchClient {
                 call.enqueue(object : Callback<SearchResult> {
                     override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                         if (response.isSuccessful) {
-                            response.body()?.items?.first()?.let(callback)
+                            response.body()?.items?.first()?.let { item ->
+                                callback(parseSubtitle(item))
+                            }
                         }
                     }
 
@@ -81,6 +91,21 @@ class SearchClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build()
+        }
+
+        private fun parseSubtitle(bookItem: BookItem): BookItem {
+            val title = bookItem.title
+
+            if (title.endsWith(")")) {
+                val subtitleStartIndex = title.lastIndexOf("(") + 1
+                val subtitleEndIndex = title.lastIndexOf(")")
+
+                bookItem.subtitle = title.substring(subtitleStartIndex, subtitleEndIndex)
+
+                bookItem.title = title.substring(0, subtitleStartIndex - 1).trim()
+            }
+
+            return bookItem
         }
     }
 }
