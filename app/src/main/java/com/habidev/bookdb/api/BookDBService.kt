@@ -25,7 +25,7 @@ interface BookDBService {
     @Multipart
     @POST(ADD_BOOK)
     fun addBook(
-        @Part("isbn") isbn: String,
+        @Part("isbn") isbn: Long,
         @Part("link") link: String,
         @Part("title") title: String,
         @Part("author") author: String,
