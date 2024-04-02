@@ -32,15 +32,15 @@ public final class BookDatabase_Impl extends BookDatabase {
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(10) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(11) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS `books` (`isbn` INTEGER NOT NULL, `link` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `imageUrl` TEXT NOT NULL, `description` TEXT NOT NULL, `comment` TEXT, PRIMARY KEY(`isbn`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `books` (`isbn` INTEGER NOT NULL, `link` TEXT NOT NULL, `title` TEXT NOT NULL, `subtitle` TEXT NOT NULL DEFAULT '', `author` TEXT NOT NULL, `imageUrl` TEXT NOT NULL, `description` TEXT NOT NULL, `comment` TEXT, PRIMARY KEY(`isbn`))");
         db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_books_isbn` ON `books` (`isbn`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `groups` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `group_books` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `groupId` INTEGER NOT NULL, `isbn` INTEGER NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ba2aac9ff77155831a772d3d05f22e30')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f04ca145d7e9f5787e11f0ed976f3800')");
       }
 
       @Override
@@ -91,10 +91,11 @@ public final class BookDatabase_Impl extends BookDatabase {
       @NonNull
       public RoomOpenHelper.ValidationResult onValidateSchema(
           @NonNull final SupportSQLiteDatabase db) {
-        final HashMap<String, TableInfo.Column> _columnsBooks = new HashMap<String, TableInfo.Column>(7);
+        final HashMap<String, TableInfo.Column> _columnsBooks = new HashMap<String, TableInfo.Column>(8);
         _columnsBooks.put("isbn", new TableInfo.Column("isbn", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsBooks.put("link", new TableInfo.Column("link", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsBooks.put("title", new TableInfo.Column("title", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsBooks.put("subtitle", new TableInfo.Column("subtitle", "TEXT", true, 0, "''", TableInfo.CREATED_FROM_ENTITY));
         _columnsBooks.put("author", new TableInfo.Column("author", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsBooks.put("imageUrl", new TableInfo.Column("imageUrl", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsBooks.put("description", new TableInfo.Column("description", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -136,7 +137,7 @@ public final class BookDatabase_Impl extends BookDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "ba2aac9ff77155831a772d3d05f22e30", "f825e2da84c6d6ddf656bc4c23e9f24a");
+    }, "f04ca145d7e9f5787e11f0ed976f3800", "cf08c5292fc911f9a2b60c6cc3bfe8d6");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -198,6 +199,7 @@ public final class BookDatabase_Impl extends BookDatabase {
     _autoMigrations.add(new BookDatabase_AutoMigration_7_8_Impl());
     _autoMigrations.add(new BookDatabase_AutoMigration_8_9_Impl());
     _autoMigrations.add(new BookDatabase_AutoMigration_9_10_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_10_11_Impl());
     return _autoMigrations;
   }
 

@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
         GroupItem::class,
         GroupBookItem::class
                ],
-    version = 10,
+    version = 11,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(1, 2),
@@ -34,6 +34,7 @@ import kotlinx.coroutines.launch
         AutoMigration(7, 8, BookDatabase.DeleteGroupFromBook::class),
         AutoMigration(8, 9, BookDatabase.RenameGroupToGroupId::class),
         AutoMigration(9, 10, BookDatabase.DeleteReadingAndOwningState::class),
+        AutoMigration(10, 11),
     ]
 )
 abstract class BookDatabase: RoomDatabase() {

@@ -64,7 +64,7 @@ public final class BookDao_Impl implements BookDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR IGNORE INTO `books` (`isbn`,`link`,`title`,`author`,`imageUrl`,`description`,`comment`) VALUES (?,?,?,?,?,?,?)";
+        return "INSERT OR IGNORE INTO `books` (`isbn`,`link`,`title`,`subtitle`,`author`,`imageUrl`,`description`,`comment`) VALUES (?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -81,25 +81,30 @@ public final class BookDao_Impl implements BookDao {
         } else {
           statement.bindString(3, entity.getTitle());
         }
-        if (entity.getAuthor() == null) {
+        if (entity.getSubtitle() == null) {
           statement.bindNull(4);
         } else {
-          statement.bindString(4, entity.getAuthor());
+          statement.bindString(4, entity.getSubtitle());
         }
-        if (entity.getImageUrl() == null) {
+        if (entity.getAuthor() == null) {
           statement.bindNull(5);
         } else {
-          statement.bindString(5, entity.getImageUrl());
+          statement.bindString(5, entity.getAuthor());
         }
-        if (entity.getDescription() == null) {
+        if (entity.getImageUrl() == null) {
           statement.bindNull(6);
         } else {
-          statement.bindString(6, entity.getDescription());
+          statement.bindString(6, entity.getImageUrl());
         }
-        if (entity.getComment() == null) {
+        if (entity.getDescription() == null) {
           statement.bindNull(7);
         } else {
-          statement.bindString(7, entity.getComment());
+          statement.bindString(7, entity.getDescription());
+        }
+        if (entity.getComment() == null) {
+          statement.bindNull(8);
+        } else {
+          statement.bindString(8, entity.getComment());
         }
       }
     };
@@ -166,7 +171,7 @@ public final class BookDao_Impl implements BookDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "UPDATE OR ABORT `books` SET `isbn` = ?,`link` = ?,`title` = ?,`author` = ?,`imageUrl` = ?,`description` = ?,`comment` = ? WHERE `isbn` = ?";
+        return "UPDATE OR ABORT `books` SET `isbn` = ?,`link` = ?,`title` = ?,`subtitle` = ?,`author` = ?,`imageUrl` = ?,`description` = ?,`comment` = ? WHERE `isbn` = ?";
       }
 
       @Override
@@ -183,27 +188,32 @@ public final class BookDao_Impl implements BookDao {
         } else {
           statement.bindString(3, entity.getTitle());
         }
-        if (entity.getAuthor() == null) {
+        if (entity.getSubtitle() == null) {
           statement.bindNull(4);
         } else {
-          statement.bindString(4, entity.getAuthor());
+          statement.bindString(4, entity.getSubtitle());
         }
-        if (entity.getImageUrl() == null) {
+        if (entity.getAuthor() == null) {
           statement.bindNull(5);
         } else {
-          statement.bindString(5, entity.getImageUrl());
+          statement.bindString(5, entity.getAuthor());
         }
-        if (entity.getDescription() == null) {
+        if (entity.getImageUrl() == null) {
           statement.bindNull(6);
         } else {
-          statement.bindString(6, entity.getDescription());
+          statement.bindString(6, entity.getImageUrl());
         }
-        if (entity.getComment() == null) {
+        if (entity.getDescription() == null) {
           statement.bindNull(7);
         } else {
-          statement.bindString(7, entity.getComment());
+          statement.bindString(7, entity.getDescription());
         }
-        statement.bindLong(8, entity.getIsbn());
+        if (entity.getComment() == null) {
+          statement.bindNull(8);
+        } else {
+          statement.bindString(8, entity.getComment());
+        }
+        statement.bindLong(9, entity.getIsbn());
       }
     };
     this.__updateAdapterOfGroupItem = new EntityDeletionOrUpdateAdapter<GroupItem>(__db) {
@@ -502,6 +512,7 @@ public final class BookDao_Impl implements BookDao {
           final int _cursorIndexOfIsbn = CursorUtil.getColumnIndexOrThrow(_cursor, "isbn");
           final int _cursorIndexOfLink = CursorUtil.getColumnIndexOrThrow(_cursor, "link");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+          final int _cursorIndexOfSubtitle = CursorUtil.getColumnIndexOrThrow(_cursor, "subtitle");
           final int _cursorIndexOfAuthor = CursorUtil.getColumnIndexOrThrow(_cursor, "author");
           final int _cursorIndexOfImageUrl = CursorUtil.getColumnIndexOrThrow(_cursor, "imageUrl");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
@@ -521,6 +532,12 @@ public final class BookDao_Impl implements BookDao {
               _tmpTitle = null;
             } else {
               _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+            }
+            final String _tmpSubtitle;
+            if (_cursor.isNull(_cursorIndexOfSubtitle)) {
+              _tmpSubtitle = null;
+            } else {
+              _tmpSubtitle = _cursor.getString(_cursorIndexOfSubtitle);
             }
             final String _tmpAuthor;
             if (_cursor.isNull(_cursorIndexOfAuthor)) {
@@ -546,7 +563,7 @@ public final class BookDao_Impl implements BookDao {
             } else {
               _tmpComment = _cursor.getString(_cursorIndexOfComment);
             }
-            _result = new BookItem(_tmpIsbn,_tmpLink,_tmpTitle,_tmpAuthor,_tmpImageUrl,_tmpDescription,_tmpComment);
+            _result = new BookItem(_tmpIsbn,_tmpLink,_tmpTitle,_tmpSubtitle,_tmpAuthor,_tmpImageUrl,_tmpDescription,_tmpComment);
           } else {
             _result = null;
           }
@@ -587,6 +604,7 @@ public final class BookDao_Impl implements BookDao {
       final int _cursorIndexOfIsbn = CursorUtil.getColumnIndexOrThrow(_cursor, "isbn");
       final int _cursorIndexOfLink = CursorUtil.getColumnIndexOrThrow(_cursor, "link");
       final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+      final int _cursorIndexOfSubtitle = CursorUtil.getColumnIndexOrThrow(_cursor, "subtitle");
       final int _cursorIndexOfAuthor = CursorUtil.getColumnIndexOrThrow(_cursor, "author");
       final int _cursorIndexOfImageUrl = CursorUtil.getColumnIndexOrThrow(_cursor, "imageUrl");
       final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
@@ -607,6 +625,12 @@ public final class BookDao_Impl implements BookDao {
           _tmpTitle = null;
         } else {
           _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+        }
+        final String _tmpSubtitle;
+        if (_cursor.isNull(_cursorIndexOfSubtitle)) {
+          _tmpSubtitle = null;
+        } else {
+          _tmpSubtitle = _cursor.getString(_cursorIndexOfSubtitle);
         }
         final String _tmpAuthor;
         if (_cursor.isNull(_cursorIndexOfAuthor)) {
@@ -632,7 +656,7 @@ public final class BookDao_Impl implements BookDao {
         } else {
           _tmpComment = _cursor.getString(_cursorIndexOfComment);
         }
-        _item = new BookItem(_tmpIsbn,_tmpLink,_tmpTitle,_tmpAuthor,_tmpImageUrl,_tmpDescription,_tmpComment);
+        _item = new BookItem(_tmpIsbn,_tmpLink,_tmpTitle,_tmpSubtitle,_tmpAuthor,_tmpImageUrl,_tmpDescription,_tmpComment);
         _result.add(_item);
       }
       return _result;
@@ -655,6 +679,7 @@ public final class BookDao_Impl implements BookDao {
           final int _cursorIndexOfIsbn = CursorUtil.getColumnIndexOrThrow(_cursor, "isbn");
           final int _cursorIndexOfLink = CursorUtil.getColumnIndexOrThrow(_cursor, "link");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+          final int _cursorIndexOfSubtitle = CursorUtil.getColumnIndexOrThrow(_cursor, "subtitle");
           final int _cursorIndexOfAuthor = CursorUtil.getColumnIndexOrThrow(_cursor, "author");
           final int _cursorIndexOfImageUrl = CursorUtil.getColumnIndexOrThrow(_cursor, "imageUrl");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
@@ -675,6 +700,12 @@ public final class BookDao_Impl implements BookDao {
               _tmpTitle = null;
             } else {
               _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+            }
+            final String _tmpSubtitle;
+            if (_cursor.isNull(_cursorIndexOfSubtitle)) {
+              _tmpSubtitle = null;
+            } else {
+              _tmpSubtitle = _cursor.getString(_cursorIndexOfSubtitle);
             }
             final String _tmpAuthor;
             if (_cursor.isNull(_cursorIndexOfAuthor)) {
@@ -700,7 +731,7 @@ public final class BookDao_Impl implements BookDao {
             } else {
               _tmpComment = _cursor.getString(_cursorIndexOfComment);
             }
-            _item = new BookItem(_tmpIsbn,_tmpLink,_tmpTitle,_tmpAuthor,_tmpImageUrl,_tmpDescription,_tmpComment);
+            _item = new BookItem(_tmpIsbn,_tmpLink,_tmpTitle,_tmpSubtitle,_tmpAuthor,_tmpImageUrl,_tmpDescription,_tmpComment);
             _result.add(_item);
           }
           return _result;
@@ -732,6 +763,7 @@ public final class BookDao_Impl implements BookDao {
           final int _cursorIndexOfIsbn = CursorUtil.getColumnIndexOrThrow(_cursor, "isbn");
           final int _cursorIndexOfLink = CursorUtil.getColumnIndexOrThrow(_cursor, "link");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+          final int _cursorIndexOfSubtitle = CursorUtil.getColumnIndexOrThrow(_cursor, "subtitle");
           final int _cursorIndexOfAuthor = CursorUtil.getColumnIndexOrThrow(_cursor, "author");
           final int _cursorIndexOfImageUrl = CursorUtil.getColumnIndexOrThrow(_cursor, "imageUrl");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
@@ -752,6 +784,12 @@ public final class BookDao_Impl implements BookDao {
               _tmpTitle = null;
             } else {
               _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+            }
+            final String _tmpSubtitle;
+            if (_cursor.isNull(_cursorIndexOfSubtitle)) {
+              _tmpSubtitle = null;
+            } else {
+              _tmpSubtitle = _cursor.getString(_cursorIndexOfSubtitle);
             }
             final String _tmpAuthor;
             if (_cursor.isNull(_cursorIndexOfAuthor)) {
@@ -777,7 +815,7 @@ public final class BookDao_Impl implements BookDao {
             } else {
               _tmpComment = _cursor.getString(_cursorIndexOfComment);
             }
-            _item = new BookItem(_tmpIsbn,_tmpLink,_tmpTitle,_tmpAuthor,_tmpImageUrl,_tmpDescription,_tmpComment);
+            _item = new BookItem(_tmpIsbn,_tmpLink,_tmpTitle,_tmpSubtitle,_tmpAuthor,_tmpImageUrl,_tmpDescription,_tmpComment);
             _result.add(_item);
           }
           return _result;
