@@ -35,7 +35,13 @@ class SearchAdapter(
                     .error(R.drawable.book)
                     .into(binding.imageViewBookCover)
 
-                binding.textViewTitle.text = item.title
+                val title = if (item.subtitle == "") {
+                    item.title
+                } else {
+                    "${item.title} - ${item.subtitle}"
+                }
+
+                binding.textViewTitle.text = title
                 binding.textViewAuthor.text = item.author
 
                 view.setOnClickListener {

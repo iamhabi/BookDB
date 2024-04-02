@@ -64,7 +64,13 @@ class BookListAdapter(private val context: Context): RecyclerView.Adapter<BookLi
             .error(R.drawable.book)
             .into(imageViewBookCover)
 
-        textViewTitle.text = item.title
+        val title = if (item.subtitle == "") {
+            item.title
+        } else {
+            "${item.title} - ${item.subtitle}"
+        }
+
+        textViewTitle.text = title
         textViewAuthor?.text = item.author
 
         view.setOnClickListener {
