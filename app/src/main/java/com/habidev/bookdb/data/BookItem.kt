@@ -24,7 +24,7 @@ data class BookItem(
     var subtitle: String = "",
     @SerializedName("author")
     val author: String,
-    @SerializedName("image_url")
+    @SerializedName("image")
     val imageUrl: String,
     @SerializedName("description")
     val description: String,
