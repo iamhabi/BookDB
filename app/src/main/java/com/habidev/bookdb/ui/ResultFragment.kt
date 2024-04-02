@@ -71,12 +71,12 @@ class ResultFragment: Fragment(R.layout.result) {
         }
 
         viewBinding.btnAddBookmark.setOnClickListener {
-            bookItem ?: return@setOnClickListener
+            val bookItem = bookItem ?: return@setOnClickListener
 
-            BookDBClient.addBookJson(bookItem!!)
+            BookDBClient.addBook(bookItem)
 
             CoroutineScope(Dispatchers.IO).launch {
-                val isInsertSuccess = bookDBViewModel.insertBook(bookItem!!)
+                val isInsertSuccess = bookDBViewModel.insertBook(bookItem)
 
                 val message = if (isInsertSuccess) {
                     R.string.insert_book_success_message
