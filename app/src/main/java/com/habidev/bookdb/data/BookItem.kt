@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.RequiresApi
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -18,7 +19,9 @@ data class BookItem(
     @SerializedName("link")
     val link: String,
     @SerializedName("title")
-    val title: String,
+    var title: String,
+    @ColumnInfo(defaultValue = "")
+    var subtitle: String = "",
     @SerializedName("author")
     val author: String,
     @SerializedName("image_url")
@@ -31,6 +34,7 @@ data class BookItem(
         isbn: Long,
         link: String,
         title: String,
+        subtitle: String,
         author: String,
         imageUrl: String,
         description: String
@@ -38,6 +42,7 @@ data class BookItem(
         isbn,
         link,
         title,
+        subtitle,
         author,
         imageUrl,
         description,
@@ -51,6 +56,7 @@ data class BookItem(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
+        parcel.readString().toString(),
         parcel.readString()
     )
 
@@ -59,6 +65,7 @@ data class BookItem(
         parcel.writeLong(isbn)
         parcel.writeString(link)
         parcel.writeString(title)
+        parcel.writeString(subtitle)
         parcel.writeString(author)
         parcel.writeString(imageUrl)
         parcel.writeString(description)
