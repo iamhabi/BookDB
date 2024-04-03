@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.habidev.bookdb.R
 import com.habidev.bookdb.adapter.GroupListAdapter
+import com.habidev.bookdb.api.BookDBClient
 import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.GroupListBinding
 import com.habidev.bookdb.utils.Utils
@@ -67,7 +66,7 @@ class GroupListFragment: Fragment() {
     override fun onStart() {
         super.onStart()
 
-        bookDBViewModel.allGroupsLiveData.observe(requireActivity()) { groups ->
+        bookDBViewModel.groups.observe(requireActivity()) { groups ->
             adapter.clear()
             adapter.add(groups)
         }
@@ -116,11 +115,13 @@ class GroupListFragment: Fragment() {
                 return@setOnClickListener
             }
 
-            bookDBViewModel.insertGroup(GroupItem(0, text))
+            BookDBClient.createGroup(text)
 
-            val message = resources.getString(R.string.created_new_group)
-
-            Toast.makeText(requireContext(), "$message $text", Toast.LENGTH_SHORT).show()
+//            bookDBViewModel.insertGroup(GroupItem(0, text))
+//
+//            val message = resources.getString(R.string.created_new_group)
+//
+//            Toast.makeText(requireContext(), "$message $text", Toast.LENGTH_SHORT).show()
 
             viewBinding.editTextAddGroup.text.clear()
 
