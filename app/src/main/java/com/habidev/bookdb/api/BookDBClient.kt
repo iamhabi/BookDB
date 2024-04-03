@@ -2,6 +2,7 @@ package com.habidev.bookdb.api
 
 import android.util.Log
 import com.habidev.bookdb.data.BookItem
+import com.habidev.bookdb.data.GroupItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,6 +65,52 @@ class BookDBClient {
 
                     override fun onFailure(call: Call<ResponseBody>, throwable: Throwable) {
                         Log.e(TAG, "Failed to add book", throwable)
+                    }
+                })
+            }
+        }
+
+        fun getGroups(callback: (List<GroupItem>) -> Unit) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val bookDBService = buildService()
+
+                val call = bookDBService.getGroups()
+
+                call.enqueue(object : Callback<List<GroupItem>> {
+                    override fun onResponse(
+                        call: Call<List<GroupItem>>,
+                        response: Response<List<GroupItem>>
+                    ) {
+                        if (response.isSuccessful) {
+                            response.body()?.let(callback)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<GroupItem>>, throwable: Throwable) {
+                        Log.e(TAG, "Failed to get groups", throwable)
+                    }
+                })
+            }
+        }
+
+        fun createGroup(title: String) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val bookDBService = buildService()
+
+                val call = bookDBService.createGroup(title)
+
+                call.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d(TAG, "Success to create group")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, throwable: Throwable) {
+                        Log.e(TAG, "Failed to create group", throwable)
                     }
                 })
             }
