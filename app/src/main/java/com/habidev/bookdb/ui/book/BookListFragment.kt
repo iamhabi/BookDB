@@ -39,6 +39,8 @@ class BookListFragment: Fragment(R.layout.book_list) {
     private val bookMoreDialogFragment = BookMoreDialogFragment()
     private val bookMoreBottomSheetFragment = BookMoreBottomSheetFragment()
 
+    private var sortingWindow: PopupWindow? = null
+
     private var someInterface: SomeInterface? = null
 
     private var booksByGroupLiveData: LiveData<List<BookItem>>? = null
@@ -56,6 +58,7 @@ class BookListFragment: Fragment(R.layout.book_list) {
 
         viewBinding = BookListBinding.bind(view)
 
+        initSortingWindow()
         initRecyclerView()
         initViewListener()
         initBookMoreFrag()
@@ -125,6 +128,18 @@ class BookListFragment: Fragment(R.layout.book_list) {
         viewBinding.recyclerView.layoutManager = linearLayoutManager
     }
 
+    private fun initSortingWindow() {
+        val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.sorting_method, null, false)
+
+        sortingWindow = PopupWindow(view).apply {
+            width = ConstraintLayout.LayoutParams.WRAP_CONTENT
+            height = ConstraintLayout.LayoutParams.WRAP_CONTENT
+
+            isFocusable = true
+        }
+    }
+
     private fun initBookMoreFrag() {
         bookMoreDialogFragment.setListener(BookMoreListener())
         bookMoreBottomSheetFragment.setListener(BookMoreListener())
@@ -144,24 +159,16 @@ class BookListFragment: Fragment(R.layout.book_list) {
         }
 
         viewBinding.btnSelectSortingMethod.setOnClickListener {
-            val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view = inflater.inflate(R.layout.sorting_method, null, false)
-
-            val window = PopupWindow(view).apply {
-                width = ConstraintLayout.LayoutParams.WRAP_CONTENT
-                height = ConstraintLayout.LayoutParams.WRAP_CONTENT
-
-                isFocusable = true
-            }
+            val window = sortingWindow ?: return@setOnClickListener
 
             window.showAsDropDown(it, 16, 0, Gravity.START)
 
-            val binding = SortingMethodBinding.bind(view)
+            val binding = SortingMethodBinding.bind(window.contentView)
 
             binding.radioGroupSortingMethod.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
-                    binding.radioBtnTitle.id -> {}
-                    binding.radioBtnAuthor.id -> {}
+                    binding.radioBtnTitle.id -> adapter.sortByTitle()
+                    binding.radioBtnAuthor.id -> adapter.sortByAuthor()
                 }
             }
         }

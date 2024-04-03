@@ -122,6 +122,16 @@ class BookListAdapter(private val context: Context): RecyclerView.Adapter<BookLi
         items.clear()
     }
 
+    fun sortByTitle() {
+        items.sortBy { it.title }
+        notifyItemRangeChanged(0, itemCount)
+    }
+
+    fun sortByAuthor() {
+        items.sortBy { it.author }
+        notifyItemRangeChanged(0, itemCount)
+    }
+
     fun changeLayout(isGridLayout: Boolean) {
         this.isGridLayout = isGridLayout
     }
