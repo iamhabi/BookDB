@@ -72,7 +72,11 @@ class BookListFragment: Fragment(R.layout.book_list) {
 
         adapter.clear()
 
-        bookDBViewModel.allBooksLiveData.observe(requireActivity()) { books ->
+//        bookDBViewModel.allBooksLiveData.observe(requireActivity()) { books ->
+//            adapter.add(books)
+//        }
+
+        bookDBViewModel.allBooks.observe(requireActivity()) { books ->
             adapter.add(books)
         }
 
