@@ -2,7 +2,11 @@ package com.habidev.bookdb.ui.book
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.PopupWindow
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
@@ -15,8 +19,10 @@ import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.data.GroupBookItem
 import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.BookListBinding
+import com.habidev.bookdb.databinding.SortingMethodBinding
 import com.habidev.bookdb.ui.main.SomeInterface
 import com.habidev.bookdb.viewmodel.BookDBViewModel
+
 
 class BookListFragment: Fragment(R.layout.book_list) {
     private val bookDBViewModel: BookDBViewModel by activityViewModels()
@@ -135,6 +141,29 @@ class BookListFragment: Fragment(R.layout.book_list) {
             adapter.changeLayout(isChecked)
 
             viewBinding.recyclerView.adapter = adapter
+        }
+
+        viewBinding.btnSelectSortingMethod.setOnClickListener {
+            val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val view = inflater.inflate(R.layout.sorting_method, null, false)
+
+            val window = PopupWindow(view).apply {
+                width = ConstraintLayout.LayoutParams.WRAP_CONTENT
+                height = ConstraintLayout.LayoutParams.WRAP_CONTENT
+
+                isFocusable = true
+            }
+
+            window.showAsDropDown(it, 16, 0, Gravity.START)
+
+            val binding = SortingMethodBinding.bind(view)
+
+            binding.radioGroupSortingMethod.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    binding.radioBtnTitle.id -> {}
+                    binding.radioBtnAuthor.id -> {}
+                }
+            }
         }
     }
 
