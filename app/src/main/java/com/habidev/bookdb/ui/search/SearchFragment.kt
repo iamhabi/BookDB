@@ -71,6 +71,12 @@ class SearchFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        bookDBViewModel.allBooks.removeObservers(requireActivity())
+    }
+
     override fun onStop() {
         super.onStop()
 
@@ -99,13 +105,23 @@ class SearchFragment : Fragment() {
 
         dbAdapter?.deleteNotMatchedItems(query)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val resultList = bookDBViewModel.searchBook(query)
-
-            CoroutineScope(Dispatchers.Main).launch {
-                dbAdapter?.add(resultList)
+        bookDBViewModel.allBooks.observe(requireActivity()) { items ->
+            items?.filter { item ->
+                item.title.contains(query)
+            }?.let { result ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    dbAdapter?.add(result)
+                }
             }
         }
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val resultList = bookDBViewModel.searchBook(query)
+//
+//            CoroutineScope(Dispatchers.Main).launch {
+//                dbAdapter?.add(resultList)
+//            }
+//        }
     }
 
     private fun searchInternet(query: String) {
