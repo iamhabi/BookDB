@@ -114,8 +114,8 @@ class SearchAdapter(
     fun deleteNotMatchedItems(query: String) {
         items.filter { item ->
             !item.title.contains(query)
-        }.let { notMatchedItems ->
-            notMatchedItems.forEach { remove(it) }
+        }.forEach { item ->
+            remove(item)
         }
     }
 
@@ -126,6 +126,7 @@ class SearchAdapter(
             }
 
             notifyItemRemoved(index)
+            notifyItemChanged(index)
 
             items.removeAt(index)
         }
