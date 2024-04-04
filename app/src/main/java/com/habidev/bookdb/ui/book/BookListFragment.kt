@@ -65,29 +65,7 @@ class BookListFragment: Fragment(R.layout.book_list) {
 
         updateAllBooks()
 
-        settingsViewModel.settings.observe(requireActivity()) { settings ->
-            CoroutineScope(Dispatchers.Main).launch {
-                if (settings.isSortByTitle == 1) {
-                    adapter.sortByTitle()
-                } else {
-                    adapter.sortByAuthor()
-                }
-            }
-
-            CoroutineScope(Dispatchers.Main).launch {
-                val isGrid = settings.isGird == 1
-
-                viewBinding.recyclerView.layoutManager = if (isGrid) {
-                    gridLayoutManager
-                } else {
-                    linearLayoutManager
-                }
-
-                adapter.changeLayout(isGrid)
-
-                viewBinding.recyclerView.adapter = adapter
-            }
-        }
+        observeSettings()
     }
 
     override fun onStop() {
@@ -107,6 +85,7 @@ class BookListFragment: Fragment(R.layout.book_list) {
 
         bookDBViewModel.allBooks.observe(requireActivity()) { books ->
             adapter.add(books)
+            updateUIBySettings()
         }
 
         groupItem = null
@@ -123,6 +102,59 @@ class BookListFragment: Fragment(R.layout.book_list) {
 
         booksByGroupLiveData?.observe(requireActivity()) { books ->
             adapter.add(books)
+        }
+    }
+
+    private fun updateUIBySettings() {
+        val settings = settingsViewModel.settings.value ?: return
+
+        val isSortByTitle = settings.isSortByTitle == 1
+        val isGrid = settings.isGird == 1
+
+        if (isSortByTitle) {
+            adapter.sortByTitle()
+        } else {
+            adapter.sortByAuthor()
+        }
+
+        adapter.changeLayout(isGrid)
+
+        viewBinding.recyclerView.run {
+            layoutManager = if (isGrid) {
+                gridLayoutManager
+            } else {
+                linearLayoutManager
+            }
+
+            this.adapter = adapter
+        }
+    }
+
+    private fun observeSettings() {
+        settingsViewModel.settings.observe(requireActivity()) { settings ->
+            CoroutineScope(Dispatchers.Main).launch {
+                if (settings.isSortByTitle == 1) {
+                    adapter.sortByTitle()
+                } else {
+                    adapter.sortByAuthor()
+                }
+            }
+
+            CoroutineScope(Dispatchers.Main).launch {
+                val isGrid = settings.isGird == 1
+
+                adapter.changeLayout(isGrid)
+
+                viewBinding.recyclerView.run {
+                    layoutManager = if (isGrid) {
+                        gridLayoutManager
+                    } else {
+                        linearLayoutManager
+                    }
+
+                    this.adapter = adapter
+                }
+            }
         }
     }
 
