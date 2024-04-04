@@ -270,7 +270,7 @@ public final class BookDao_Impl implements BookDao {
   }
 
   @Override
-  public Object insertBook(final BookItem bookItem, final Continuation<? super Long> $completion) {
+  public Object insertBook(final BookItem bookItem, final Continuation<? super Long> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Long>() {
       @Override
       @NonNull
@@ -284,12 +284,11 @@ public final class BookDao_Impl implements BookDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
-  public Object insertGroup(final GroupItem groupItem,
-      final Continuation<? super Unit> $completion) {
+  public Object insertGroup(final GroupItem groupItem, final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -303,12 +302,12 @@ public final class BookDao_Impl implements BookDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
   public Object insertBookIntoGroup(final GroupBookItem groupBookItem,
-      final Continuation<? super Unit> $completion) {
+      final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -322,11 +321,11 @@ public final class BookDao_Impl implements BookDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
-  public Object deleteBook(final BookItem bookItem, final Continuation<? super Unit> $completion) {
+  public Object deleteBook(final BookItem bookItem, final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -340,12 +339,11 @@ public final class BookDao_Impl implements BookDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
-  public Object deleteGroup(final GroupItem groupItem,
-      final Continuation<? super Unit> $completion) {
+  public Object deleteGroup(final GroupItem groupItem, final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -359,11 +357,11 @@ public final class BookDao_Impl implements BookDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
-  public Object updateBook(final BookItem bookItem, final Continuation<? super Unit> $completion) {
+  public Object updateBook(final BookItem bookItem, final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -377,12 +375,11 @@ public final class BookDao_Impl implements BookDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
-  public Object updateGroup(final GroupItem groupItem,
-      final Continuation<? super Unit> $completion) {
+  public Object updateGroup(final GroupItem groupItem, final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -396,12 +393,12 @@ public final class BookDao_Impl implements BookDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
   public Object deleteBookFromGroup(final long isbn, final int groupId,
-      final Continuation<? super Unit> $completion) {
+      final Continuation<? super Unit> arg2) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -424,11 +421,11 @@ public final class BookDao_Impl implements BookDao {
           __preparedStmtOfDeleteBookFromGroup.release(_stmt);
         }
       }
-    }, $completion);
+    }, arg2);
   }
 
   @Override
-  public Object deleteAllBooks(final Continuation<? super Unit> $completion) {
+  public Object deleteAllBooks(final Continuation<? super Unit> arg0) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -447,11 +444,11 @@ public final class BookDao_Impl implements BookDao {
           __preparedStmtOfDeleteAllBooks.release(_stmt);
         }
       }
-    }, $completion);
+    }, arg0);
   }
 
   @Override
-  public Object deleteAllGroups(final Continuation<? super Unit> $completion) {
+  public Object deleteAllGroups(final Continuation<? super Unit> arg0) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -470,11 +467,11 @@ public final class BookDao_Impl implements BookDao {
           __preparedStmtOfDeleteAllGroups.release(_stmt);
         }
       }
-    }, $completion);
+    }, arg0);
   }
 
   @Override
-  public Object deleteAllGroupBooks(final Continuation<? super Unit> $completion) {
+  public Object deleteAllGroupBooks(final Continuation<? super Unit> arg0) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -493,11 +490,11 @@ public final class BookDao_Impl implements BookDao {
           __preparedStmtOfDeleteAllGroupBooks.release(_stmt);
         }
       }
-    }, $completion);
+    }, arg0);
   }
 
   @Override
-  public Object searchByISBN(final long isbn, final Continuation<? super BookItem> $completion) {
+  public Object searchByISBN(final long isbn, final Continuation<? super BookItem> arg1) {
     final String _sql = "SELECT * FROM books WHERE isbn = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
@@ -573,7 +570,7 @@ public final class BookDao_Impl implements BookDao {
           _statement.release();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
