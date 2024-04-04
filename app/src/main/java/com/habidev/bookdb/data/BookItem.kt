@@ -1,9 +1,7 @@
 package com.habidev.bookdb.data
 
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.annotation.RequiresApi
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
@@ -60,7 +58,6 @@ data class BookItem(
         parcel.readString()
     )
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(isbn)
         parcel.writeString(link)
@@ -77,7 +74,6 @@ data class BookItem(
     }
 
     companion object CREATOR : Parcelable.Creator<BookItem> {
-        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BookItem {
             return BookItem(parcel)
         }
