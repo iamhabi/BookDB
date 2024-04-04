@@ -2,6 +2,7 @@ package com.habidev.bookdb.database
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.habidev.bookdb.data.SettingsItem
@@ -13,14 +14,14 @@ interface SettingsDao {
         const val TABLE_NAME = "settings"
     }
 
-    @Insert
-    fun insert(settingsItem: SettingsItem)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(settingsItem: SettingsItem)
 
     @Update
-    fun update(settingsItem: SettingsItem)
+    suspend fun update(settingsItem: SettingsItem)
 
     @Query("DELETE FROM $TABLE_NAME")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM $TABLE_NAME LIMIT 1")
     fun getSettings(): Flow<SettingsItem>
