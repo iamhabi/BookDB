@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -91,6 +92,22 @@ class GroupListFragment: Fragment() {
         viewBinding.recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 
+    private fun createGroup() {
+        val text = viewBinding.editTextAddGroup.text.toString()
+
+        if (text == "") {
+            return
+        }
+
+        BookDBClient.createGroup(text)
+
+        viewBinding.editTextAddGroup.text.clear()
+
+        Utils.closeKeyboard(requireActivity())
+
+        // TODO refresh groups
+    }
+
     private fun initViewListener() {
         Utils.setUpEditTextCloseKeyboard(requireActivity(), viewBinding.root)
 
@@ -109,23 +126,7 @@ class GroupListFragment: Fragment() {
         }
 
         viewBinding.btnAddGroup.setOnClickListener {
-            val text = viewBinding.editTextAddGroup.text.toString()
-
-            if (text == "") {
-                return@setOnClickListener
-            }
-
-            BookDBClient.createGroup(text)
-
-//            bookDBViewModel.insertGroup(GroupItem(0, text))
-//
-//            val message = resources.getString(R.string.created_new_group)
-//
-//            Toast.makeText(requireContext(), "$message $text", Toast.LENGTH_SHORT).show()
-
-            viewBinding.editTextAddGroup.text.clear()
-
-            Utils.closeKeyboard(requireActivity())
+            createGroup()
         }
 
         viewBinding.editTextAddGroup.setOnFocusChangeListener { view, hasFocus ->
@@ -134,6 +135,14 @@ class GroupListFragment: Fragment() {
             } else {
                 Utils.closeKeyboard(requireActivity())
             }
+        }
+
+        viewBinding.editTextAddGroup.setOnEditorActionListener { view, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                createGroup()
+            }
+
+            true
         }
     }
 }
