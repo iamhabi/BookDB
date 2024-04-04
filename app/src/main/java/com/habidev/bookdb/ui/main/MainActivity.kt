@@ -146,7 +146,13 @@ class MainActivity : AppCompatActivity(), SomeInterface {
 
             window.showAsDropDown(it, 16, 0, Gravity.END)
 
+            val isSortByTitle = settings.isSortByTitle == 1
+            val isGrid = settings.isGird == 1
+
             val binding = ListSettingsBinding.bind(window.contentView)
+
+            binding.radioGroupSortingMethod.check(if (isSortByTitle) binding.radioBtnTitle.id else binding.radioBtnAuthor.id)
+            binding.radioGroupViewMethod.check(if (isGrid) binding.radioBtnGrid.id else binding.radioBtnList.id)
 
             binding.radioGroupSortingMethod.setOnCheckedChangeListener { _, checkedId ->
                 settings.isSortByTitle = when (checkedId) {
