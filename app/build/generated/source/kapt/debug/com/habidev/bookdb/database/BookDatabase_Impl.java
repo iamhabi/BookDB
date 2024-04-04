@@ -29,18 +29,21 @@ import javax.annotation.processing.Generated;
 public final class BookDatabase_Impl extends BookDatabase {
   private volatile BookDao _bookDao;
 
+  private volatile SettingsDao _settingsDao;
+
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(11) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(12) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS `books` (`isbn` INTEGER NOT NULL, `link` TEXT NOT NULL, `title` TEXT NOT NULL, `subtitle` TEXT NOT NULL DEFAULT '', `author` TEXT NOT NULL, `imageUrl` TEXT NOT NULL, `description` TEXT NOT NULL, `comment` TEXT, PRIMARY KEY(`isbn`))");
         db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_books_isbn` ON `books` (`isbn`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `groups` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `group_books` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `groupId` INTEGER NOT NULL, `isbn` INTEGER NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `settings` (`id` INTEGER NOT NULL, `isSortByTitle` INTEGER NOT NULL, `isGird` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f04ca145d7e9f5787e11f0ed976f3800')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '329ab121fe5b241b6ec88929efb75082')");
       }
 
       @Override
@@ -48,6 +51,7 @@ public final class BookDatabase_Impl extends BookDatabase {
         db.execSQL("DROP TABLE IF EXISTS `books`");
         db.execSQL("DROP TABLE IF EXISTS `groups`");
         db.execSQL("DROP TABLE IF EXISTS `group_books`");
+        db.execSQL("DROP TABLE IF EXISTS `settings`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
         if (_callbacks != null) {
           for (RoomDatabase.Callback _callback : _callbacks) {
@@ -135,9 +139,22 @@ public final class BookDatabase_Impl extends BookDatabase {
                   + " Expected:\n" + _infoGroupBooks + "\n"
                   + " Found:\n" + _existingGroupBooks);
         }
+        final HashMap<String, TableInfo.Column> _columnsSettings = new HashMap<String, TableInfo.Column>(3);
+        _columnsSettings.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSettings.put("isSortByTitle", new TableInfo.Column("isSortByTitle", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSettings.put("isGird", new TableInfo.Column("isGird", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysSettings = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesSettings = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoSettings = new TableInfo("settings", _columnsSettings, _foreignKeysSettings, _indicesSettings);
+        final TableInfo _existingSettings = TableInfo.read(db, "settings");
+        if (!_infoSettings.equals(_existingSettings)) {
+          return new RoomOpenHelper.ValidationResult(false, "settings(com.habidev.bookdb.data.SettingsItem).\n"
+                  + " Expected:\n" + _infoSettings + "\n"
+                  + " Found:\n" + _existingSettings);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "f04ca145d7e9f5787e11f0ed976f3800", "cf08c5292fc911f9a2b60c6cc3bfe8d6");
+    }, "329ab121fe5b241b6ec88929efb75082", "3e3a53555e27ea386ec9defb8361fa85");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -148,7 +165,7 @@ public final class BookDatabase_Impl extends BookDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "books","groups","group_books");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "books","groups","group_books","settings");
   }
 
   @Override
@@ -160,6 +177,7 @@ public final class BookDatabase_Impl extends BookDatabase {
       _db.execSQL("DELETE FROM `books`");
       _db.execSQL("DELETE FROM `groups`");
       _db.execSQL("DELETE FROM `group_books`");
+      _db.execSQL("DELETE FROM `settings`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -175,6 +193,7 @@ public final class BookDatabase_Impl extends BookDatabase {
   protected Map<Class<?>, List<Class<?>>> getRequiredTypeConverters() {
     final HashMap<Class<?>, List<Class<?>>> _typeConvertersMap = new HashMap<Class<?>, List<Class<?>>>();
     _typeConvertersMap.put(BookDao.class, BookDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(SettingsDao.class, SettingsDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -200,6 +219,7 @@ public final class BookDatabase_Impl extends BookDatabase {
     _autoMigrations.add(new BookDatabase_AutoMigration_8_9_Impl());
     _autoMigrations.add(new BookDatabase_AutoMigration_9_10_Impl());
     _autoMigrations.add(new BookDatabase_AutoMigration_10_11_Impl());
+    _autoMigrations.add(new BookDatabase_AutoMigration_11_12_Impl());
     return _autoMigrations;
   }
 
@@ -213,6 +233,20 @@ public final class BookDatabase_Impl extends BookDatabase {
           _bookDao = new BookDao_Impl(this);
         }
         return _bookDao;
+      }
+    }
+  }
+
+  @Override
+  public SettingsDao settingsDao() {
+    if (_settingsDao != null) {
+      return _settingsDao;
+    } else {
+      synchronized(this) {
+        if(_settingsDao == null) {
+          _settingsDao = new SettingsDao_Impl(this);
+        }
+        return _settingsDao;
       }
     }
   }

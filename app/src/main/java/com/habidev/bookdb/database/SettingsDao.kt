@@ -1,0 +1,27 @@
+package com.habidev.bookdb.database
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+import com.habidev.bookdb.data.SettingsItem
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface SettingsDao {
+    companion object {
+        const val TABLE_NAME = "settings"
+    }
+
+    @Insert
+    fun insert(settingsItem: SettingsItem)
+
+    @Update
+    fun update(settingsItem: SettingsItem)
+
+    @Query("DELETE FROM $TABLE_NAME")
+    fun deleteAll()
+
+    @Query("SELECT * FROM $TABLE_NAME LIMIT 1")
+    fun getSettings(): Flow<SettingsItem>
+}

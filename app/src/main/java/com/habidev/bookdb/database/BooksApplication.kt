@@ -14,4 +14,8 @@ class BooksApplication: Application() {
     val repository by lazy {
         BookRepository(database.bookDao())
     }
+
+    val settingsRepository by lazy {
+        SettingsRepository(database.settingsDao())
+    }
 }

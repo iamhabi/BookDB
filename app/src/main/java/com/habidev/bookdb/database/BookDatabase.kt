@@ -13,6 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.habidev.bookdb.data.BookItem
 import com.habidev.bookdb.data.GroupBookItem
 import com.habidev.bookdb.data.GroupItem
+import com.habidev.bookdb.data.SettingsItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -20,9 +21,10 @@ import kotlinx.coroutines.launch
     entities = [
         BookItem::class,
         GroupItem::class,
-        GroupBookItem::class
+        GroupBookItem::class,
+        SettingsItem::class
                ],
-    version = 11,
+    version = 12,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(1, 2),
@@ -35,11 +37,13 @@ import kotlinx.coroutines.launch
         AutoMigration(8, 9, BookDatabase.RenameGroupToGroupId::class),
         AutoMigration(9, 10, BookDatabase.DeleteReadingAndOwningState::class),
         AutoMigration(10, 11),
+        AutoMigration(11, 12),
     ]
 )
 abstract class BookDatabase: RoomDatabase() {
 
     abstract fun bookDao(): BookDao
+    abstract fun settingsDao(): SettingsDao
 
     companion object {
         @Volatile
@@ -73,15 +77,17 @@ abstract class BookDatabase: RoomDatabase() {
 
             INSTANCE?.let { bookDatabase ->
                 scope.launch {
-                    populateDatabase(bookDatabase.bookDao())
+                    populateDatabase(bookDatabase.bookDao(), bookDatabase.settingsDao())
                 }
             }
         }
 
-        suspend fun populateDatabase(bookDao: BookDao) {
+        suspend fun populateDatabase(bookDao: BookDao, settingsDao: SettingsDao) {
             bookDao.deleteAllBooks()
             bookDao.deleteAllGroups()
             bookDao.deleteAllGroupBooks()
+
+            settingsDao.deleteAll()
         }
     }
 
