@@ -17,10 +17,15 @@ import com.habidev.bookdb.data.GroupItem
 import com.habidev.bookdb.databinding.BookListBinding
 import com.habidev.bookdb.ui.main.SomeInterface
 import com.habidev.bookdb.viewmodel.BookDBViewModel
+import com.habidev.bookdb.viewmodel.SettingsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class BookListFragment: Fragment(R.layout.book_list) {
     private val bookDBViewModel: BookDBViewModel by activityViewModels()
+    private val settingsViewModel: SettingsViewModel by activityViewModels()
 
     private lateinit var viewBinding: BookListBinding
 
@@ -59,6 +64,30 @@ class BookListFragment: Fragment(R.layout.book_list) {
         super.onStart()
 
         updateAllBooks()
+
+        settingsViewModel.settings.observe(requireActivity()) { settings ->
+            CoroutineScope(Dispatchers.Main).launch {
+                if (settings.isSortByTitle == 1) {
+                    adapter.sortByTitle()
+                } else {
+                    adapter.sortByAuthor()
+                }
+            }
+
+            CoroutineScope(Dispatchers.Main).launch {
+                val isGrid = settings.isGird == 1
+
+                viewBinding.recyclerView.layoutManager = if (isGrid) {
+                    gridLayoutManager
+                } else {
+                    linearLayoutManager
+                }
+
+                adapter.changeLayout(isGrid)
+
+                viewBinding.recyclerView.adapter = adapter
+            }
+        }
     }
 
     override fun onStop() {
@@ -100,6 +129,7 @@ class BookListFragment: Fragment(R.layout.book_list) {
     private fun removeObservers() {
         bookDBViewModel.allBooksLiveData.removeObservers(requireActivity())
         booksByGroupLiveData?.removeObservers(requireActivity())
+        settingsViewModel.settings.removeObservers(requireActivity())
     }
 
     private fun initRecyclerView() {

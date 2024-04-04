@@ -32,6 +32,8 @@ import com.habidev.bookdb.viewmodel.BookDBViewModel
 import com.habidev.bookdb.viewmodel.BookViewModelFactory
 import com.habidev.bookdb.viewmodel.DetailInfoViewModel
 import com.habidev.bookdb.viewmodel.SearchViewModel
+import com.habidev.bookdb.viewmodel.SettingsViewModel
+import com.habidev.bookdb.viewmodel.SettingsViewModelFactory
 
 
 interface SomeInterface {
@@ -46,6 +48,9 @@ class MainActivity : AppCompatActivity(), SomeInterface {
 
     private val searchViewModel: SearchViewModel by viewModels()
     private val detailInfoViewModel: DetailInfoViewModel by viewModels()
+    private val settingsViewModel: SettingsViewModel by viewModels<SettingsViewModel> {
+        SettingsViewModelFactory((application as BooksApplication).settingsRepository)
+    }
 
     private val bookListFragment = BookListFragment()
     private val groupListFragment = GroupListFragment()
@@ -64,6 +69,7 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         setContentView(viewBinding.root)
 
         bookDBViewModel.init()
+        settingsViewModel.init()
 
         initBookList()
         initSortingWindow()
@@ -134,6 +140,8 @@ class MainActivity : AppCompatActivity(), SomeInterface {
         }
 
         viewBinding.btnMore.setOnClickListener {
+            val settings = settingsViewModel.settings.value ?: return@setOnClickListener
+
             val window = sortingWindow ?: return@setOnClickListener
 
             window.showAsDropDown(it, 16, 0, Gravity.END)
@@ -141,26 +149,23 @@ class MainActivity : AppCompatActivity(), SomeInterface {
             val binding = ListSettingsBinding.bind(window.contentView)
 
             binding.radioGroupSortingMethod.setOnCheckedChangeListener { _, checkedId ->
-                when (checkedId) {
-                    binding.radioBtnTitle.id -> {
-
-                    }
-                    binding.radioBtnAuthor.id -> {
-
-                    }
+                settings.isSortByTitle = when (checkedId) {
+                    binding.radioBtnTitle.id -> 1
+                    binding.radioBtnAuthor.id -> 0
+                    else -> 1
                 }
+
+                settingsViewModel.update(settings)
             }
 
             binding.radioGroupViewMethod.setOnCheckedChangeListener { _, checkedId ->
-                when (checkedId) {
-                    binding.radioBtnList.id -> {
-
-                    }
-
-                    binding.radioBtnGrid.id -> {
-
-                    }
+                settings.isGird = when (checkedId) {
+                    binding.radioBtnList.id -> 0
+                    binding.radioBtnGrid.id -> 1
+                    else -> 0
                 }
+
+                settingsViewModel.update(settings)
             }
         }
     }
