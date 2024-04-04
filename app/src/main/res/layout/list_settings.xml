@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="@color/black"
+    android:background="@color/default_button_color"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -34,6 +34,40 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_minimum_height"
             android:text="Author"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/text_view_view_method"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_height"
+        android:gravity="center_vertical"
+        android:text="List viewing method"
+        app:layout_constraintTop_toBottomOf="@id/radio_group_sorting_method"/>
+
+    <RadioGroup
+        android:id="@+id/radio_group_view_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/text_view_view_method">
+
+        <RadioButton
+            android:id="@+id/radio_btn_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_minimum_height"
+            android:text="List"
+            android:checked="true"
+            android:drawableStart="@drawable/list"
+            android:drawableTint="@color/white"/>
+
+        <RadioButton
+            android:id="@+id/radio_btn_grid"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_minimum_height"
+            android:text="Grid"
+            android:drawableStart="@drawable/grid"
+            android:drawableTint="@color/white"/>
 
     </RadioGroup>
 

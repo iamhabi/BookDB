@@ -13,10 +13,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/btn_more"
+            android:id="@+id/btn_group"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:contentDescription="@string/more"
+            android:contentDescription="show group"
             android:src="@drawable/dehaze"
             android:background="@null"
             app:layout_constraintDimensionRatio="H,1:1"
@@ -29,7 +29,17 @@
             android:contentDescription="@string/search"
             android:src="@drawable/search"
             android:background="@null"
-            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintDimensionRatio="H,1:0.8"
+            app:layout_constraintEnd_toStartOf="@id/btn_more"/>
+
+        <ImageButton
+            android:id="@+id/btn_more"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/more"
+            android:src="@drawable/more"
+            android:background="@null"
+            app:layout_constraintDimensionRatio="H,1:0.8"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
